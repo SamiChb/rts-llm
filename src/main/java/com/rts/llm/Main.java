@@ -141,6 +141,7 @@ public class Main {
                                 case OPENAI -> "gpt-4o-mini";
                                 case ANTHROPIC -> "claude-sonnet-4-20250514";
                                 case OLLAMA -> "llama3";
+                                case GEMINI -> "gemini-2.0-flash";
                             };
                         }
                     }
@@ -161,12 +162,17 @@ public class Main {
                     case OPENAI -> System.getenv("OPENAI_API_KEY");
                     case ANTHROPIC -> System.getenv("ANTHROPIC_API_KEY");
                     case OLLAMA -> "not-needed";
+                    case GEMINI -> System.getenv("GEMINI_API_KEY");
                 };
             }
 
             if (config.apiKey == null && config.provider != LLMClient.Provider.OLLAMA) {
-                String envVar = config.provider == LLMClient.Provider.OPENAI
-                        ? "OPENAI_API_KEY" : "ANTHROPIC_API_KEY";
+                String envVar = switch (config.provider) {
+                    case OPENAI -> "OPENAI_API_KEY";
+                    case ANTHROPIC -> "ANTHROPIC_API_KEY";
+                    case GEMINI -> "GEMINI_API_KEY";
+                    default -> "API_KEY";
+                };
                 throw new IllegalArgumentException(
                         "Clé API requise. Utilisez --api-key <clé> ou la variable " + envVar);
             }
@@ -177,25 +183,28 @@ public class Main {
 
     private static void printUsage() {
         System.err.println("""
-                
+
                 Usage : java -jar rts-llm.jar <chemin-projet> [options]
-                
+
                 Options :
-                  --provider openai|anthropic|ollama  (défaut: openai)
-                  --model <nom>                      (défaut: gpt-4o-mini / claude-sonnet-4-20250514 / llama3)
-                  --api-key <clé>                    (ou env OPENAI_API_KEY / ANTHROPIC_API_KEY)
+                  --provider openai|anthropic|ollama|gemini  (défaut: openai)
+                  --model <nom>                      (défaut: gpt-4o-mini / claude-sonnet-4-20250514 / llama3 / gemini-2.0-flash)
+                  --api-key <clé>                    (ou env OPENAI_API_KEY / ANTHROPIC_API_KEY / GEMINI_API_KEY)
                   --diff-from <commit>               (défaut: HEAD~1)
                   --diff-to <commit>                 (défaut: HEAD)
                   --include-stepdefs                 (inclut les step defs dans le prompt)
                   --show-prompt                      (affiche le prompt et la réponse)
-                
+
                 Exemples :
                   # Avec OpenAI, dernier commit
                   java -jar rts-llm.jar /mon/projet --api-key sk-xxx
-                
+
+                  # Avec Gemini (Google AI Studio)
+                  java -jar rts-llm.jar /mon/projet --provider gemini --api-key AIza-xxx
+
                   # Avec Anthropic, entre deux commits
                   java -jar rts-llm.jar /mon/projet --provider anthropic --diff-from abc123 --diff-to def456
-                
+
                   # Avec Ollama local (gratuit)
                   java -jar rts-llm.jar /mon/projet --provider ollama --model llama3
                 """);

@@ -16,7 +16,7 @@ import java.time.Duration;
  */
 public class LLMClient {
 
-    public enum Provider { OPENAI, ANTHROPIC, OLLAMA }
+    public enum Provider { OPENAI, ANTHROPIC, OLLAMA, GEMINI }
 
     private final Provider provider;
     private final String apiKey;
@@ -33,6 +33,8 @@ public class LLMClient {
             case OPENAI -> "https://api.openai.com/v1/chat/completions";
             case ANTHROPIC -> "https://api.anthropic.com/v1/messages";
             case OLLAMA -> "http://localhost:11434/api/chat";
+            // L'URL Gemini dépend du modèle et de la clé — construite dynamiquement
+            case GEMINI -> "https://generativelanguage.googleapis.com/v1beta/models/";
         };
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
@@ -101,14 +103,35 @@ public class LLMClient {
                 messages.add(msg);
                 body.add("messages", messages);
             }
+            case GEMINI -> {
+                // Format Gemini : { "contents": [{ "parts": [{"text": "..."}] }] }
+                JsonArray parts = new JsonArray();
+                JsonObject part = new JsonObject();
+                part.addProperty("text", prompt);
+                parts.add(part);
+                JsonObject contentItem = new JsonObject();
+                contentItem.add("parts", parts);
+                JsonArray contents = new JsonArray();
+                contents.add(contentItem);
+                body.add("contents", contents);
+                JsonObject genConfig = new JsonObject();
+                genConfig.addProperty("temperature", 0.1);
+                genConfig.addProperty("maxOutputTokens", 1000);
+                body.add("generationConfig", genConfig);
+            }
         }
 
         return gson.toJson(body);
     }
 
     private HttpRequest buildHttpRequest(String requestBody) {
+        // Pour Gemini, l'URL complète inclut le modèle et la clé API
+        String url = provider == Provider.GEMINI
+                ? baseUrl + model + ":generateContent?key=" + apiKey
+                : baseUrl;
+
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
+                .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(120))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody));
@@ -120,6 +143,7 @@ public class LLMClient {
                 builder.header("anthropic-version", "2023-06-01");
             }
             case OLLAMA -> {} // pas d'authentification
+            case GEMINI -> {} // clé dans l'URL
         }
 
         return builder.build();
@@ -138,6 +162,13 @@ public class LLMClient {
                     .get("text").getAsString();
             case OLLAMA -> json.getAsJsonObject("message")
                     .get("content").getAsString();
+            // Gemini : { "candidates": [{ "content": { "parts": [{"text":"..."}] } }] }
+            case GEMINI -> json.getAsJsonArray("candidates")
+                    .get(0).getAsJsonObject()
+                    .getAsJsonObject("content")
+                    .getAsJsonArray("parts")
+                    .get(0).getAsJsonObject()
+                    .get("text").getAsString();
         };
     }
 
