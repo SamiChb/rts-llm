@@ -52,11 +52,11 @@ public class PromptBuilder {
         }
 
         // ── Scénarios ──
-        sb.append("═══ SCÉNARIOS BDD EXISTANTS ═══\n\n");
+        sb.append("═══ SCÉNARIOS BDD EXISTANTS ═══\n");
+        sb.append("La numérotation commence à [1]. Utilise UNIQUEMENT les indices listés ci-dessous.\n\n");
         int index = 1;
         for (FeatureCollector.FeatureFile f : features) {
             sb.append("--- Fichier : ").append(f.path()).append(" ---\n");
-            // Numéroter chaque scénario
             for (String line : f.content().split("\n")) {
                 String trimmed = line.trim();
                 if (trimmed.startsWith("Scenario:") || trimmed.startsWith("Scenario Outline:")) {
@@ -70,6 +70,11 @@ public class PromptBuilder {
             }
             sb.append("\n");
         }
+
+        // Récapitulatif des indices valides
+        int totalScenarios = index - 1;
+        sb.append("Indices valides : [1] à [").append(totalScenarios).append("]. ")
+          .append("Tout indice en dehors de cette plage est INVALIDE.\n\n");
 
         // ── Step definitions (optionnel) ──
         if (includeStepDefs && !stepDefs.isEmpty()) {
@@ -92,21 +97,17 @@ public class PromptBuilder {
         }
 
         // ── Format de réponse ──
-        sb.append("""
-                ═══ FORMAT DE RÉPONSE ═══
-                
-                Réponds UNIQUEMENT avec un objet JSON valide, sans texte avant ni après :
-                {
-                  "selected": [1, 3],
-                  "reasoning": "Explication courte de pourquoi ces scénarios sont impactés."
-                }
-                
-                Si aucun scénario n'est impacté :
-                {
-                  "selected": [],
-                  "reasoning": "Aucun scénario impacté par ces modifications."
-                }
-                """);
+        sb.append("═══ FORMAT DE RÉPONSE ═══\n\n");
+        sb.append("IMPORTANT :\n");
+        sb.append("- Ta réponse doit commencer IMMÉDIATEMENT par { et se terminer par }.\n");
+        sb.append("- N'écris aucun texte avant ou après le JSON.\n");
+        sb.append("- N'utilise pas de blocs ```json```.\n");
+        sb.append("- Utilise UNIQUEMENT des indices entre [1] et [").append(totalScenarios).append("].\n");
+        sb.append("- Un seul objet JSON, rien d'autre.\n\n");
+        sb.append("Exemple si des scénarios sont impactés :\n");
+        sb.append("{\"selected\": [1, 3], \"reasoning\": \"Explication courte.\"}\n\n");
+        sb.append("Exemple si aucun scénario n'est impacté :\n");
+        sb.append("{\"selected\": [], \"reasoning\": \"Aucun scénario impacté par ces modifications.\"}\n");
 
         return sb.toString();
     }

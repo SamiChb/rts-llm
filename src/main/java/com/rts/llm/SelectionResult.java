@@ -6,6 +6,8 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Résultat de la sélection de tests par le LLM.
@@ -31,11 +33,8 @@ public class SelectionResult {
      * @param allScenarios liste ordonnée de tous les noms de scénarios (index 1-based)
      */
     public static SelectionResult parse(String llmResponse, List<String> allScenarios) {
-        // Nettoyer la réponse (enlever les ```json ... ``` si présents)
-        String cleaned = llmResponse.trim();
-        if (cleaned.startsWith("```")) {
-            cleaned = cleaned.replaceAll("^```json?\\s*", "").replaceAll("```$", "").trim();
-        }
+        // Extraire le dernier objet JSON valide de la réponse
+        String cleaned = extractLastJson(llmResponse);
 
         try {
             Gson gson = new Gson();
@@ -69,6 +68,23 @@ public class SelectionResult {
                     "Erreur de parsing JSON : " + e.getMessage()
                             + "\nRéponse brute : " + llmResponse);
         }
+    }
+
+    // ── Extraction JSON ────────────────────────────────
+
+    /**
+     * Extrait le dernier bloc JSON valide { ... } de la réponse du LLM.
+     * Gère les cas où le modèle ajoute du texte ou plusieurs blocs JSON.
+     */
+    private static String extractLastJson(String response) {
+        // Chercher tous les blocs {...} et retourner le dernier valide
+        Pattern pattern = Pattern.compile("\\{[^{}]*\\}", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(response);
+        String last = null;
+        while (matcher.find()) {
+            last = matcher.group();
+        }
+        return last != null ? last : response.trim();
     }
 
     // ── Affichage ──────────────────────────────────────
