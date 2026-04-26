@@ -118,4 +118,78 @@ public class PromptBuilder {
     public static String build(String diff, List<FeatureCollector.FeatureFile> features) {
         return build(diff, features, List.of(), false);
     }
+
+    /**
+     * Prompt en mode élagueur : les candidats ont déjà été filtrés par l'analyse
+     * statique. Le LLM a pour seul rôle de retirer les faux positifs.
+     */
+    public static String buildPruning(String diff,
+                                      List<CandidateFinder.Candidate> candidates,
+                                      int totalScenarios) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("""
+                Tu es un expert en sélection de tests de régression pour les projets BDD (Cucumber/Gherkin).
+
+                Une analyse statique a déjà identifié les scénarios *potentiellement* impactés par
+                les modifications de code (ils appellent transitivement une méthode modifiée).
+                Ton rôle : pour chaque candidat, décider s'il s'agit d'un vrai impact ou d'un faux
+                positif (la chaîne d'appel existe mais la modification ne change pas le comportement
+                observable par le scénario).
+
+                Règles :
+                - Sélectionne UNIQUEMENT les scénarios dont le comportement observable change.
+                - Utilise la chaîne d'appel pour comprendre COMMENT chaque scénario atteint le code modifié.
+                - Un changement purement cosmétique (log, commentaire, renommage interne) n'est pas un impact.
+                - Si AUCUN candidat n'est un vrai impact, retourne une liste vide.
+
+                """);
+
+        sb.append("═══ MODIFICATIONS DE CODE ═══\n\n");
+        if (diff.isBlank()) {
+            sb.append("(aucune modification détectée)\n\n");
+        } else if (diff.length() > 4000) {
+            sb.append(diff, 0, 4000);
+            sb.append("\n... (diff tronqué, ").append(diff.length()).append(" caractères au total)\n\n");
+        } else {
+            sb.append(diff).append("\n\n");
+        }
+
+        sb.append("═══ SCÉNARIOS CANDIDATS (présélection statique) ═══\n");
+        sb.append("Chaque candidat est listé avec son indice global [n], son nom, ses steps,\n");
+        sb.append("et la chaîne d'appel qui le relie au code modifié (step def → … → méthode modifiée).\n\n");
+
+        if (candidates.isEmpty()) {
+            sb.append("(aucun candidat — l'analyse statique n'a trouvé aucun lien)\n\n");
+        }
+
+        for (CandidateFinder.Candidate c : candidates) {
+            StaticAnalyzer.Scenario sc = c.scenario();
+            sb.append("[").append(sc.index()).append("] ").append(sc.name())
+              .append("   (").append(sc.filePath()).append(")\n");
+            for (String step : sc.stepLines()) {
+                sb.append("    ").append(step).append("\n");
+            }
+            sb.append("  Chaîne(s) d'appel vers le code modifié :\n");
+            for (CandidateFinder.CandidateChain ch : c.chains()) {
+                sb.append("    ").append(String.join(" → ", ch.chain())).append("\n");
+            }
+            sb.append("\n");
+        }
+
+        sb.append("Indices valides : parmi les candidats listés ci-dessus uniquement. ")
+          .append("La numérotation globale va de [1] à [").append(totalScenarios).append("] ; ")
+          .append("tout indice en dehors des candidats listés est INVALIDE.\n\n");
+
+        sb.append("═══ FORMAT DE RÉPONSE ═══\n\n");
+        sb.append("IMPORTANT :\n");
+        sb.append("- Ta réponse doit commencer IMMÉDIATEMENT par { et se terminer par }.\n");
+        sb.append("- N'écris aucun texte avant ou après le JSON.\n");
+        sb.append("- N'utilise pas de blocs ```json```.\n");
+        sb.append("- Un seul objet JSON, rien d'autre.\n\n");
+        sb.append("Exemple : {\"selected\": [1, 3], \"reasoning\": \"Explication courte.\"}\n");
+        sb.append("Si aucun candidat n'est un vrai impact : {\"selected\": [], \"reasoning\": \"...\"}\n");
+
+        return sb.toString();
+    }
 }

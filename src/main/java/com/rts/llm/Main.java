@@ -59,6 +59,11 @@ public class Main {
         int diffLines = diff.split("\n").length;
         System.out.println("   " + diffLines + " lignes de diff extraites.");
 
+        // Branche hybride : analyse statique + LLM élagueur
+        if (config.staticPrune) {
+            return runStaticPrune(config, diff);
+        }
+
         // ── 2. Collecter les scénarios ──
         System.out.println("2. Collecte des scénarios BDD...");
         FeatureCollector collector = new FeatureCollector(projectPath);
@@ -109,6 +114,78 @@ public class Main {
         return result;
     }
 
+    /**
+     * Pipeline hybride : analyse statique → candidats → LLM élagueur.
+     */
+    private static SelectionResult runStaticPrune(Config config, String diff) throws IOException {
+        Path projectPath = config.projectPath;
+
+        System.out.println("2. Analyse statique (AST + call graph)...");
+        StaticAnalyzer.Index index = StaticAnalyzer.analyze(projectPath);
+        System.out.println("   " + index.methodRangesByFile().size() + " fichiers indexés");
+        System.out.println("   " + index.stepDefs().size() + " step definitions");
+        System.out.println("   " + index.scenarios().size() + " scénarios");
+
+        List<String> allScenarios = new ArrayList<>();
+        for (StaticAnalyzer.Scenario sc : index.scenarios()) {
+            allScenarios.add(sc.name());
+        }
+
+        if (index.scenarios().isEmpty()) {
+            System.out.println("   Aucun scénario trouvé. Arrêt.");
+            return new SelectionResult(List.of(), List.of(), "Aucun scénario.");
+        }
+
+        System.out.println("3. Extraction des symboles modifiés...");
+        List<SymbolExtractor.ModifiedSymbol> modified =
+                SymbolExtractor.extract(diff, index.methodRangesByFile());
+        System.out.println("   " + modified.size() + " méthode(s) modifiée(s) détectée(s)");
+        for (SymbolExtractor.ModifiedSymbol m : modified) {
+            System.out.println("     - " + m.methodId());
+        }
+
+        System.out.println("4. Calcul des scénarios candidats (remontée transitive)...");
+        List<CandidateFinder.Candidate> candidates = CandidateFinder.find(modified, index);
+        System.out.println("   " + candidates.size() + " candidat(s) sur "
+                + index.scenarios().size() + " scénario(s)");
+
+        if (candidates.isEmpty()) {
+            String msg = modified.isEmpty()
+                    ? "Aucune méthode modifiée détectée (le diff peut concerner des champs, "
+                            + "du code hors méthode, ou des fichiers non parsables)."
+                    : "L'analyse statique n'a trouvé aucun lien entre les méthodes modifiées "
+                            + "et les scénarios BDD.";
+            System.out.println("   " + msg);
+            SelectionResult empty = new SelectionResult(List.of(), List.of(), msg);
+            empty.afficherRapport();
+            return empty;
+        }
+
+        System.out.println("5. Construction du prompt (mode élagueur)...");
+        String prompt = PromptBuilder.buildPruning(diff, candidates, index.scenarios().size());
+        System.out.println("   Prompt : " + prompt.length() + " caractères");
+
+        if (config.showPrompt) {
+            System.out.println("\n── PROMPT ──────────────────────────────────");
+            System.out.println(prompt);
+            System.out.println("── FIN PROMPT ──────────────────────────────\n");
+        }
+
+        System.out.println("6. Appel au LLM (" + config.provider + " / " + config.model + ")...");
+        LLMClient client = new LLMClient(config.provider, config.apiKey, config.model);
+        String response = client.chat(prompt);
+
+        if (config.showPrompt) {
+            System.out.println("\n── RÉPONSE LLM ─────────────────────────────");
+            System.out.println(response);
+            System.out.println("── FIN RÉPONSE ─────────────────────────────\n");
+        }
+
+        SelectionResult result = SelectionResult.parse(response, allScenarios);
+        result.afficherRapport();
+        return result;
+    }
+
     // ── Configuration ──────────────────────────────────────
 
     public static class Config {
@@ -120,6 +197,7 @@ public class Main {
         String diffTo;
         boolean includeStepDefs = false;
         boolean showPrompt = false;
+        boolean staticPrune = false;
 
         public static Config parse(String[] args) {
             Config config = new Config();
@@ -151,6 +229,7 @@ public class Main {
                     case "--diff-to" -> config.diffTo = args[++i];
                     case "--include-stepdefs" -> config.includeStepDefs = true;
                     case "--show-prompt" -> config.showPrompt = true;
+                    case "--static-prune" -> config.staticPrune = true;
                     default -> throw new IllegalArgumentException(
                             "Option inconnue : " + args[i]);
                 }
@@ -194,6 +273,7 @@ public class Main {
                   --diff-to <commit>                 (défaut: HEAD)
                   --include-stepdefs                 (inclut les step defs dans le prompt)
                   --show-prompt                      (affiche le prompt et la réponse)
+                  --static-prune                     (pipeline hybride : analyse statique → LLM élagueur)
 
                 Exemples :
                   # Avec OpenAI, dernier commit

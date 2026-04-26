@@ -1,0 +1,8 @@
+commit,modified_methods,gt_size,sel_size,tp,fp,fn,precision,recall,f1
+847e4de,0,0,0,0,0,0,NaN,NaN,NaN
+5d76675,0,0,0,0,0,0,NaN,NaN,NaN
+40d2960,1,2,0,0,0,0,NaN,NaN,NaN
+bd99a7c,1,2,0,0,0,0,NaN,NaN,NaN
+ffe06d9,1,2,0,0,0,0,NaN,NaN,NaN
+4b7aea3,0,0,0,0,0,0,NaN,NaN,NaN
+cc93e76,0,0,0,0,0,0,NaN,NaN,NaN
