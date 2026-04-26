@@ -1,0 +1,32 @@
+1. Extraction du diff Git...
+   48 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   32 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   8 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 10885 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 7
+    [2] Add tony stark user
+    [4] Update tony stark user
+    [5] Patch bruce wayne user
+    [6] Get users
+    [7] Search for valid users
+    [9] Get user
+    [10] Get user
+
+  Justification LLM :
+    Les scénarios sélectionnés appellent la méthode modifiée pour vérifier le format du corps de la requête HTTP. Cette modification peut affecter leur évaluation et donc changer leur comportement observable.
+
+═══════════════════════════════════════════════════

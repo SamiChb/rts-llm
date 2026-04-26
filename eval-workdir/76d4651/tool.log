@@ -1,0 +1,29 @@
+1. Extraction du diff Git...
+   46 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   34 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   4 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyPathWithValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   4 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 6941 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [1] Should import users csv file
+
+  Justification LLM :
+    The 'Add tony stark user' scenario modifies the age of Tony Stark using the introduced method in the modified code.
+
+═══════════════════════════════════════════════════

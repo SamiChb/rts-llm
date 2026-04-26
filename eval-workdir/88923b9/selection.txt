@@ -1,0 +1,2 @@
+Should be authenticated
+Add bruce wayne user

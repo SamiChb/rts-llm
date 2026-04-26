@@ -1,0 +1,29 @@
+1. Extraction du diff Git...
+   42 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   3 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkBodyContains
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
+4. Calcul des scénarios candidats (remontée transitive)...
+   13 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 11991 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 2
+    [4] Update tony stark user
+    [8] Search for invalid users
+
+  Justification LLM :
+    For scenario 4, the modification made to AbstractBddStepDefinition affects the age update operation for a specific user. The change in the method could potentially alter the age of the user being updated, which is observable behavior change. Scenario 8 searches for users with an invalid parameter and the code modification has added a new validation rule that will return an empty array if the user name is not found, which changes the observable behavior.
+
+═══════════════════════════════════════════════════

@@ -1,0 +1,22 @@
+1. Extraction du diff Git...
+   13 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   37 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   0 méthode(s) modifiée(s) détectée(s)
+4. Calcul des scénarios candidats (remontée transitive)...
+   0 candidat(s) sur 15 scénario(s)
+   Aucune méthode modifiée détectée (le diff peut concerner des champs, du code hors méthode, ou des fichiers non parsables).
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Aucune méthode modifiée détectée (le diff peut concerner des champs, du code hors méthode, ou des fichiers non parsables).
+
+═══════════════════════════════════════════════════

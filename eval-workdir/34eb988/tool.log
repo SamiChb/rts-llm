@@ -1,0 +1,42 @@
+1. Extraction du diff Git...
+   317 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   37 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   21 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setUp
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.stopWireMockServer
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.mockThirdPartyApiCall
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithJSON
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithFileContent
+     - fr.redfroggy.bdd.restapi.user.UserController.getAll
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getId
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setSessionIds
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getDetails
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setDetails
+     - fr.redfroggy.bdd.restapi.user.UserDetailService.getUserDetails
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getComicName
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setComicName
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getMainColors
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setMainColors
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getCity
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setCity
+4. Calcul des scénarios candidats (remontée transitive)...
+   15 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 24833 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+Erreur : request timed out
+java.net.http.HttpTimeoutException: request timed out
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
+	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
+	at com.rts.llm.Main.runStaticPrune(Main.java:186)
+	at com.rts.llm.Main.run(Main.java:74)
+	at com.rts.llm.Main.main(Main.java:33)

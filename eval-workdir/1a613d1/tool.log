@@ -1,0 +1,49 @@
+1. Extraction du diff Git...
+   238 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   19 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.addHeaders
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkHeaderExists
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkHeaderEqual
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.storeHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.storeJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getBodyDocument
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.emptyBodyPath
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+     - fr.redfroggy.bdd.restapi.user.UserController.addUser
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getId
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setRelatedTo
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getSessionIds
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setSessionIds
+4. Calcul des scénarios candidats (remontée transitive)...
+   13 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 24262 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 6
+    [1] Should be authenticated
+    [5] Patch bruce wayne user
+    [7] Search for valid users
+    [9] Get user
+    [11] Get wrong user
+    [12] Delete wrong user
+
+  Justification LLM :
+    The selected scenarios are those that directly interact with the functions modify, delete, or retrieve data from the users resource. Scenarios 1, 5, and 7 involve creating, updating, and retrieving user data, respectively. Scenario 9 stores the response header Content-Type for further use in the scenario scope. Scenario 11 tests a non-existent user ID, which could be relevant when handling edge cases. Scenario 12 deletes a wrong user, testing an error condition for a DELETE request.
+
+═══════════════════════════════════════════════════

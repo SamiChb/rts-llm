@@ -1,0 +1,64 @@
+→ agent JaCoCo : /home/etudiant/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar
+→ 28 scénarios détectés dans /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api
+→ couverture écrite dans /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6066347/coverage-per-scenario
+
+[sc_001] Should be authenticated
+  (test en échec — on garde quand même la couverture)
+[sc_002] Add tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_003] Add bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_004] Update tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_005] Patch bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_006] Get users
+  (test en échec — on garde quand même la couverture)
+[sc_007] Search for valid users
+  (test en échec — on garde quand même la couverture)
+[sc_008] Search for invalid users
+  (test en échec — on garde quand même la couverture)
+[sc_009] Get user
+  (test en échec — on garde quand même la couverture)
+[sc_010] Get user
+  (test en échec — on garde quand même la couverture)
+[sc_011] Get wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_012] Delete wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_013] Delete user
+  (test en échec — on garde quand même la couverture)
+[sc_014] Should import users csv file
+  (test en échec — on garde quand même la couverture)
+[sc_015] Should be authenticated
+  (test en échec — on garde quand même la couverture)
+[sc_016] Add tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_017] Add bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_018] Update tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_019] Patch bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_020] Get users
+  (test en échec — on garde quand même la couverture)
+[sc_021] Search for valid users
+  (test en échec — on garde quand même la couverture)
+[sc_022] Search for invalid users
+  (test en échec — on garde quand même la couverture)
+[sc_023] Get user
+  (test en échec — on garde quand même la couverture)
+[sc_024] Get user
+  (test en échec — on garde quand même la couverture)
+[sc_025] Get wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_026] Delete wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_027] Delete user
+  (test en échec — on garde quand même la couverture)
+[sc_028] Should import users csv file
+  (test en échec — on garde quand même la couverture)
+
+Terminé : 28 réussi(s), 0 sans couverture sur 28 scénario(s).
+Index   : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6066347/coverage-per-scenario/index.txt
+Logs    : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6066347/coverage-per-scenario/sc_*.log

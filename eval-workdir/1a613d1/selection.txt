@@ -1,0 +1,6 @@
+Should be authenticated
+Patch bruce wayne user
+Search for valid users
+Get user
+Get wrong user
+Delete wrong user

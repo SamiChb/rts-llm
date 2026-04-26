@@ -25,7 +25,17 @@ public class Main {
     public static void main(String[] args) {
         try {
             Config config = Config.parse(args);
-            run(config);
+            java.io.PrintStream originalOut = System.out;
+            if (config.selectionOnly) {
+                // Tous les logs partent sur stderr ; stdout est réservé à la sortie machine.
+                System.setOut(System.err);
+            }
+            SelectionResult result = run(config);
+            if (config.selectionOnly && result != null) {
+                for (String name : result.getSelectedScenarios()) {
+                    originalOut.println(name);
+                }
+            }
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur : " + e.getMessage());
             printUsage();
@@ -198,6 +208,7 @@ public class Main {
         boolean includeStepDefs = false;
         boolean showPrompt = false;
         boolean staticPrune = false;
+        boolean selectionOnly = false;
 
         public static Config parse(String[] args) {
             Config config = new Config();
@@ -230,6 +241,7 @@ public class Main {
                     case "--include-stepdefs" -> config.includeStepDefs = true;
                     case "--show-prompt" -> config.showPrompt = true;
                     case "--static-prune" -> config.staticPrune = true;
+                    case "--selection-only" -> config.selectionOnly = true;
                     default -> throw new IllegalArgumentException(
                             "Option inconnue : " + args[i]);
                 }

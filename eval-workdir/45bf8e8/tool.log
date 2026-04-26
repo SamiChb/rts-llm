@@ -1,0 +1,28 @@
+1. Extraction du diff Git...
+   58 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   34 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   4 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   5 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 7960 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    The code modifications affect how the body is set but do not change the behavior of any scenario as the JSON structure remains the same.
+
+═══════════════════════════════════════════════════

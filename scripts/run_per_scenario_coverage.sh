@@ -22,12 +22,22 @@ set -euo pipefail
 
 JACOCO_VERSION="0.8.11"
 NO_POM_CHANGES=false
+MVN_EXTRA=""
+
+# Flags par défaut alignés avec test-commits.sh : on désactive les plugins
+# stricts qui cassent les vieilles versions du projet sur JDK moderne.
+# IMPORTANT : on NE met PAS -Djacoco.skip=true ici, sinon pas de couverture !
+DEFAULT_SKIP_FLAGS="-Drat.skip=true -Dcheckstyle.skip=true -Denforcer.skip=true \
+-Dspotbugs.skip=true -Dpmd.skip=true -Dcpd.skip=true \
+-Dmaven.javadoc.skip=true -Danimal.sniffer.skip=true \
+-Dgit.commit.id.skip=true -Dmaven.gitcommitid.skip=true"
 
 # ── Parsing des options ───────────────────────────────────────────────────
 POSITIONAL=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --no-pom-changes) NO_POM_CHANGES=true; shift ;;
+    --mvn-extra) MVN_EXTRA="$2"; shift 2 ;;
     -h|--help)
       sed -n '2,20p' "$0"; exit 0 ;;
     --) shift; while [[ $# -gt 0 ]]; do POSITIONAL+=("$1"); shift; done ;;
@@ -119,6 +129,11 @@ for sc in "${SCENARIOS[@]}"; do
     -Dsurefire.failIfNoSpecifiedTests=false
     -DfailIfNoTests=false
   )
+  # Flags par défaut + extras éventuels
+  # shellcheck disable=SC2206
+  MVN_OPTS+=( $DEFAULT_SKIP_FLAGS )
+  # shellcheck disable=SC2206
+  [[ -n "$MVN_EXTRA" ]] && MVN_OPTS+=( $MVN_EXTRA )
 
   if $NO_POM_CHANGES; then
     # Injecte l'agent JaCoCo directement dans la JVM des tests Surefire.

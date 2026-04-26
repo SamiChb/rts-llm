@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -328,7 +329,7 @@ public class GroundTruthBuilder {
             double p = metrics != null ? metrics.precision() : Double.NaN;
             double r = metrics != null ? metrics.recall()    : Double.NaN;
             double f = metrics != null ? metrics.f1()        : Double.NaN;
-            System.out.printf("%s,%d,%d,%d,%d,%d,%d,%.4f,%.4f,%.4f%n",
+            System.out.printf(Locale.ROOT, "%s,%d,%d,%d,%d,%d,%d,%.4f,%.4f,%.4f%n",
                     commitTag, modifiedIds.size(), g.size(), sel, tp, fp, fn, p, r, f);
             return;
         }

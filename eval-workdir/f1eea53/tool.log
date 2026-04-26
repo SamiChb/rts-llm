@@ -1,0 +1,26 @@
+1. Extraction du diff Git...
+   82 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.glue.DefaultRestApiStepDefinitionTest.authenticate
+4. Calcul des scénarios candidats (remontée transitive)...
+   2 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 6322 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [1] Should be authenticated
+
+  Justification LLM :
+    The scenario 'Should be authenticated' calls the method 'authenticate' which was modified. This change might affect the authentication process and thus the response code of the test.
+
+═══════════════════════════════════════════════════

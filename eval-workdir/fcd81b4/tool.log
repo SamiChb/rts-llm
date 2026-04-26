@@ -1,0 +1,36 @@
+1. Extraction du diff Git...
+   87 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   7 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonValue
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16750 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 5
+    [1] Should be authenticated
+    [2] Add tony stark user
+    [4] Update tony stark user
+    [7] Search for users
+    [8] Get user
+
+  Justification LLM :
+    The selected scenarios demonstrate a variety of use cases for the application, including authentication (scenario 1), querying data with filters (scenario 7), retrieving specific data items (scenarios 8 and 9), and deleting data (scenario 12). Scenario 4 is not included as it tests an edge case that may not be a common user interaction.
+
+═══════════════════════════════════════════════════

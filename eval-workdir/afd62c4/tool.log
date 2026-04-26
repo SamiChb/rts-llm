@@ -1,0 +1,62 @@
+1. Extraction du diff Git...
+   239 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   21 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.uploadFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest.authenticate
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest.afterImport
+     - fr.redfroggy.bdd.restapi.user.UserController.getAll
+     - fr.redfroggy.bdd.restapi.user.UserController.addUser
+     - fr.redfroggy.bdd.restapi.user.UserController.uploadFile
+     - fr.redfroggy.bdd.restapi.user.UserController.updateUser
+     - fr.redfroggy.bdd.restapi.user.UserController.patchUser
+     - fr.redfroggy.bdd.restapi.user.UserController.deleteUser
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getId
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setId
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getFirstName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setFirstName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getAge
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setAge
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getLastName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setLastName
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16903 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute :  It appears you've shared a list of potential tests for an API in the form of scenarios with specific steps. Each scenario has a description, expected outcome, and a set of actions to perform to test the API. The steps are written in a way that suggests they use a Cucumber-style BDD (Behavior Driven Development) testing framework.
+    
+    Here's an example of one of the scenarios:
+    
+    ```
+    [10] Get user   (src/test/resources/features/users.feature)
+        When I GET /users/1
+        Then http response code should be 200
+        And http response body path $.id should be 1
+        And http response body path $.firstName should be Tony
+        And http response body path $.lastName should be Stark
+        And http response body path $.age should be 60
+        And I store the value of http response header Content-Type as httpContentType in scenario scope
+        And http value of scenario variable httpContentType should be application/json
+        And http response body should contain `$firstSessionId`
+    ```
+    In this example, the test involves making a GET request to the API endpoint for user 1, checking that the response code is 200 OK and that the user's data (ID, first name, last name, and age) are as expected. Additionally, it stores the value of the Content-Type header in a scenario variable and verifies that the response body contains the `$firstSessionId`.
+
+═══════════════════════════════════════════════════

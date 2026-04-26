@@ -1,0 +1,26 @@
+1. Extraction du diff Git...
+   20 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.uploadFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   1 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 3459 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [1] Should import users csv file
+
+  Justification LLM :
+    The method modification changes the way files are handled, which affects the behavior of the 'Should import users csv file' scenario as it relies on the uploadFile method to send a file. The change in contentDisposition is not a pure cosmetic change and may alter the behavior of the API.
+
+═══════════════════════════════════════════════════

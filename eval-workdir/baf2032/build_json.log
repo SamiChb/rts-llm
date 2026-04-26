@@ -1,0 +1,28 @@
+Lecture de /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/baf2032/coverage-per-scenario
+Bytecode  : [/home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/classes, /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/test-classes]
+sc_001 (Should be authenticated) → 3 méthodes couvertes
+sc_002 (Add tony stark user) → 3 méthodes couvertes
+sc_003 (Add bruce wayne user) → 3 méthodes couvertes
+sc_004 (Update tony stark user) → 3 méthodes couvertes
+sc_005 (Patch bruce wayne user) → 3 méthodes couvertes
+sc_006 (Get users) → 3 méthodes couvertes
+sc_007 (Search for users) → 3 méthodes couvertes
+sc_008 (Get user) → 3 méthodes couvertes
+sc_009 (Get user) → 3 méthodes couvertes
+sc_010 (Get wrong user) → 3 méthodes couvertes
+sc_011 (Delete wrong user) → 3 méthodes couvertes
+sc_012 (Delete user) → 3 méthodes couvertes
+sc_013 (Should be authenticated) → 3 méthodes couvertes
+sc_014 (Add tony stark user) → 3 méthodes couvertes
+sc_015 (Add bruce wayne user) → 3 méthodes couvertes
+sc_016 (Update tony stark user) → 3 méthodes couvertes
+sc_017 (Patch bruce wayne user) → 3 méthodes couvertes
+sc_018 (Get users) → 3 méthodes couvertes
+sc_019 (Search for users) → 3 méthodes couvertes
+sc_020 (Get user) → 3 méthodes couvertes
+sc_021 (Get user) → 3 méthodes couvertes
+sc_022 (Get wrong user) → 3 méthodes couvertes
+sc_023 (Delete wrong user) → 3 méthodes couvertes
+sc_024 (Delete user) → 3 méthodes couvertes
+→ Vérité terrain de couverture écrite dans /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/baf2032/coverage.json
+  24 scénario(s) indexés

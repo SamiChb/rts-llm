@@ -1,0 +1,24 @@
+sc_001|Should be authenticated
+sc_002|Add tony stark user
+sc_003|Add bruce wayne user
+sc_004|Update tony stark user
+sc_005|Patch bruce wayne user
+sc_006|Get users
+sc_007|Search for users
+sc_008|Get user
+sc_009|Get user
+sc_010|Get wrong user
+sc_011|Delete wrong user
+sc_012|Delete user
+sc_013|Should be authenticated
+sc_014|Add tony stark user
+sc_015|Add bruce wayne user
+sc_016|Update tony stark user
+sc_017|Patch bruce wayne user
+sc_018|Get users
+sc_019|Search for users
+sc_020|Get user
+sc_021|Get user
+sc_022|Get wrong user
+sc_023|Delete wrong user
+sc_024|Delete user

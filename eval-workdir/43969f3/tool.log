@@ -1,0 +1,34 @@
+1. Extraction du diff Git...
+   108 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   7 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonValue
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16838 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute :  This text appears to list a set of Cucumber test scenarios for a REST API. Each scenario is associated with a number, and there are 12 scenarios in total. The scenarios cover various actions such as GET, POST, DELETE on different endpoints and also include query parameters.
+    
+    The format for the response is specified to be a JSON object, containing two keys: "selected" (an array of selected scenario indices) and "reasoning" (a brief explanation of why those scenarios were chosen). If no scenario has an impact, the response should contain an empty array for "selected". The JSON object must not have any additional text or formatting.
+
+═══════════════════════════════════════════════════

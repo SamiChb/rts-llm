@@ -1,0 +1,27 @@
+1. Extraction du diff Git...
+   197 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   3 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseHeader
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseJsonPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+4. Calcul des scénarios candidats (remontée transitive)...
+   2 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 7070 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Scenarios [1] and [2] are false positives as they do not call any method modified in the given code changes.
+
+═══════════════════════════════════════════════════

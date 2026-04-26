@@ -1,0 +1,7 @@
+Add tony stark user
+Update tony stark user
+Patch bruce wayne user
+Get users
+Search for valid users
+Get user
+Get user

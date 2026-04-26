@@ -1,0 +1,29 @@
+1. Extraction du diff Git...
+   12 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   34 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   2 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   4 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 5663 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 3
+    [3] Add tony stark user
+    [5] Update tony stark user
+    [6] Patch bruce wayne user
+
+  Justification LLM :
+    Les scénarios [3] et [6] appellent la méthode modifiée 'setBodyWithJsonPath', qui permet de changer la valeur d'un champ JSON dans le corps de la requête HTTP. Dans les cas [3] et [6], la modification du code affecte la valeur de l'âge de Tony Stark et Bruce Wayne respectivement, modifiant donc le comportement observable des scénarios. Le scénario [5] n'utilise pas directement la méthode modifiée mais appelle 'setBodyTo', qui utilise cette méthode pour effectuer l'opération de changement de valeur. Cette chaîne d'appel peut être utilisée pour effectuer le changement, même si la modification de code ne change pas explicitement la valeur observable du scénario.
+
+═══════════════════════════════════════════════════

@@ -1,0 +1,27 @@
+1. Extraction du diff Git...
+   70 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   37 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   6 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyPathWithValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   5 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 8817 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+Erreur : request timed out
+java.net.http.HttpTimeoutException: request timed out
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
+	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
+	at com.rts.llm.Main.runStaticPrune(Main.java:186)
+	at com.rts.llm.Main.run(Main.java:74)
+	at com.rts.llm.Main.main(Main.java:33)

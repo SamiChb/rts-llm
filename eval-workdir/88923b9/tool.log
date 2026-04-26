@@ -1,0 +1,49 @@
+1. Extraction du diff Git...
+   219 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   23 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.baseUri
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.header
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.queryParameter
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headers
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.notResponseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerNotExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerNotEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyContains
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathDoesntExist
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.emptyBodyPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathNotEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathIsArray
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathIsArrayWithLength
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseHeader
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseJsonPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 15195 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 2
+    [1] Should be authenticated
+    [3] Add bruce wayne user
+
+  Justification LLM :
+    Candidates 1 and 3 are the most complete solutions that handle edge cases effectively. They provide clean code and adhere to good practices.
+
+═══════════════════════════════════════════════════

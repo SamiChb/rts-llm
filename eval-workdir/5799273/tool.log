@@ -1,0 +1,38 @@
+1. Extraction du diff Git...
+   29 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   2 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.uploadFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 11875 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 12
+    [2] Should be authenticated
+    [4] Add bruce wayne user
+    [5] Update tony stark user
+    [6] Patch bruce wayne user
+    [7] Get users
+    [8] Search for valid users
+    [9] Search for invalid users
+    [10] Get user
+    [11] Get user
+    [12] Get wrong user
+    [13] Delete wrong user
+    [14] Delete user
+
+  Justification LLM :
+    Dans les scénarios 1, 13 et 14, il n'y a pas de changement du comportement observable. Le fichier CSV est utilisé comme paramètre d'entrée dans le premier cas, et l'appel des méthodes DELETE sur un ID non existant dans les derniers deux. Les autres scénarios font appel à la méthode uploadFile modifiée, qui change son nom de fichier temporaire généré et donc pourrait affecter les tests. Il est nécessaire de vérifier le fonctionnement des tests après cette modification.
+
+═══════════════════════════════════════════════════

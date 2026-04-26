@@ -1,0 +1,30 @@
+1. Extraction du diff Git...
+   42 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   35 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   4 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyPathWithValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   2 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 5556 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected name at line 1 column 2 path $.
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute :  "{\"selected\": [3], \"reasoning\": \"The 'setBodyWithJsonPath' method modification impacts the scenario 'Add tony stark user' as it changes the value of the age property in the HTTP body. The change in the age property affects the subsequent steps that rely on the modified HTTP body.\"}"
+
+═══════════════════════════════════════════════════

@@ -1,0 +1,39 @@
+1. Extraction du diff Git...
+   23 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   37 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   3 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithJSON
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithFileContent
+4. Calcul des scénarios candidats (remontée transitive)...
+   5 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 8029 caractères
+6. Appel au LLM (OLLAMA / mistral)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 4
+    [3] Add tony stark user
+    [6] Update tony stark user
+    [7] Patch bruce wayne user
+    [11] Get user Tony Stark
+
+  Justification LLM :
+    Analyse des chaînes d'appel :
+    
+    [3] Add tony stark user : la méthode modifiée `mockThirdPartyApiCallWithJSON` est appelée avec un changement du type de contenu de corps de requête, qui peut affecter le comportement du scénario.
+    
+    [6] Update tony stark user : la même raison que précédemment.
+    
+    [7] Patch bruce wayne user : la même raison que précédemment. Il est également utilisé pour modifier le corps de requête lors d'une mise à jour.
+    
+    [11] Get user Tony Stark : la même raison que précédemment, avec un changement du format de corps de requête.
+
+═══════════════════════════════════════════════════

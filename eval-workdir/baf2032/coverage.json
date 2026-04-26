@@ -1,0 +1,194 @@
+{
+  "sc_001": {
+    "name": "Should be authenticated",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_002": {
+    "name": "Add tony stark user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_003": {
+    "name": "Add bruce wayne user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_004": {
+    "name": "Update tony stark user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_005": {
+    "name": "Patch bruce wayne user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_006": {
+    "name": "Get users",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_007": {
+    "name": "Search for users",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_008": {
+    "name": "Get user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_009": {
+    "name": "Get user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_010": {
+    "name": "Get wrong user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_011": {
+    "name": "Delete wrong user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_012": {
+    "name": "Delete user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_013": {
+    "name": "Should be authenticated",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_014": {
+    "name": "Add tony stark user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_015": {
+    "name": "Add bruce wayne user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_016": {
+    "name": "Update tony stark user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_017": {
+    "name": "Patch bruce wayne user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_018": {
+    "name": "Get users",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_019": {
+    "name": "Search for users",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_020": {
+    "name": "Get user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_021": {
+    "name": "Get user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_022": {
+    "name": "Get wrong user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_023": {
+    "name": "Delete wrong user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  },
+  "sc_024": {
+    "name": "Delete user",
+    "methods": [
+      "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
+      "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
+      "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
+    ]
+  }
+}
