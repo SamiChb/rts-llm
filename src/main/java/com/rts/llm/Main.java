@@ -171,6 +171,23 @@ public class Main {
             return empty;
         }
 
+        // Mode --no-llm : on retourne directement tous les candidats statiques,
+        // sans appel LLM. Sert à mesurer le rappel maximal de l'analyse statique.
+        if (config.noLlm) {
+            System.out.println("5. Mode --no-llm : retour direct des candidats statiques (pas d'appel LLM)");
+            List<Integer> indices = new ArrayList<>();
+            List<String> names = new ArrayList<>();
+            for (CandidateFinder.Candidate c : candidates) {
+                indices.add(c.scenario().index());
+                names.add(c.scenario().name());
+            }
+            SelectionResult staticResult = new SelectionResult(indices, names,
+                    "Analyse statique seule (sans filtrage LLM). "
+                    + candidates.size() + " candidat(s) retourné(s) tels quels.");
+            staticResult.afficherRapport();
+            return staticResult;
+        }
+
         System.out.println("5. Construction du prompt (mode élagueur)...");
         String prompt = PromptBuilder.buildPruning(diff, candidates, index.scenarios().size());
         System.out.println("   Prompt : " + prompt.length() + " caractères");
@@ -209,6 +226,7 @@ public class Main {
         boolean showPrompt = false;
         boolean staticPrune = false;
         boolean selectionOnly = false;
+        boolean noLlm = false;
 
         public static Config parse(String[] args) {
             Config config = new Config();
@@ -242,6 +260,7 @@ public class Main {
                     case "--show-prompt" -> config.showPrompt = true;
                     case "--static-prune" -> config.staticPrune = true;
                     case "--selection-only" -> config.selectionOnly = true;
+                    case "--no-llm" -> config.noLlm = true;
                     default -> throw new IllegalArgumentException(
                             "Option inconnue : " + args[i]);
                 }
@@ -255,6 +274,15 @@ public class Main {
                     case OLLAMA -> "not-needed";
                     case GEMINI -> System.getenv("GEMINI_API_KEY");
                 };
+            }
+
+                // --no-llm court-circuite tout appel LLM ; aucune clé API requise
+            if (config.noLlm) {
+                if (!config.staticPrune) {
+                    throw new IllegalArgumentException(
+                            "--no-llm requiert --static-prune (sinon il n'y a aucun candidat à retourner)");
+                }
+                config.apiKey = "not-needed";
             }
 
             if (config.apiKey == null && config.provider != LLMClient.Provider.OLLAMA) {
@@ -286,6 +314,9 @@ public class Main {
                   --include-stepdefs                 (inclut les step defs dans le prompt)
                   --show-prompt                      (affiche le prompt et la réponse)
                   --static-prune                     (pipeline hybride : analyse statique → LLM élagueur)
+                  --no-llm                           (avec --static-prune : retourne tous les candidats sans appel LLM ;
+                                                      utile pour mesurer le rappel maximal de l'analyse statique)
+                  --selection-only                   (sortie machine : un nom de scénario par ligne sur stdout)
 
                 Exemples :
                   # Avec OpenAI, dernier commit

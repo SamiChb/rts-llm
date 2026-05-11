@@ -29,6 +29,8 @@
 #   --provider <p>       openai|anthropic|ollama|gemini  (passé à RTS-LLM)
 #   --model <m>          modèle LLM
 #   --static-prune       active le pipeline hybride
+#   --no-llm             avec --static-prune : retourne tous les candidats sans appel
+#                        LLM. Permet d'isoler le rappel max de l'analyse statique.
 #   --tool-extra "..."   options supplémentaires passées à RTS-LLM (entre guillemets)
 
 set -euo pipefail
@@ -43,6 +45,7 @@ RUN_TOOL=false
 PROVIDER=""
 MODEL=""
 STATIC_PRUNE=false
+NO_LLM=false
 TOOL_EXTRA=""
 MVN_EXTRA=""
 PROJECT=""
@@ -64,6 +67,7 @@ while [[ $# -gt 0 ]]; do
     --provider) PROVIDER="$2"; shift 2 ;;
     --model) MODEL="$2"; shift 2 ;;
     --static-prune) STATIC_PRUNE=true; shift ;;
+    --no-llm) NO_LLM=true; shift ;;
     --tool-extra) TOOL_EXTRA="$2"; shift 2 ;;
     --mvn-extra) MVN_EXTRA="$2"; shift 2 ;;
     -h|--help) sed -n '2,38p' "$0"; exit 0 ;;
@@ -209,6 +213,7 @@ for C in "${COMMITS[@]}"; do
     [[ -n "$PROVIDER" ]] && TOOL_OPTS+=(--provider "$PROVIDER")
     [[ -n "$MODEL"    ]] && TOOL_OPTS+=(--model "$MODEL")
     [[ "$STATIC_PRUNE" == true ]] && TOOL_OPTS+=(--static-prune)
+    [[ "$NO_LLM" == true ]] && TOOL_OPTS+=(--no-llm)
     # shellcheck disable=SC2206
     [[ -n "$TOOL_EXTRA" ]] && TOOL_OPTS+=($TOOL_EXTRA)
 

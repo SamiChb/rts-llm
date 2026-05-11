@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Calcul de la vérité terrain — RTS-LLM</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #555;
+    --accent: #2a5a8a;
+    --bg-code: #f4f4f4;
+    --border: #ddd;
+    --warn: #b85c00;
+    --ok: #2a7a2a;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    color: var(--fg);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { color: var(--accent); }
+  h1 { border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem; }
+  h2 { margin-top: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  h3 { margin-top: 1.8rem; }
+  code {
+    background: var(--bg-code);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Fira Code", Consolas, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bg-code);
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  pre code { background: none; padding: 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #eef3f8; }
+  .note {
+    background: #fff8e6;
+    border-left: 4px solid var(--warn);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .ok {
+    background: #eef9ee;
+    border-left: 4px solid var(--ok);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .ascii {
+    background: var(--bg-code);
+    padding: 1rem;
+    font-family: monospace;
+    white-space: pre;
+    border-radius: 5px;
+    line-height: 1.3;
+    font-size: 0.88em;
+  }
+  .toc {
+    background: #f8f9fa;
+    border: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+  }
+  .toc ol { margin: 0; padding-left: 1.4rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .formula {
+    text-align: center;
+    font-family: serif;
+    font-size: 1.1em;
+    padding: 0.6rem;
+    background: #fafafa;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    margin: 1rem 2rem;
+  }
+  small { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<h1>Calcul de la vérité terrain pour RTS-LLM</h1>
+<p><small>Document méthodologique — projet de mémoire sur la sélection de tests de régression assistée par LLM.</small></p>
+
+<div class="toc">
+  <strong>Sommaire</strong>
+  <ol>
+    <li><a href="#intro">Pourquoi une vérité terrain ?</a></li>
+    <li><a href="#principe">Principe : couverture dynamique avec JaCoCo</a></li>
+    <li><a href="#pipeline">Pipeline de calcul, étape par étape</a></li>
+    <li><a href="#metrics">Métriques d'évaluation</a></li>
+    <li><a href="#limites">Limitations connues</a></li>
+    <li><a href="#sanity">Sanity checks de validation</a></li>
+    <li><a href="#bibliographie">Bibliographie & rapport au mémoire</a></li>
+  </ol>
+</div>
+
+<h2 id="intro">1. Pourquoi une vérité terrain ?</h2>
+
+<p>
+RTS-LLM est un outil de <strong>sélection de tests de régression</strong> : à partir d'un diff Git, il <em>prédit</em> quels scénarios BDD doivent être ré-exécutés. Pour évaluer cette prédiction, il faut un <strong>oracle</strong> qui dit, pour le même diff, quels scénarios <em>auraient réellement dû</em> être ré-exécutés.
+</p>
+
+<p>
+Cet oracle s'appelle la <strong>vérité terrain</strong>. Sa fonction n'est pas d'être un outil RTS concurrent, mais un étalon de mesure :
+</p>
+
+<div class="ascii">                  Diff Git d'un commit
+                          |
+              +-----------+----------+
+              |                      |
+              v                      v
+    RTS-LLM (statique + LLM)   Vérité terrain (JaCoCo)
+    -> S = {sc_1, sc_5}         -> G = {sc_1, sc_3}
+              |                      |
+              +----------+-----------+
+                         |
+                         v
+                  Métriques :
+                   Précision = |S inter G| / |S|
+                   Rappel    = |S inter G| / |G|
+</div>
+
+<p>
+La vérité terrain est <strong>par définition correcte au regard de l'exécution réelle des tests</strong> ; les écarts mesurés (faux positifs, faux négatifs de RTS-LLM) reflètent les limites de la prédiction, pas de l'oracle.
+</p>
+
+
+<h2 id="principe">2. Principe : couverture dynamique avec JaCoCo</h2>
+
+<p>
+La méthodologie repose sur l'observation suivante : <em>un scénario BDD est impacté par une modification si, et seulement si, son exécution traverse au moins une des méthodes modifiées</em>.
+</p>
+
+<p>
+La <strong>couverture dynamique</strong> répond exactement à cette question : pour chaque scénario, on enregistre les méthodes effectivement exécutées lors de son passage, en instrumentant le bytecode avec <a href="https://www.jacoco.org/" target="_blank">JaCoCo</a>.
+</p>
+
+<p>L'équation centrale de la vérité terrain s'écrit alors :</p>
+
+<div class="formula">
+  G(diff) = { s &isin; Scénarios | Couverture(s) &cap; MéthodesModifiées(diff) &ne; &empty; }
+</div>
+
+<p>où :</p>
+<ul>
+  <li><strong>Couverture(s)</strong> est l'ensemble des méthodes exécutées par le scénario <em>s</em>, mesuré une fois pour toutes par JaCoCo dans la version de référence du code ;</li>
+  <li><strong>MéthodesModifiées(diff)</strong> est l'ensemble des méthodes que le diff Git modifie, calculé par croisement entre les <em>hunks</em> du diff et les plages de méthodes issues de l'AST.</li>
+</ul>
+
+
+<h2 id="pipeline">3. Pipeline de calcul, étape par étape</h2>
+
+<h3>3.1. Préparation du projet cible</h3>
+
+<p>
+Le projet à évaluer doit avoir le plugin <code>jacoco-maven-plugin</code> configuré, ou bien être lancé avec l'agent JaCoCo injecté à la ligne de commande (mode <code>--no-pom-changes</code>, qui évite de polluer l'historique Git).
+</p>
+
+<pre><code>// Dans le pom.xml du projet cible (mode permanent)
+&lt;plugin&gt;
+  &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+  &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;0.8.11&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;&lt;goals&gt;&lt;goal&gt;prepare-agent&lt;/goal&gt;&lt;/goals&gt;&lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;</code></pre>
+
+<h3>3.2. Étape 1 — Collecte de la couverture par scénario</h3>
+
+<p>
+Le script <code>scripts/run_per_scenario_coverage.sh</code> exécute chaque scénario Cucumber dans une JVM distincte, puis renomme le fichier <code>target/jacoco.exec</code> produit en <code>sc_NNN.exec</code>.
+</p>
+
+<pre><code>./scripts/run_per_scenario_coverage.sh --no-pom-changes /chemin/projet</code></pre>
+
+<p>Pour chaque scénario, la commande Maven exécutée est de la forme :</p>
+
+<pre><code>mvn test \
+  -Dcucumber.filter.name="^Nom du scenario$" \
+  -DargLine="-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,append=false"</code></pre>
+
+<p>Sortie produite :</p>
+
+<pre><code>coverage-per-scenario/
+├── sc_001.exec        // couverture binaire JaCoCo
+├── sc_002.exec
+├── ...
+└── index.txt          // sc_001|Should be authenticated
+                       // sc_002|Add bruce wayne user
+                       // ...</code></pre>
+
+<div class="note">
+  <strong>Choix d'isolation</strong> — un fork JVM par scénario élimine la pollution d'état (caches statiques, sessions persistantes, base in-memory). Le coût est l'overhead de démarrage Maven, négligeable à l'échelle d'une évaluation académique.
+</div>
+
+<h3>3.3. Étape 2 — Construction de la map scénario &rarr; méthodes</h3>
+
+<p>
+La classe <code>GroundTruthBuilder</code> lit chaque <code>.exec</code> via l'API JaCoCo (<code>ExecFileLoader</code> + <code>Analyzer</code>), en croisant les probes activées avec le bytecode compilé. Pour chaque scénario, elle produit la liste des méthodes effectivement exécutées.
+</p>
+
+<pre><code>java -cp target/rts-llm-1.0-SNAPSHOT.jar com.rts.llm.GroundTruthBuilder build \
+    /chemin/projet/coverage-per-scenario \
+    /chemin/projet/target/classes \
+    /chemin/projet/target/test-classes \
+    coverage.json</code></pre>
+
+<p>Format de l'identifiant méthode : <code>FQN.NomClasse.nomMéthode</code>, identique à celui produit par <code>StaticAnalyzer</code>, pour permettre l'intersection avec les méthodes modifiées extraites du diff.</p>
+
+<p>Normalisations appliquées sur la sortie JaCoCo :</p>
+<ul>
+  <li><code>com/example/Foo</code> &rarr; <code>com.example.Foo</code> (slash &rarr; point)</li>
+  <li><code>Outer$Inner</code> &rarr; <code>Outer.Inner</code> (classes imbriquées)</li>
+  <li><code>lambda$importFrom$0</code> &rarr; <code>importFrom</code> (repli des lambdas sur leur méthode englobante)</li>
+  <li><code>&lt;init&gt;</code>, <code>&lt;clinit&gt;</code>, <code>access$N</code> : ignorés (non trackés par <code>StaticAnalyzer</code>)</li>
+</ul>
+
+<p>Extrait de <code>coverage.json</code> :</p>
+
+<pre><code>{
+  "sc_001": {
+    "name": "Should be authenticated",
+    "methods": [
+      "fr.redfroggy.bdd.restapi.user.UserController.getAll",
+      "fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setUp",
+      ...
+    ]
+  },
+  ...
+}</code></pre>
+
+<h3>3.4. Étape 3 — Extraction des méthodes modifiées par le diff</h3>
+
+<p>
+Pour un diff Git donné (<code>git diff C^ C</code>), <code>SymbolExtractor</code> :
+</p>
+
+<ol>
+  <li>parse les en-têtes de hunks (<code>@@ -X +Y,Z @@</code>) pour récupérer les plages de lignes modifiées dans chaque fichier ;</li>
+  <li>croise ces plages avec <code>methodRangesByFile</code> (calculé par <code>StaticAnalyzer</code> via JavaParser) ;</li>
+  <li>retourne la liste des méthodes dont la plage chevauche au moins un hunk.</li>
+</ol>
+
+<h3>3.5. Étape 4 — Intersection finale</h3>
+
+<p>La vérité terrain pour le diff est obtenue par intersection :</p>
+
+<pre><code>for (Map.Entry&lt;String, ScenarioCoverage&gt; e : coverageMap.entrySet()) {
+    if (!Collections.disjoint(e.getValue().methods, modifiedMethods)) {
+        groundTruth.add(e.getKey());
+    }
+}</code></pre>
+
+<h3>3.6. Boucle sur l'historique Git</h3>
+
+<p>
+Le script <code>scripts/eval_history.sh</code> automatise les étapes 1 à 4 sur une plage de commits :
+</p>
+
+<div class="ascii">Pour chaque commit C dans la plage :
+
+  1. checkout C^ (parent)         <- état AVANT le diff
+  2. mvn test-compile             <- bytecode pour analyse JaCoCo
+  3. run_per_scenario_coverage.sh <- un .exec par scenario
+  4. GroundTruthBuilder build     <- coverage.json
+  5. checkout C
+  6. GroundTruthBuilder eval      <- calcule G pour le diff C^ -> C
+  7. agrege dans un CSV</div>
+
+<div class="note">
+  <strong>Important</strong> — la couverture est collectée sur le <em>parent</em> du commit (<code>C^</code>), c'est-à-dire l'état du code <em>avant</em> les modifications. C'est nécessaire pour que les noms et plages des méthodes correspondent à celles que le diff référence en <code>-</code>.
+</div>
+
+
+<h2 id="metrics">4. Métriques d'évaluation</h2>
+
+<p>Pour un commit donné, on compare deux ensembles :</p>
+<ul>
+  <li><strong>G</strong> — la vérité terrain (scénarios réellement impactés)</li>
+  <li><strong>S</strong> — la sélection produite par RTS-LLM</li>
+</ul>
+
+<table>
+  <tr>
+    <th>Sigle</th>
+    <th>Nom</th>
+    <th>Définition</th>
+    <th>Interprétation</th>
+  </tr>
+  <tr>
+    <td><strong>TP</strong></td>
+    <td>True Positive</td>
+    <td><code>|S &cap; G|</code></td>
+    <td>Sélectionnés et impactés &mdash; bonne décision</td>
+  </tr>
+  <tr>
+    <td><strong>FP</strong></td>
+    <td>False Positive</td>
+    <td><code>|S \ G|</code></td>
+    <td>Sélectionnés mais pas impactés &mdash; temps perdu</td>
+  </tr>
+  <tr>
+    <td><strong>FN</strong></td>
+    <td>False Negative</td>
+    <td><code>|G \ S|</code></td>
+    <td>Impactés mais oubliés &mdash; <span style="color:var(--warn)">danger</span></td>
+  </tr>
+</table>
+
+<div class="formula">
+  Précision = TP / (TP + FP)<br>
+  Rappel    = TP / (TP + FN)<br>
+  F1        = 2 &middot; P &middot; R / (P + R)
+</div>
+
+<p>
+Pour un outil RTS, le <strong>rappel est l'indicateur prioritaire</strong> : un FN signifie qu'un test impacté n'est pas exécuté, donc qu'un bug peut atteindre la production sans alerte. Un FP n'est qu'un test exécuté inutilement.
+</p>
+
+
+<h2 id="limites">5. Limitations connues</h2>
+
+<h3>5.1. Surcharges de méthodes (overloads)</h3>
+
+<p>
+Les identifiants utilisés (<code>FQN.Class.method</code>) <strong>n'incluent pas la signature</strong>. Si une classe possède plusieurs surcharges et que seule l'une d'entre elles est modifiée, la vérité terrain marquera comme TP des scénarios qui n'utilisaient en réalité qu'une autre surcharge.
+</p>
+
+<p>
+<strong>Effet</strong> : surestime <code>gt_size</code>. Faible impact sur les projets sans surcharges intensives.
+</p>
+
+<h3>5.2. Méthodes ajoutées par le diff</h3>
+
+<p>
+La couverture est mesurée à <code>C^</code>. Si <code>C</code> introduit une méthode neuve, aucun scénario n'a pu la &laquo;&nbsp;couvrir&nbsp;&raquo; dans la map produite à <code>C^</code>. La vérité terrain ignore donc les scénarios qui, après <code>C</code>, utiliseront cette méthode.
+</p>
+
+<p>
+<strong>Effet</strong> : sous-estime <code>gt_size</code>, biaise contre RTS-LLM s'il a (correctement) sélectionné ces scénarios.
+</p>
+
+<p>
+<em>Atténuation possible</em> : doubler le coût de collecte en mesurant aussi la couverture à <code>C</code> et en unissant les deux maps.
+</p>
+
+<h3>5.3. Classes anonymes</h3>
+
+<p>
+JaCoCo nomme une méthode dans une classe anonyme <code>EnclosingClass$1.method</code>. Après normalisation : <code>EnclosingClass.1.method</code>. JavaParser, lui, ne génère pas de <code>ClassOrInterfaceDeclaration</code> pour les classes anonymes : <code>StaticAnalyzer</code> ne produit donc aucun identifiant correspondant. <strong>Méthode invisible des deux côtés</strong>.
+</p>
+
+<h3>5.4. Tests qui échouent</h3>
+
+<p>
+Le script garde le fichier <code>.exec</code> même si <code>mvn test</code> retourne un code d'erreur. Si un scénario plante avant d'atteindre le code modifié (setup cassé, dépendance externe indisponible), sa couverture est incomplète &rarr; sous-estime <code>gt_size</code>.
+</p>
+
+<h3>5.5. Renommages</h3>
+
+<p>
+Un renommage de méthode dans <code>C</code> apparaît comme une suppression dans <code>C^</code> et un ajout dans <code>C</code>. <code>SymbolExtractor</code> peut ne pas corréler les deux. Heureusement, un renommage pur n'altère pas le comportement observable : aucun scénario ne devrait être impacté de toute façon.
+</p>
+
+
+<h2 id="sanity">6. Sanity checks de validation</h2>
+
+<p>Avant de se fier aux chiffres, quatre vérifications rapides :</p>
+
+<table>
+  <tr><th>Check</th><th>Procédure</th><th>Attendu</th></tr>
+  <tr>
+    <td>Diff trivial</td>
+    <td>Commit qui ne touche que des commentaires</td>
+    <td><code>gt_size = 0</code></td>
+  </tr>
+  <tr>
+    <td>Diff massif</td>
+    <td>Commit qui modifie une classe centrale</td>
+    <td><code>gt_size</code> proche du total</td>
+  </tr>
+  <tr>
+    <td>Présence dans la map</td>
+    <td>Vérifier qu'au moins une méthode du diff figure dans <code>coverage.json</code></td>
+    <td><code>grep "NomMéthode" coverage.json</code> retourne quelque chose</td>
+  </tr>
+  <tr>
+    <td>Cross-check avant/après</td>
+    <td>Sur 2-3 commits : <code>mvn test</code> à <code>C^</code> puis à <code>C</code>, comparer les scénarios qui changent de résultat</td>
+    <td>L'ensemble obtenu doit être <strong>inclus</strong> dans <code>G</code></td>
+  </tr>
+</table>
+
+<div class="ok">
+  <strong>Recommandation</strong> — exécuter le quatrième check sur un échantillon est l'argument le plus solide à donner dans un mémoire pour défendre la fiabilité de la vérité terrain.
+</div>
+
+
+<h2 id="bibliographie">7. Bibliographie & rapport au mémoire</h2>
+
+<p>
+La méthodologie ici décrite est une instance du paradigme <em>safe RTS</em> par couverture dynamique, formalisé notamment par :
+</p>
+
+<ul>
+  <li>Rothermel &amp; Harrold (1997), <em>A Safe, Efficient Regression Test Selection Technique</em>, ACM TOSEM.</li>
+  <li>Gligoric, Eloussi &amp; Marinov (2015), <em>Practical Regression Test Selection with Dynamic File Dependencies</em> &mdash; outil <strong>Ekstazi</strong>.</li>
+  <li>Legunsen et al. (2017), <em>An Extensive Study of Static Regression Test Selection in Modern Software Evolution</em> &mdash; outil <strong>STARTS</strong>.</li>
+</ul>
+
+<p>
+Ces travaux utilisent JaCoCo (ou des instrumentations équivalentes) comme oracle, exactement de la manière décrite dans ce document. Ils servent de référence à la fois <em>baseline</em> (rappel = 1 par construction quand l'instrumentation est complète) et <em>justification méthodologique</em> de l'approche.
+</p>
+
+<p>
+Pour une évaluation de RTS-LLM, la vérité terrain est l'objet de comparaison ; les métriques de précision, rappel et F1 publiées dans le mémoire sont la projection directe des intersections <code>S &cap; G</code>, <code>S \ G</code>, <code>G \ S</code> calculées par <code>GroundTruthBuilder.evaluate()</code>.
+</p>
+
+<hr>
+<p><small>Généré pour le projet RTS-LLM &mdash; <code>scripts/run_per_scenario_coverage.sh</code>, <code>scripts/eval_history.sh</code>, <code>com.rts.llm.GroundTruthBuilder</code>.</small></p>
+
+</body>
+</html>
