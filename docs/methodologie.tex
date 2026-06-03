@@ -1,0 +1,287 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+
+\definecolor{accent}{HTML}{2A5A8A}
+\definecolor{muted}{HTML}{555555}
+\definecolor{bgcode}{HTML}{F4F4F4}
+\definecolor{warn}{HTML}{B85C00}
+\definecolor{thbg}{HTML}{EEF3F8}
+\definecolor{okbg}{HTML}{EEF9EE}
+\definecolor{ok}{HTML}{2A7A2A}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{formulabox}{
+  colback=thbg, colframe=accent, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{attention}{
+  colback=okbg, colframe=ok, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  title={\textbf{Point clé}}, fonttitle=\small
+}
+
+\title{\textbf{Méthodologie et validation terrain}}
+\author{Samir El Khoumri, Aly Hachem-Reda, Sami Chbicheb}
+\date{Mai 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Méthodologie et validation terrain}
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection{Le problème de l'évaluation}
+% ------------------------------------------------------------
+
+Évaluer la qualité d'un outil de sélection de tests de régression pose
+un problème fondamental : l'outil produit une liste de scénarios à
+ré-exécuter, mais rien ne permet a priori de savoir si cette liste est
+bonne. Pour cela, il faudrait connaître, pour chaque commit, l'ensemble
+des scénarios qui \emph{auraient réellement dû} être ré-exécutés.
+
+Ce référentiel de référence est appelé \textbf{vérité terrain}. Sans
+lui, il est impossible de distinguer un scénario correctement sélectionné
+d'un scénario sélectionné par erreur, ni de détecter les scénarios
+impactés que l'outil aurait manqués. La construction de cette vérité
+terrain est donc une étape préalable indispensable à toute évaluation
+rigoureuse.
+
+% ------------------------------------------------------------
+\subsection{Définition de la vérité terrain}
+% ------------------------------------------------------------
+
+\subsubsection{Principe}
+
+La vérité terrain repose sur l'observation suivante : \emph{un scénario
+est impacté par un commit si et seulement si son exécution traverse au
+moins une des méthodes modifiées par ce commit}. Ce principe est à la
+fois intuitif et rigoureux --- il s'appuie sur l'exécution réelle des
+tests, et non sur une heuristique ou une approximation.
+
+Formellement, pour un diff donné, la vérité terrain $G$ est définie par :
+
+\begin{formulabox}
+\[
+  G(\mathit{diff}) = \bigl\{\, s \in \mathcal{S}
+  \;\mid\;
+  \text{Couverture}(s) \cap \text{MéthodesModifiées}(\mathit{diff})
+  \neq \emptyset \,\bigr\}
+\]
+\end{formulabox}
+
+\noindent où $\mathcal{S}$ est l'ensemble des scénarios du projet,
+$\text{Couverture}(s)$ l'ensemble des méthodes effectivement exécutées
+lors du passage du scénario $s$, et $\text{MéthodesModifiées}(\mathit{diff})$
+l'ensemble des méthodes dont le corps est modifié par le diff.
+
+\subsubsection{Couverture dynamique avec JaCoCo}
+
+Pour mesurer $\text{Couverture}(s)$, nous utilisons \textbf{JaCoCo},
+un outil d'instrumentation du bytecode Java qui enregistre, lors de
+l'exécution d'un test, l'ensemble exact des méthodes traversées.
+
+Un point d'attention important est l'isolation des scénarios : chaque
+scénario est exécuté dans une JVM distincte, indépendamment des autres.
+Sans cette isolation, la couverture mesurée pour un scénario pourrait
+être contaminée par l'exécution d'un scénario précédent (caches en
+mémoire, état de la base de données, variables statiques). L'isolation
+garantit que la couverture mesurée est bien imputable au seul scénario
+considéré.
+
+% ------------------------------------------------------------
+\subsection{Métriques d'évaluation}
+% ------------------------------------------------------------
+
+Pour évaluer la qualité de la sélection produite par RTS-LLM, on compare
+l'ensemble $S$ des scénarios sélectionnés par l'outil à l'ensemble $G$
+de la vérité terrain. Trois situations peuvent se présenter pour chaque
+scénario :
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{llXl}
+\toprule
+\textbf{Sigle} & \textbf{Nom} & \textbf{Signification} & \textbf{Définition} \\
+\midrule
+VP & Vrai Positif
+   & Le scénario est sélectionné \textbf{et} réellement impacté.
+     C'est le cas idéal : l'outil a pris la bonne décision.
+   & $|S \cap G|$ \\[6pt]
+FP & Faux Positif
+   & Le scénario est sélectionné \textbf{mais pas} réellement impacté.
+     Le test sera ré-exécuté inutilement, ce qui représente du temps
+     de CI perdu, mais ne met pas en danger la qualité.
+   & $|S \setminus G|$ \\[6pt]
+FN & Faux Négatif
+   & Le scénario est impacté \textbf{mais} l'outil ne l'a pas sélectionné.
+     C'est le cas le plus grave : un défaut introduit par le commit
+     pourrait ne pas être détecté et atteindre la production.
+   & $|G \setminus S|$ \\
+\bottomrule
+\end{tabularx}
+\caption{Définition des cas de figure de la sélection.}
+\label{tab:vp-fp-fn}
+\end{table}
+
+À partir de ces trois quantités, on calcule trois métriques classiques
+de la recherche d'information :
+
+\begin{formulabox}
+\[
+  \text{Précision} = \frac{VP}{VP + FP}
+  \qquad
+  \text{Rappel} = \frac{VP}{VP + FN}
+  \qquad
+  F_1 = \frac{2 \times \text{Précision} \times \text{Rappel}}
+             {\text{Précision} + \text{Rappel}}
+\]
+\end{formulabox}
+
+\paragraph{La précision} mesure la proportion de scénarios sélectionnés
+qui sont effectivement impactés. Une précision élevée signifie que l'outil
+sélectionne peu de scénarios inutiles : le pipeline de CI reste léger.
+Une précision faible indique que l'outil est trop conservateur et
+sélectionne beaucoup de scénarios sans lien réel avec les modifications.
+
+\paragraph{Le rappel} mesure la proportion de scénarios impactés que
+l'outil a effectivement sélectionnés. Un rappel élevé signifie que peu
+de scénarios impactés ont été oubliés. C'est \textbf{l'indicateur
+prioritaire} pour un outil RTS : un faux négatif (rappel insuffisant)
+signifie qu'un scénario impacté n'est pas ré-exécuté, permettant
+potentiellement à un défaut d'atteindre la production sans être détecté.
+Un faux positif (précision insuffisante), en revanche, n'entraîne qu'une
+exécution superflue dont le coût est borné et prévisible.
+
+\paragraph{Le score F1} est la moyenne harmonique de la précision et du
+rappel. Il offre une vision synthétique de la qualité globale de la
+sélection, pénalisant les outils qui optimiseraient l'une des deux
+métriques au détriment de l'autre (par exemple, un outil qui sélectionne
+systématiquement tous les scénarios aurait un rappel parfait de 1 mais
+une précision très faible).
+
+\begin{attention}
+Dans le contexte du RTS, un rappel de 1 est toujours atteignable
+trivialement en sélectionnant l'intégralité des scénarios à chaque
+commit --- mais cela annule tout l'intérêt de la sélection. L'enjeu est
+d'obtenir un rappel élevé \emph{tout en maintenant une précision
+raisonnable}, ce que le score F1 permet de mesurer conjointement.
+\end{attention}
+
+% ------------------------------------------------------------
+\subsection{Mise en place concrète}
+% ------------------------------------------------------------
+
+\subsubsection{Collecte de la couverture par scénario}
+
+La première étape consiste à mesurer, une fois pour toutes, la couverture
+de chaque scénario dans la version de référence du projet. Pour cela, un
+script exécute chaque scénario Cucumber individuellement, avec l'agent
+JaCoCo attaché à la JVM. À l'issue de chaque exécution, le fichier de
+couverture produit est archivé sous un nom unique lié au scénario.
+
+On obtient ainsi une \textbf{map de couverture} : pour chaque scénario,
+la liste des méthodes Java effectivement traversées lors de son passage.
+
+\subsubsection{Calcul de la vérité terrain pour un commit}
+
+Pour un commit donné, le calcul de $G$ suit trois étapes :
+
+\begin{enumerate}[noitemsep]
+  \item \textbf{Extraction des méthodes modifiées.} Le diff entre le
+        commit et son parent est analysé pour identifier les méthodes
+        Java dont le corps a été modifié (par croisement des hunks du
+        diff avec les plages de méthodes issues de l'analyse statique).
+
+  \item \textbf{Intersection avec la map de couverture.} Pour chaque
+        scénario, on vérifie si l'ensemble de ses méthodes couvertes
+        intersecte l'ensemble des méthodes modifiées. Si oui, le scénario
+        appartient à $G$.
+
+  \item \textbf{Calcul des métriques.} La sélection $S$ produite par
+        RTS-LLM est comparée à $G$ pour calculer VP, FP, FN, précision,
+        rappel et F1.
+\end{enumerate}
+
+\subsubsection{Application sur l'historique Git}
+
+Pour obtenir un jeu d'évaluation suffisamment représentatif, ce calcul
+est automatisé sur une plage de commits de l'historique Git du projet
+cible. Pour chaque commit, la couverture est collectée dans l'état du
+code \emph{avant} le commit (état parent), afin que les noms et plages
+de méthodes soient cohérents avec ce que le diff référence. Les résultats
+sont agrégés dans un fichier CSV contenant, pour chaque commit, les
+métriques individuelles. Les moyennes finales sont ensuite calculées
+sur l'ensemble des commits pour lesquels la vérité terrain est non vide.
+
+% ------------------------------------------------------------
+\subsection{Limites connues de la vérité terrain}
+% ------------------------------------------------------------
+
+La vérité terrain telle que définie ici est robuste, mais présente trois
+cas limites à prendre en compte lors de l'interprétation des résultats.
+
+\paragraph{Méthodes nouvellement introduites par le diff.}
+La couverture est collectée avant le commit, dans l'état du code parent.
+Si le commit introduit une méthode entièrement nouvelle, aucun scénario
+ne peut l'avoir couverte à ce stade : la vérité terrain ne peut pas
+identifier les scénarios qui, après le commit, invoqueront cette méthode.
+Ce cas tend à \emph{sous-estimer} $G$ et à pénaliser RTS-LLM s'il a
+correctement sélectionné ces scénarios.
+
+\paragraph{Fichiers supprimés par le diff.}
+Lorsqu'un commit supprime entièrement un fichier, les méthodes qu'il
+contenait ne figurent plus dans l'index de l'analyse statique. Elles ne
+sont donc pas incluses dans $\text{MéthodesModifiées}(\mathit{diff})$,
+même si des scénarios les couvraient dans la version parente.
+
+\paragraph{Surcharges de méthodes.}
+Les identifiants de méthodes utilisés n'incluent pas la signature
+(types des paramètres). Si une classe possède plusieurs surcharges d'une
+même méthode et que seule l'une est modifiée, la vérité terrain peut
+inclure des scénarios qui n'utilisaient en réalité qu'une autre surcharge.
+Ce cas tend à \emph{surestimer} légèrement $G$.
+
+\medskip
+Ces trois limites sont inhérentes à toute approche de vérité terrain par
+couverture dynamique et sont documentées dans la littérature
+scientifique~\cite{rothermel1997, gligoric2015}. Elles constituent des
+biais connus dont il faut tenir compte lors de l'analyse des résultats,
+sans remettre en cause la validité globale de la méthodologie.
+
+\begin{thebibliography}{9}
+\bibitem{rothermel1997}
+  G. Rothermel et M. J. Harrold,
+  \emph{A Safe, Efficient Regression Test Selection Technique},
+  ACM Transactions on Software Engineering and Methodology, 1997.
+
+\bibitem{gligoric2015}
+  M. Gligoric, L. Eloussi et D. Marinov,
+  \emph{Practical Regression Test Selection with Dynamic File Dependencies},
+  ISSTA, 2015.
+\end{thebibliography}
+
+\end{document}

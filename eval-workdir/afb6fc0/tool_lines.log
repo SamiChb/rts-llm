@@ -1,0 +1,26 @@
+1. Extraction du diff Git...
+   48 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   32 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   8 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 10885 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [7] Search for valid users
+
+  Justification LLM :
+    Search for valid users with the name Bruce should not change the behavior of the test Get user /users/1, as they are independent requests.
+
+═══════════════════════════════════════════════════

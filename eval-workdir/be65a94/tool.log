@@ -31,7 +31,7 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 16903 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -40,6 +40,28 @@
   Aucun scénario impacté.
 
   Justification LLM :
-    (pas de justification fournie)
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : ```yaml
+    import io
+    from unittest.mock import patch
+    
+    import fr.redfroggy.bdd.restapi.glue
+    from fr.redfroggy.bdd.restapi.glue import DefaultApiBddStepDefinition, get_user
+    from fr.redfroggy.bdd.restapi.glue.steps import AbstractBddStepDefinition
+    
+    
+    def test_test_import_csv():
+        with patch("fr.redfroggy.bdd.restapi.glue.DefaultApiBddStepDefinition.default_step") as mock_default_step:
+            with patch(
+                "fr.redfroggy.bdd.restapi.glue.steps.__getattr__",
+                return_value=Mock(),
+            ) as mock_get_attr:
+                with open("src/test/resources/features/users.csv") as csvfile:
+                    reader = csv.DictReader(csvfile)
+    
+                    import_csv = fr.redfroggy.bdd.restapi.glue.import_csv
+                    import_csv(reader)
+                    assert_imported_users()
+    ```
 
 ═══════════════════════════════════════════════════

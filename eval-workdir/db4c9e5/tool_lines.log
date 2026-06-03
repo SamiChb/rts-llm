@@ -1,0 +1,36 @@
+1. Extraction du diff Git...
+   13 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   35 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 19969 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [10] Get user Tony Stark
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $ → fallback texte : [10] scénario(s) extraits
+    Réponse brute : 
+    Les scénarios testant la méthode modifiée sont les suivants :
+    
+    * Get user Tony Stark (fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode → fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus → fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters → *.get)
+    - Les méthodes qui ont des paramètres différents peuvent être identifiées à l'aide de l'attribut 'type'. En général, les classes sont groupées par type de fonctionnalité ou action (par exemple, 'MockApi', 'FeignApi', 'CucumberRestApiStepDefinition').
+    - Les méthodes qui contiennent du code spécifique à une API peuvent être identifiées en examinant leur nom et leurs arguments. Par exemple, les méthodes qui ont des paramètres de type 'GetResponse' ou 'PostResponse' sont souvent destinés à effectuer des appels HTTP GET ou POST respectivement.
+    - Les méthodes qui ne contiennent pas de code spécifique peuvent être identifiées en examinant leur nom et les classes du package parent. Par exemple, les méthodes de la classe 'fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition' sont destinés à l'ensemble des fonctionnalités Cucumber REST API.
+    - Les méthodes qui contiennent du code spécifique à une API peuvent être identifiées en examinant leur nom, les classes du package parent et leurs arguments. Par exemple, la méthode 'fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeHeader' de la classe 'fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition' est destinée à stocker le contenu du header d'une réponse HTTP.
+    - Les méthodes qui ne contiennent pas de code spécifique peuvent être identifiées en examinant leur nom, les classes du package parent et leurs arguments. Par exemple, la méthode 'fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.bodyContains' de la classe 'fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition' est destinée à vérifier si le corps d'une réponse contient un certain texte.
+    - Les méthodes qui contiennent du code spécifique à une API peuvent être identifiées en examinant leur nom, les classes du package parent et leurs arguments, ainsi que les détails de l'API (par exemple, le chemin d'accès au resource). Par exemple, la méthode 'fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode' est destinée à vérifier si la réponse d'une requête HTTP contient un certain statut d'ensemble des scénarios testant une méthode spécifique
+
+═══════════════════════════════════════════════════

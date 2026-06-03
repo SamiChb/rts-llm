@@ -1,0 +1,45 @@
+1. Extraction du diff Git...
+   247 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   21 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.uploadFile
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.uploadFileTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest.authenticate
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest.afterImport
+     - fr.redfroggy.bdd.restapi.user.UserController.getAll
+     - fr.redfroggy.bdd.restapi.user.UserController.addUser
+     - fr.redfroggy.bdd.restapi.user.UserController.uploadFile
+     - fr.redfroggy.bdd.restapi.user.UserController.updateUser
+     - fr.redfroggy.bdd.restapi.user.UserController.patchUser
+     - fr.redfroggy.bdd.restapi.user.UserController.deleteUser
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getId
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setId
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getFirstName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setFirstName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getAge
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setAge
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.getLastName
+     - fr.redfroggy.bdd.restapi.user.UserCsvLine.setLastName
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16903 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    ...
+
+═══════════════════════════════════════════════════

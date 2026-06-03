@@ -1,0 +1,64 @@
+1. Extraction du diff Git...
+   305 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   35 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   21 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setUp
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.stopWireMockServer
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.stubFeign
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockFeignCallWithJSON
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockFeignCallWithFileContent
+     - fr.redfroggy.bdd.restapi.user.UserController.getAll
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getId
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setSessionIds
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getDetails
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setDetails
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getComicName
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setComicName
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getMainColors
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setMainColors
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.getCity
+     - fr.redfroggy.bdd.restapi.user.UserDetailsDTO.setCity
+     - fr.redfroggy.bdd.restapi.user.UserFeignService.getUserDetails
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 23047 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 5
+    [10] Get user Tony Stark
+    [11] Get user Bruce Wayne
+    [12] Get wrong user
+    [13] Delete wrong user
+    [14] Delete user
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $ → fallback texte : [10, 11, 12, 13, 14] scénario(s) extraits
+    Réponse brute : 
+    La requête BDD propose des cas de test pour une API REST exposant des méthodes CRUD sur un ensemble d'utilisateurs. Le premier cas, `Get user Tony Stark`, se fait en faisant appel à la méthode GET vers l'URL `/users/1` avec les paramètres `format=json`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `1`.
+    
+    Le second cas, `Get user Bruce Wayne`, est similaire au premier mais avec l'URL `/users/2` et le paramètre `format=json`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `2`.
+    
+    Le troisième cas, `Get wrong user`, est similaire au deuxième mais avec l'URL `/users/24333`. Les tests prévoient que le code HTTP retourné doit être 404 Not Found, et que le corps de réponse ne contienne pas de contenu.
+    
+    Le quatrième cas, `Delete wrong user`, est similaire au troisième mais avec l'URL `/users/3`. Les tests prévoient que le code HTTP retourné doit être 404 Not Found, et que le corps de réponse ne contienne pas de contenu.
+    
+    Le cinquième cas, `Delete user`, est similaire au troisième mais avec l'URL `/users/1` et les paramètres `format=json`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `1`. Le même test doit être effectué pour l'URL `/users/2`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `2`. Enfin, les tests prévoient que le corps de réponse ne contienne pas de contenu.
+    
+    La sixième case, `Get user Tony Stark`, est similaire au premier mais avec l'URL `/users/1` et le paramètre `format=json`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `1`. La même méthode doit être effectuée pour l'URL `/users/2`. Les tests prévoient que le code HTTP retourné doit être 200 OK, et que la valeur du champ `id` dans le corps de réponse soit égale à `2`.
+    
+    La septième case, `Get user Bruce Wayne`, est similaire au deuxième mais avec l'URL `/users/3`. Les tests prévoient que le code HTTP retourné doit être 404 Not Found, et que le corps de réponse ne contienne pas de contenu.
+
+═══════════════════════════════════════════════════

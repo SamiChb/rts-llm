@@ -16,12 +16,33 @@
    5 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 8817 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : request timed out
-java.net.http.HttpTimeoutException: request timed out
-	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
-	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
-	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
-	at com.rts.llm.Main.runStaticPrune(Main.java:186)
-	at com.rts.llm.Main.run(Main.java:74)
-	at com.rts.llm.Main.main(Main.java:33)
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : Here are the candidates for regression tests:
+    
+    [1] Add tony stark user   (src/test/resources/features/users.feature)
+    [2] Add bruce wayne user   (src/test/resources/features/users.feature)
+    [3] Add bruce banner user   (src/test/resources/features/users.feature)
+    [4] Update tony stark user   (src/test/resources/features/users.feature)
+    [5] Patch bruce wayne user   (src/test/resources/features/users.feature)
+    [6] Update bruce banner user   (src/test/resources/features/users.feature)
+    
+    Here is the reasoning for each candidate:
+    
+    - [1]: This scenario sets an authorization header and then sends a POST request to /users with a JSON body. The JSON body contains fields like id, firstName, lastName, age, relatedTo, and sessionIds. The request modifies the code by sending data to the server. Therefore, this is a potential impact.
+    - [2]: This scenario also sends a POST request to /users with an authorization header and a JSON body. However, the authorization header is set from a variable in the feature file, which means it can change between runs. Additionally, the request modifies the code by sending data to the server. Therefore, this is a potential impact.
+    - [3]: This scenario sends a POST request to /users with an authorization header and a JSON body. The JSON body contains fields like id, firstName, lastName, age, relatedTo, and sessionIds. However, the request modifies the code by sending data to the server, but it also sends a JSON file from the features directory using the setBodyWithFile method. This is not a modification of the code, but rather a file system modification. Therefore, this scenario is not a potential impact.
+    - [4]: This scenario sends a PUT request to /users/1 with an authorization header and a JSON body. The JSON body contains fields like id, firstName, lastName, age, relatedTo, and sessionIds. However, the request modifies the code by sending data to the server. Therefore, this is a potential impact.
+    - [5]: This scenario sends a PATCH request to /users/2 with an authorization header and a JSON body. The JSON body contains fields like lastName. However, the request modifies the code by sending data to the server, but it also sends a JSON file from the features directory using the setBodyWithFile method. This is not a modification of the code, but rather a file system modification. Therefore, this scenario is not a potential impact.
+    - [6]: This scenario sends a PATCH request to /users/2 with an authorization header and a JSON body. The JSON body contains fields like id, firstName, lastName, age, relatedTo, and sessionIds. However, the request modifies the code by sending data to the server. Therefore, this is a potential impact.
+    - [7]: This scenario sends a PATCH request to /users/2 with an authorization header and a JSON body. The JSON body contains fields like lastName. However, the request modifies the code by sending data to the server. Therefore, this is a potential impact.
+
+═══════════════════════════════════════════════════

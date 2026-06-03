@@ -1,0 +1,38 @@
+→ agent JaCoCo : /home/etudiant/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar
+→ 15 scénarios détectés dans /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api
+→ couverture écrite dans /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6b7cf28/coverage-per-scenario
+
+[sc_001] Should be authenticated
+  (test en échec — on garde quand même la couverture)
+[sc_002] Add tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_003] Add bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_004] Add bruce banner user
+  (test en échec — on garde quand même la couverture)
+[sc_005] Update tony stark user
+  (test en échec — on garde quand même la couverture)
+[sc_006] Patch bruce wayne user
+  (test en échec — on garde quand même la couverture)
+[sc_007] Get users
+  (test en échec — on garde quand même la couverture)
+[sc_008] Search for valid users
+  (test en échec — on garde quand même la couverture)
+[sc_009] Search for invalid users
+  (test en échec — on garde quand même la couverture)
+[sc_010] Get user Tony Stark
+  (test en échec — on garde quand même la couverture)
+[sc_011] Get user Bruce Wayne
+  (test en échec — on garde quand même la couverture)
+[sc_012] Get wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_013] Delete wrong user
+  (test en échec — on garde quand même la couverture)
+[sc_014] Delete user
+  (test en échec — on garde quand même la couverture)
+[sc_015] Should import users csv file
+  (test en échec — on garde quand même la couverture)
+
+Terminé : 15 réussi(s), 0 sans couverture sur 15 scénario(s).
+Index   : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6b7cf28/coverage-per-scenario/index.txt
+Logs    : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/6b7cf28/coverage-per-scenario/sc_*.log

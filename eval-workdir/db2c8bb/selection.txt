@@ -1,6 +1,0 @@
-Update tony stark user
-Get users
-Search for invalid users
-Get user
-Get user
-Delete wrong user

@@ -1,0 +1,23 @@
+1. Extraction du diff Git...
+   34 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   35 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setUp
+4. Calcul des scénarios candidats (remontée transitive)...
+   0 candidat(s) sur 14 scénario(s)
+   L'analyse statique n'a trouvé aucun lien entre les méthodes modifiées et les scénarios BDD.
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    L'analyse statique n'a trouvé aucun lien entre les méthodes modifiées et les scénarios BDD.
+
+═══════════════════════════════════════════════════

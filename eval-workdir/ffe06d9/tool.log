@@ -11,16 +11,17 @@
    1 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 3830 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 1
+  Scénarios à retester : 2
     [1] Should import users csv file
+    [5] Add bruce banner user
 
   Justification LLM :
-    Le changement de la méthode postMultipart affecte directement la façon dont les données sont envoyées, et donc pourrait modifier le comportement du scénario d'importation des utilisateurs.
+    Scénario 1 est le seul candidat qui appelle la méthode modifiée (uploadFile). Scénario 5 a une chaîne d'appel à uploadFile mais elle n'est pas modifiée. Les autres scénarios ne sont pas impactés car ils appellent une méthode interne renommée.
 
 ═══════════════════════════════════════════════════

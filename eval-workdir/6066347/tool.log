@@ -16,12 +16,15 @@
    5 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 8255 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : request timed out
-java.net.http.HttpTimeoutException: request timed out
-	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
-	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
-	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
-	at com.rts.llm.Main.runStaticPrune(Main.java:186)
-	at com.rts.llm.Main.run(Main.java:74)
-	at com.rts.llm.Main.main(Main.java:33)
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    (pas de justification fournie)
+
+═══════════════════════════════════════════════════

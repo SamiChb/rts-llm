@@ -1,0 +1,358 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{parskip}
+\usepackage{amsmath}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\usepackage{fancyvrb}
+\usepackage{titlesec}
+
+\definecolor{accent}{HTML}{2A5A8A}
+\definecolor{muted}{HTML}{555555}
+\definecolor{bgcode}{HTML}{F4F4F4}
+\definecolor{warn}{HTML}{B85C00}
+\definecolor{ok}{HTML}{2A7A2A}
+\definecolor{bordercol}{HTML}{DDDDDD}
+\definecolor{warnbg}{HTML}{FFF8E6}
+\definecolor{okbg}{HTML}{EEF9EE}
+\definecolor{thbg}{HTML}{EEF3F8}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  citecolor=accent
+}
+
+\geometry{margin=2.5cm}
+
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codegreen}{rgb}{0,0.5,0}
+
+\lstset{
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  language=bash,
+  keywordstyle=\color{blue},
+  commentstyle=\color{codegreen},
+}
+
+\title{\textbf{Bilan outil RTS par Analyse Statique et LLM}}
+\author{Sami Chbicheb}
+\date{27 Avril 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+\subsection{Rappel des travaux précédents}
+
+Nous avons précédemment implémenté un outil RTS BDD tirant parti des LLM afin de sélectionner les scénarios impacté par une modification de code. La semaine dernière, nous avons rajouté une phase d'analyse statique afin d'améliorer la précision des scénarios sélectionnés. Cette semaine nous nous sommes concentrés sur l'amélioration de l'analyse statique, ainsi que le développement de scripts permettant de calculer la vérité terrain. Enfin nous avons avancé sur la recherche et le benchmark de projets open sources, demandé par Quentin.
+
+\subsection{Intérêt du calcul de la vérité terrain}
+ notre outil permet la sélection de tests de non-régression : à partir d'un diff Git, il prédit quels scénarios BDD doivent être ré-exécutés. Pour évaluer cette prédiction, il faut un oracle qui dit, pour le même diff, quels scénarios auraient réellement dû être ré-exécutés.
+\\\\
+Cet oracle s'appelle la vérité terrain. Sa fonction n'est pas d'être un outil RTS concurrent, la vérité terrain est par définition correcte au regard de l'exécution réelle des tests ; les écarts mesurés (faux positifs, faux négatifs de RTS-LLM) reflètent les limites de la prédiction, pas de l'oracle. is un étalon de mesure.
+\\\\
+Concrètement, les scénarios sélectionnés par la vérité terrain vont être comparés à ceux sélectionnés par notre outil RTS-LLM. Trois métriques principales vont pouvoir être mesurées : La précision, le rappel et le score F1. En théorie, plus le score F1 est élevé, plus l'outil est efficace (bon ratio précision/rappel).\\\\
+                                   
+
+\section{Métriques}
+Les métriques vont servir à mesurer l'efficacité de notre outil. Il est donc important de bien comprendre leur sens, ainsi que leurs calculs.
+Ces métriques reposent sur quatre concepts de base :
+    \begin{itemize}
+        \item \textbf{Vrais Positifs (VP)} : scénarios correctement identifiés comme devant être rejoués
+        \item \textbf{Faux Positifs (FP)} : scénarios identifiés comme devant être rejoués à tort
+        \item \textbf{Faux Négatifs (FN)} : scénarios devant être rejoués que l'outil a manqué
+        \item \textbf{Vrais Négatifs (VN) }: scénarios correctement exclus de la sélection    
+    \end{itemize}
+
+Ces 4 concepts sont obtenu grâce à la comparaison entre la vérité terrain et l'outil RTS-LLM.
+
+Par la suite les métriques suivantes vont pouvoir être calculées.                
+\begin{itemize} 
+    \item \textbf{La précision} :  mesure la proportion de scénarios identifiés comme devant être rejoués qui le sont réellement.
+    Formule = VP/(FP+VP) \\\\
+   Elle répond à la question « Parmi tous les scénarios que l'outil a sélectionné, combien sont ils vraiment impacté par les modification ? ». Une précision élevée signifie que lorsque l'outi sélectionne un scénario, on peut lui faire confiance. Dans notre cas, améliorer la précision signifie un gain de temps sur les scénarios à rejouer.\\\\
+   \item \textbf{Le rappel} :  mesure la proportion de scénarios devant être impérativement sélectionnés qui l'ont correctement été.
+    Formule = VP/(FN+VP) \\\\
+   Il répond à la question « Parmi tous les scénarios devant être sélectionnés, combien l'outil a-t-il réussi à sélectionner ? ». Un rappel élevé signifie que le modèle ne laisse pas passer beaucoup de scénarios critiques. Dans notre cas, le rappel va permettre de savoir si notre outil sélectionne bien tous les scénarios impacté par le git diff.\\\\
+   \item \textbf{Le score F1} : c'est la moyenne harmonique de la précision et du rappel. Il combine les deux métriques en une seule valeur.
+    Formule = (2*précision*rappel)/(précision+rappel) \\\\
+    fournit une mesure équilibrée de la performance du modèle lorsque l'on souhaite tenir compte à la fois de la précision et du rappel. Contrairement à une moyenne arithmétique, la moyenne   
+  harmonique pénalise fortement les valeurs extrêmes : si l'une des deux métriques est très faible, le score F1 le sera aussi. \\Il est particulièrement utile lorsque les classes sont déséquilibrées (la simple exactitude serait trompeuse), On cherche un compromis entre éviter les faux positifs et éviter les faux négatifs et on veut comparer plusieurs outils avec une seule métrique synthétique.
+   
+   
+                                                          
+\end{itemize}
+\section{Fonctionnement de l'outil}
+
+\subsection{Principe : couverture dynamique avec JaCoCo}
+\label{sec:principe}
+
+La méthodologie repose sur l'observation suivante : \emph{un scénario BDD est impacté par une modification si, et seulement si, son exécution traverse au moins une des méthodes modifiées}.
+
+La \textbf{couverture dynamique} répond exactement à cette question : pour chaque scénario, on enregistre les méthodes effectivement exécutées lors de son passage, en instrumentant le bytecode avec \href{https://www.jacoco.org/}{JaCoCo}.
+
+L'équation centrale de la vérité terrain s'écrit alors :
+
+\begin{formulabox}
+$G(\mathit{diff}) = \{\, s \in \text{Scénarios} \mid \text{Couverture}(s) \cap \text{MéthodesModifiées}(\mathit{diff}) \neq \emptyset \,\}$
+\end{formulabox}
+
+\noindent où :
+\begin{itemize}
+  \item \textbf{Couverture(s)} est l'ensemble des méthodes exécutées par le scénario \emph{s}, mesuré une fois pour toutes par JaCoCo dans la version de référence du code ;
+  \item \textbf{MéthodesModifiées(diff)} est l'ensemble des méthodes que le diff Git modifie, calculé par croisement entre les \emph{hunks} du diff et les plages de méthodes issues de l'AST.
+\end{itemize}
+
+
+\section{Pipeline de calcul, étape par étape}
+\label{sec:pipeline}
+
+\subsection{Préparation du projet cible}
+
+Le projet à évaluer doit avoir le plugin \texttt{jacoco-maven-plugin} configuré, ou bien être lancé avec l'agent JaCoCo injecté à la ligne de commande (mode \texttt{--no-pom-changes}, qui évite de polluer l'historique Git).
+
+\begin{lstlisting}[language=XML]
+<!-- Dans le pom.xml du projet cible (mode permanent) -->
+<plugin>
+  <groupId>org.jacoco</groupId>
+  <artifactId>jacoco-maven-plugin</artifactId>
+  <version>0.8.11</version>
+  <executions>
+    <execution><goals><goal>prepare-agent</goal></goals></execution>
+  </executions>
+</plugin>
+\end{lstlisting}
+
+\subsection{Étape 1 --- Collecte de la couverture par scénario}
+
+Le script \texttt{scripts/run\_per\_scenario\_coverage.sh} exécute chaque scénario Cucumber dans une JVM distincte, puis renomme le fichier \texttt{target/jacoco.exec} produit en \texttt{sc\_NNN.exec}.
+
+\begin{lstlisting}[language=bash]
+./scripts/run_per_scenario_coverage.sh --no-pom-changes /chemin/projet
+\end{lstlisting}
+
+Pour chaque scénario, la commande Maven exécutée est de la forme :
+
+\begin{lstlisting}[language=bash]
+mvn test \
+  -Dcucumber.filter.name="^Nom du scenario$" \
+  -DargLine="-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,append=false"
+\end{lstlisting}
+
+Sortie produite :
+
+\begin{lstlisting}
+coverage-per-scenario/
+|-- sc_001.exec        // couverture binaire JaCoCo
+|-- sc_002.exec
+|-- ...
+`-- index.txt          // sc_001|Should be authenticated
+                       // sc_002|Add bruce wayne user
+                       // ...
+\end{lstlisting}
+
+\begin{notebox}
+\textbf{Choix d'isolation} --- un fork JVM par scénario élimine la pollution d'état (caches statiques, sessions persistantes, base in-memory). Le coût est l'overhead de démarrage Maven, négligeable à l'échelle d'une évaluation académique.
+\end{notebox}
+
+\subsection{Étape 2 --- Construction de la map scénario \(\rightarrow\) méthodes}
+
+La classe \texttt{GroundTruthBuilder} lit chaque \texttt{.exec} via l'API JaCoCo (\texttt{ExecFileLoader} + \texttt{Analyzer}), en croisant les probes activées avec le bytecode compilé. Pour chaque scénario, elle produit la liste des méthodes effectivement exécutées.
+
+\begin{lstlisting}[language=bash]
+java -cp target/rts-llm-1.0-SNAPSHOT.jar com.rts.llm.GroundTruthBuilder build \
+    /chemin/projet/coverage-per-scenario \
+    /chemin/projet/target/classes \
+    /chemin/projet/target/test-classes \
+    coverage.json
+\end{lstlisting}
+
+Format de l'identifiant méthode : \texttt{FQN.NomClasse.nomMéthode}, identique à celui produit par \texttt{StaticAnalyzer}, pour permettre l'intersection avec les méthodes modifiées extraites du diff.
+
+Normalisations appliquées sur la sortie JaCoCo :
+\begin{itemize}
+  \item \texttt{com/example/Foo} \(\rightarrow\) \texttt{com.example.Foo} (slash \(\rightarrow\) point)
+  \item \texttt{Outer\$Inner} \(\rightarrow\) \texttt{Outer.Inner} (classes imbriquées)
+  \item \texttt{lambda\$importFrom\$0} \(\rightarrow\) \texttt{importFrom} (repli des lambdas sur leur méthode englobante)
+  \item \texttt{<init>}, \texttt{<clinit>}, \texttt{access\$N} : ignorés (non trackés par \texttt{StaticAnalyzer})
+\end{itemize}
+
+Extrait de \texttt{coverage.json} :
+
+\begin{lstlisting}[language=Java]
+{
+  "sc_001": {
+    "name": "Should be authenticated",
+    "methods": [
+      "fr.redfroggy.bdd.restapi.user.UserController.getAll",
+      "fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setUp",
+      ...
+    ]
+  },
+  ...
+}
+\end{lstlisting}
+
+\subsection{Étape 3 --- Extraction des méthodes modifiées par le diff}
+
+Pour un diff Git donné (\texttt{git diff C\^{} C}), \texttt{SymbolExtractor} :
+
+\begin{enumerate}
+  \item parse les en-têtes de hunks (\texttt{@@ -X +Y,Z @@}) pour récupérer les plages de lignes modifiées dans chaque fichier ;
+  \item croise ces plages avec \texttt{methodRangesByFile} (calculé par \texttt{StaticAnalyzer} via JavaParser) ;
+  \item retourne la liste des méthodes dont la plage chevauche au moins un hunk.
+\end{enumerate}
+
+\subsection{Étape 4 --- Intersection finale}
+
+La vérité terrain pour le diff est obtenue par intersection :
+
+\begin{lstlisting}[language=Java]
+for (Map.Entry<String, ScenarioCoverage> e : coverageMap.entrySet()) {
+    if (!Collections.disjoint(e.getValue().methods, modifiedMethods)) {
+        groundTruth.add(e.getKey());
+    }
+}
+\end{lstlisting}
+
+\subsection{Boucle sur l'historique Git}
+
+Le script \texttt{scripts/eval\_history.sh} automatise les étapes 1 à 4 sur une plage de commits :
+
+\begin{Verbatim}[frame=single,fontsize=\small]
+Pour chaque commit C dans la plage :
+
+  1. checkout C^ (parent)         <- état AVANT le diff
+  2. mvn test-compile             <- bytecode pour analyse JaCoCo
+  3. run_per_scenario_coverage.sh <- un .exec par scenario
+  4. GroundTruthBuilder build     <- coverage.json
+  5. checkout C
+  6. GroundTruthBuilder eval      <- calcule G pour le diff C^ -> C
+  7. agrege dans un CSV
+\end{Verbatim}
+
+\begin{notebox}
+\textbf{Important} --- la couverture est collectée sur le \emph{parent} du commit (\texttt{C\^{}}), c'est-à-dire l'état du code \emph{avant} les modifications. C'est nécessaire pour que les noms et plages des méthodes correspondent à celles que le diff référence en \texttt{-}.
+\end{notebox}
+
+
+\section{Retour sur les métriques d'évaluation}
+\label{sec:metrics}
+
+Pour un commit donné, on compare deux ensembles :
+\begin{itemize}
+  \item \textbf{G} --- la vérité terrain (scénarios réellement impactés)
+  \item \textbf{S} --- la sélection produite par RTS-LLM
+\end{itemize}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\hline
+\rowcolor{thbg}
+\textbf{Sigle} & \textbf{Nom} & \textbf{Définition} & \textbf{Interprétation} \\
+\hline
+\textbf{TP} & True Positive  & $|S \cap G|$         & Sélectionnés et impactés --- bonne décision \\
+\hline
+\textbf{FP} & False Positive & $|S \setminus G|$    & Sélectionnés mais pas impactés --- temps perdu \\
+\hline
+\textbf{FN} & False Negative & $|G \setminus S|$    & Impactés mais oubliés --- \textcolor{warn}{danger} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\begin{formulabox}
+$\text{Précision} = \dfrac{TP}{TP + FP} \qquad
+ \text{Rappel} = \dfrac{TP}{TP + FN} \qquad
+ F_1 = \dfrac{2 \cdot P \cdot R}{P + R}$
+\end{formulabox}
+
+Pour un outil RTS, le \textbf{rappel est l'indicateur prioritaire} : un FN signifie qu'un test impacté n'est pas exécuté, donc qu'un bug peut atteindre la production sans alerte. Un FP n'est qu'un test exécuté inutilement.
+
+\subsection{Evaluation de l'outil}
+A l'aide des scripts développés, nous avons pu benchmarker notre outil rts-llm.
+Dans un premier temps, nous allons comparer l'outil avec et sans analyse statique. Le benchmark est réalisé sur 80 commits du projet RedFroggy/spring-cucumber-rest-api.
+
+   \begin{table}[ht]
+     \centering
+   \caption{Performance moyenne de RTS-LLM (Mistral) avec et sans analyse statique préalable.}
+     \label{tab:resultats-mistral}
+   \begin{tabular}{lccc}
+       \toprule
+      \textbf{Configuration} & \textbf{Précision} & \textbf{Rappel} & \textbf{F1} \\
+       \midrule
+       Sans analyse statique & 0{,}7087 & 0{,}2198 & 0{,}2643 \\
+       Avec analyse statique & \textbf{0{,}7659} & \textbf{0{,}2520} & \textbf{0{,}3217} \\
+       \midrule
+       Gain absolu           & $+0{,}0572$ & $+0{,}0322$ & $+0{,}0574$ \\
+       \bottomrule
+     \end{tabular}
+  
+     \vspace{0.5em}
+
+ \end{table}
+
+                                                                               
+  L'analyse statique préalable améliore les trois métriques simultanément :                                                                                                                                                
+  $+5{,}7$~points de précision, $+3{,}2$~points de rappel et $+5{,}7$~points                                                                                                                                               
+  de F1. Le gain de précision était attendu : restreindre l'espace de                                                                                                                                                      
+  décision du LLM aux scénarios touchant effectivement une méthode modifiée                                                                                                                                                
+  élimine mécaniquement une partie des faux positifs. Le gain de rappel est                                                                                                                                                
+  plus notable : il indique que l'analyse statique ne se contente pas de                                                                                                                                                   
+  filtrer du bruit, mais oriente aussi le LLM vers des scénarios qu'il                                                                                                                                                     
+  aurait manqués en raisonnant sur le seul diff.\\\\ Le rappel reste néanmoins                                                                                                                                                 
+  modeste ($0{,}25$), ce qui traduit la difficulté intrinsèque, pour un                                                                                                                                                    
+  modèle de langage, de relier un changement bas niveau dans le code source                                                                                                                                                
+  à des scénarios fonctionnels exprimés en langage métier. Pour un outil                                                                                                                                                   
+  de sélection de tests de régression, cette limite est la plus                                                                                                                                                            
+  préoccupante un faux négatif laisse passer un test impacté et donc                                                                                                                                                   
+  potentiellement un bug en production et constitue le principal axe                                                                                                                                                   
+  d'amélioration à explorer.                                                                                                                                                                                          
+  \section{Travail en collaboration avec le doctorant}
+  Dans le cadre de notre collaboration, nous avons continué la phase de recherche de projets open sources qui pourront être utilisés pour le benchmark de son outil rts. Nous avons donc mis au point un script qui permet d'analyser les commits d'un projet, puis d'extraires certaines informations (nombre de .feature, java modifié, feature modifié ...).
+  Il n'existe pas beaucoup de projets possédant un nombre conséquent de commits ainsi que de tests cucumber.
+  Cependant nous avons réussi à trouver 7 projets exploitables.
+  \begin{itemize}
+      \item SerenityCucumber
+      \item spring-cucumber-rest-api
+      \item Learn-ta-cucumberBDD
+      \item karate-tutorial
+      \item calculator-cucumber
+      \item selenium-cucumber-java
+      \item cucumber-spring-petclinic
+  \end{itemize}
+
+\section{pistes d'améliorations}
+Le principal objectif afin d'améliorer le rappel et le score f1 de notre outil est d'améliorer l'analyse statique. En effet, pour l'instant l'analyse statique ne permet pas de détecter l'injection Spring. Ce qui empêche l'obtention d'un rappel de 100\%. Sur certains commits, le rappel chute jusqu'à 50\% dû à l'absence de cette fonctionnalité.\\
+nous devrions également mettre en place une pipeline CI/CD afin de montrer que l'outil s'intègre bien dans un écosystème Devops.
+\end{document}

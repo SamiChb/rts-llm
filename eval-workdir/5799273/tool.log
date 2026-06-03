@@ -12,27 +12,23 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 11875 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 12
+  Scénarios à retester : 8
+    [1] Should import users csv file
     [2] Should be authenticated
+    [3] Add tony stark user
     [4] Add bruce wayne user
-    [5] Update tony stark user
     [6] Patch bruce wayne user
     [7] Get users
     [8] Search for valid users
     [9] Search for invalid users
-    [10] Get user
-    [11] Get user
-    [12] Get wrong user
-    [13] Delete wrong user
-    [14] Delete user
 
   Justification LLM :
-    Dans les scénarios 1, 13 et 14, il n'y a pas de changement du comportement observable. Le fichier CSV est utilisé comme paramètre d'entrée dans le premier cas, et l'appel des méthodes DELETE sur un ID non existant dans les derniers deux. Les autres scénarios font appel à la méthode uploadFile modifiée, qui change son nom de fichier temporaire généré et donc pourrait affecter les tests. Il est nécessaire de vérifier le fonctionnement des tests après cette modification.
+    Le comportement observable change pour les scénarios suivants : [1], [2], [3], [4], [6], [7], [8], et [9]. Les chaînes d'appel vers le code modifié sont indiquées dans la section des candidates.
 
 ═══════════════════════════════════════════════════

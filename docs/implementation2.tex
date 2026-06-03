@@ -1,0 +1,246 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+
+\definecolor{accent}{HTML}{2A5A8A}
+\definecolor{muted}{HTML}{555555}
+\definecolor{bgcode}{HTML}{F4F4F4}
+\definecolor{warn}{HTML}{B85C00}
+\definecolor{thbg}{HTML}{EEF3F8}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{remarque}{
+  colback=thbg, colframe=accent, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  title={\textbf{Remarque}}, fonttitle=\small
+}
+
+\title{\textbf{Implémentation de RTS-LLM}}
+\author{Samir El Khoumri, Aly Hachem-Reda, Sami Chbicheb}
+\date{Mai 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Implémentation}
+% ============================================================
+
+L'implémentation de l'approche s'est déroulée en deux étapes itératives.
+Nous avons d'abord développé une version reposant uniquement sur un modèle
+de langage, afin de valider le principe de base. Nous avons ensuite enrichi
+cette première version d'une phase d'analyse statique en amont, pour pallier
+les limites observées.
+
+% ============================================================
+\subsection{Première version : sélection par le LLM seul}
+% ============================================================
+
+La première implémentation suit une logique directe : à partir d'un commit,
+extraire le diff Git et l'ensemble des scénarios BDD du projet, puis
+soumettre ces deux éléments à un LLM en lui demandant d'identifier les
+scénarios susceptibles d'être impactés.
+
+\subsubsection{Fonctionnement général}
+
+Pour chaque commit analysé, le pipeline se déroule en trois étapes :
+
+\begin{enumerate}[noitemsep]
+  \item \textbf{Extraction du diff.} La commande \texttt{git diff} est
+        exécutée entre le commit parent et le commit courant. Le diff
+        obtenu contient les lignes ajoutées et supprimées dans chaque
+        fichier modifié.
+
+  \item \textbf{Collecte des scénarios BDD.} L'outil parcourt les fichiers
+        \texttt{.feature} du projet et en extrait l'ensemble des scénarios
+        avec leurs steps Gherkin.
+
+  \item \textbf{Appel au LLM.} Un prompt est construit en concaténant le
+        diff et la liste des scénarios numérotés. Le modèle est invité à
+        retourner les indices des scénarios dont le comportement pourrait
+        être affecté par les modifications, accompagnés d'une justification.
+\end{enumerate}
+
+\subsubsection{Construction du prompt}
+
+Le prompt soumis au LLM positionne le modèle comme expert en tests de
+régression BDD, et lui présente deux blocs d'information : le diff du
+commit et la liste complète des scénarios. Il lui est demandé de répondre
+au format JSON structuré :
+
+\begin{center}
+\ttfamily\small
+\{ "selected": [2, 5], "reasoning": "..." \}
+\end{center}
+
+Ce format contraint la réponse et facilite son exploitation automatique.
+La réponse est ensuite parsée pour en extraire les indices sélectionnés,
+qui sont validés contre la liste des scénarios fournis afin d'éviter
+toute hallucination d'indice.
+
+\subsubsection{Modèle utilisé et configuration}
+
+L'outil a été conçu pour fonctionner avec plusieurs fournisseurs de LLM
+(OpenAI, Anthropic, Gemini, Ollama). Pour l'évaluation, nous avons
+utilisé \textbf{Mistral 7B} via Ollama, qui permet une exécution locale
+sans dépendance à une API payante. La température est fixée à $0{,}1$
+pour garantir un comportement quasi-déterministe et améliorer la
+reproductibilité des résultats.
+
+\subsubsection{Limites observées}
+
+Cette première approche présente deux limites importantes, mises en
+évidence lors de l'évaluation :
+
+\begin{itemize}
+  \item \textbf{Passage à l'échelle difficile.} Le prompt contient
+        l'intégralité des scénarios du projet. À mesure que ce nombre
+        croît, le contexte soumis au modèle s'allonge, ce qui dégrade
+        la qualité du raisonnement et augmente les coûts d'inférence.
+
+  \item \textbf{Manque de précision.} Sans connaissance de la structure
+        du code, le LLM ne peut relier un changement dans une méthode
+        à un scénario qu'en s'appuyant sur des indices lexicaux dans le
+        diff. Il tend à sur-sélectionner (faux positifs) par prudence,
+        ou à manquer des impacts indirects non apparents dans le diff
+        (faux négatifs).
+\end{itemize}
+
+Ces limites ont motivé le développement d'une seconde version intégrant
+une phase d'analyse statique en amont.
+
+% ============================================================
+\subsection{Seconde version : analyse statique en amont du LLM}
+% ============================================================
+
+La seconde version introduit une couche d'analyse statique du code source
+avant l'appel au LLM. L'idée centrale est de ne soumettre au modèle que
+les scénarios déjà présélectionnés sur la base d'un lien structurel
+démontrable avec le code modifié, réduisant ainsi à la fois le bruit et
+la taille du contexte.
+
+\subsubsection{Analyse statique du projet}
+
+Avant tout appel au LLM, l'outil analyse le code source du projet cible
+à l'aide de la bibliothèque \textbf{JavaParser}. Cette analyse produit
+deux structures :
+
+\begin{itemize}
+  \item Un \textbf{graphe d'appels} reliant les méthodes entre elles :
+        un arc de $A$ vers $B$ signifie que la méthode $A$ appelle la
+        méthode $B$. Ce graphe est également construit en sens inverse
+        (\emph{reverse call graph}) pour permettre de remonter de
+        n'importe quelle méthode vers ses appelants.
+
+  \item Une \textbf{table de correspondance} entre les scénarios BDD et
+        les méthodes Java de leurs step definitions : pour chaque scénario,
+        on connaît l'ensemble des méthodes Java invoquées par ses étapes
+        Gherkin.
+\end{itemize}
+
+\subsubsection{Identification des scénarios candidats}
+
+Lorsqu'un commit est soumis, les méthodes modifiées par le diff sont
+d'abord identifiées par croisement des lignes modifiées avec les plages
+de méthodes issues de l'analyse statique. On obtient ainsi un ensemble
+$M$ de méthodes touchées par le commit.
+
+À partir de $M$, on remonte le reverse call graph par un parcours en
+largeur (\emph{BFS}) pour identifier tous les composants transitivement
+dépendants des méthodes modifiées. Un scénario est retenu comme candidat
+si au moins une de ses step definitions appartient à cet ensemble. On
+obtient ainsi un sous-ensemble $C \subseteq \mathcal{S}$ des scénarios
+structurellement liés aux modifications.
+
+\begin{remarque}
+  Par construction, tout scénario qui invoque --- directement ou
+  indirectement --- une méthode modifiée est inclus dans $C$. La couche
+  statique est donc \emph{sûre} : elle ne peut pas exclure un scénario
+  véritablement impacté, sous réserve que le graphe d'appels soit
+  suffisamment complet.
+\end{remarque}
+
+\subsubsection{Raffinement par le LLM}
+
+Le LLM reçoit ensuite uniquement les scénarios de $C$, et non plus
+l'ensemble du projet. Pour chaque candidat, le prompt inclut également
+la \textbf{chaîne d'appel} qui relie sa step definition à la méthode
+modifiée, par exemple :
+
+\begin{center}
+\ttfamily\small
+setBodyTo $\to$ AbstractBddStepDefinition.addQueryParameters
+\end{center}
+
+Cette information permet au LLM de comprendre \emph{comment} le scénario
+atteint le code modifié, et non seulement \emph{que} ce lien existe. Il
+peut ainsi distinguer un impact réel d'un faux positif structurel (lien
+existant dans le graphe, mais modification sans effet sur le comportement
+observable du scénario, comme un changement de log ou de commentaire).
+
+\subsubsection{Apport de la seconde version}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  >=Stealth, thick, font=\small,
+  box/.style={
+    draw=accent, fill=accent!8, rounded corners=4pt,
+    minimum width=3.8cm, minimum height=1cm, align=center
+  },
+  arr/.style={->, thick}
+]
+
+\node[box] (diff)   at (0, 0)    {Diff Git};
+\node[box] (static) at (4.5, 0)  {Analyse statique\\$\rightarrow C \subseteq \mathcal{S}$};
+\node[box] (llm)    at (9, 0)    {Raisonnement LLM\\$\rightarrow S \subseteq C$};
+
+\draw[arr] (diff)   -- node[above,font=\footnotesize]{méthodes modifiées} (static);
+\draw[arr] (static) -- node[above,font=\footnotesize]{candidats + chaînes} (llm);
+
+\draw[->, dashed, color=muted, thick]
+  (static.south) -- ++(0,-0.9)
+  node[below,font=\footnotesize\itshape]{fallback \texttt{--no-llm}}
+  -- ++(2.5,0) -- ++(0,0.9);
+
+\end{tikzpicture}
+\caption{Pipeline de la seconde version : filtrage statique puis raffinement LLM.}
+\label{fig:pipeline-v2}
+\end{figure}
+
+La combinaison des deux couches apporte trois améliorations concrètes
+par rapport à la version LLM seul :
+
+\begin{itemize}[noitemsep]
+  \item Le contexte soumis au LLM est réduit aux seuls scénarios
+        pertinents, ce qui améliore la qualité du raisonnement et
+        réduit la latence.
+  \item Le LLM dispose d'une information structurelle précise (chaînes
+        d'appel) qu'il ne pouvait pas déduire seul à partir du diff.
+  \item En cas d'indisponibilité du LLM, l'analyse statique seule
+        (option \texttt{--no-llm}) constitue un repli valide qui préserve
+        la sûreté de la sélection.
+\end{itemize}
+
+\end{document}

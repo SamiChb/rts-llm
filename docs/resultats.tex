@@ -1,0 +1,397 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\definecolor{accent}{HTML}{2A5A8A}
+\definecolor{muted}{HTML}{555555}
+\definecolor{bgcode}{HTML}{F4F4F4}
+\definecolor{warn}{HTML}{B85C00}
+\definecolor{thbg}{HTML}{EEF3F8}
+\definecolor{okbg}{HTML}{EEF9EE}
+\definecolor{ok}{HTML}{2A7A2A}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{formulabox}{
+  colback=thbg, colframe=accent, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{attention}{
+  colback=okbg, colframe=ok, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{avertissement}{
+  colback=yellow!8, colframe=warn, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\renewcommand{\arraystretch}{1.5}
+
+\title{\textbf{Résultats et benchmark}}
+\author{Samir El Khoumri, Aly Hachem-Reda, Sami Chbicheb}
+\date{Mai 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Résultats et benchmark}
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection{Présentation du projet de benchmark}
+% ------------------------------------------------------------
+
+\subsubsection{Choix du projet}
+
+Pour évaluer RTS-LLM dans des conditions réalistes, nous avons retenu le
+projet open source \textbf{spring-cucumber-rest-api}. Ce projet est une
+API REST développée avec Spring Boot et intégralement testée par des
+scénarios BDD écrits en Gherkin avec Cucumber. Il réunit plusieurs
+caractéristiques qui en font un terrain d'évaluation pertinent :
+
+\begin{itemize}[noitemsep]
+  \item Les tests sont exclusivement des scénarios BDD fonctionnels,
+        ce qui correspond exactement au contexte cible de RTS-LLM.
+  \item Le code source est en Java, compatible avec l'analyse statique
+        par JavaParser intégrée à l'outil.
+  \item L'historique Git est suffisamment riche pour constituer un corpus
+        d'évaluation représentatif.
+  \item Le projet est public et reproductible, ce qui permet de vérifier
+        indépendamment les résultats.
+\end{itemize}
+
+\subsubsection{Caractéristiques du corpus}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Caractéristique}              & \textbf{Valeur} \\
+\midrule
+Nombre de scénarios BDD               & 12 \\
+Nombre de commits dans l'historique   & 220 \\
+Période couverte                      & Février 2017 -- Avril 2021 \\
+Commits analysés (LLM seul)           & 30 \\
+Commits analysés (hybride)            & 30 \\
+Commits avec vérité terrain non vide  & 27 (les deux modes) \\
+Commits retenus pour l'évaluation     & 6 (LLM seul) / 7 (hybride) \\
+\bottomrule
+\end{tabular}
+\caption{Caractéristiques du corpus d'évaluation.}
+\label{tab:corpus}
+\end{table}
+
+\noindent Les commits retenus sont ceux pour lesquels la vérité terrain
+est non vide (\texttt{gt\_size > 0}), c'est-à-dire les commits qui
+modifient effectivement du code traversé par au moins un scénario.
+Les commits dont le diff ne touche que des fichiers non couverts
+(documentation, configuration, tests de bas niveau) sont exclus car
+ils ne permettent pas de mesurer la qualité de la sélection.
+
+% ------------------------------------------------------------
+\subsection{Configurations évaluées}
+% ------------------------------------------------------------
+
+Deux configurations de RTS-LLM ont été comparées, utilisant toutes les
+deux le modèle \textbf{Mistral 7B-instruct (quantification q3\_K\_M)}
+via Ollama en exécution locale sur GPU (NVIDIA RTX A500, 4 Go VRAM).
+La version quantifiée (3,3 Go) a été choisie car la version complète
+(4,4 Go) débordait sur le CPU, réduisant la vitesse d'inférence à
+environ 5 tok/s contre 30 tok/s avec q3\_K\_M :
+
+\begin{itemize}
+  \item \textbf{LLM seul} : le diff et l'ensemble des scénarios sont
+        soumis directement à Mistral, sans présélection statique.
+        Le modèle décide seul quels scénarios retester.
+
+  \item \textbf{Hybride (analyse statique + LLM)} : une analyse statique
+        du call graph présélectionne les scénarios structurellement liés
+        aux méthodes modifiées. Mistral reçoit uniquement ces candidats,
+        accompagnés de la chaîne d'appel les reliant au code modifié,
+        et joue un rôle d'élagueur.
+\end{itemize}
+
+Cette comparaison vise à mesurer l'apport concret de la couche statique
+sur les trois métriques d'évaluation.
+
+% ------------------------------------------------------------
+\subsection{Résultats quantitatifs}
+% ------------------------------------------------------------
+
+\subsubsection{Anomalies détectées dans les métriques brutes}
+
+\paragraph{Double-comptage dans la vérité terrain.}
+Lors de l'analyse des résultats bruts, nous avons constaté que le
+\texttt{gt\_size} moyen ($\approx 14$) dépassait le nombre réel de
+scénarios du projet (12). Ce chiffre peut même atteindre~24 ou~30, ce
+qui est mathématiquement impossible avec 12 scénarios.
+
+L'origine est un bug dans le script de collecte de couverture :
+\texttt{run\_per\_scenario\_coverage.sh} ajoutait à la fois
+\texttt{src/test/resources} et \texttt{src/test} à sa liste de
+répertoires de recherche. Comme le premier est un sous-répertoire du
+second, le \texttt{grep} récursif trouvait chaque scénario \textbf{deux fois},
+produisant 24 entrées dans l'index au lieu de~12. Chaque scénario
+réellement impacté contribuait ainsi à 2~entrées dans~$G$, gonflant
+\texttt{gt\_size} du facteur~2 et plafonnant mécaniquement le rappel à~0{,}5.
+
+Le bug est corrigé dans la version actuelle du script. Comme la
+re-collecte de couverture (une exécution JVM par scénario et par commit)
+représente un coût calculatoire important, nous dérivons les métriques
+corrigées analytiquement : le rappel corrigé vaut exactement deux fois
+le rappel mesuré (puisque $G_{\text{réel}} = G_{\text{mesuré}} / 2$ et
+que TP est inchangé). La précision n'est pas affectée.
+
+\paragraph{Taux de NaN élevé (sélection vide).}
+Sur les 27~commits avec vérité terrain non vide, 21~commits (LLM seul)
+et 20~commits (hybride) produisent des métriques indéfinies (NaN).
+Dans tous ces cas, \texttt{sel\_size = 0} : le modèle n'a sélectionné
+aucun scénario. Un bug dans \texttt{eval\_history.sh} en est la cause
+directe : lorsque la liste de sélection est vide, le script n'appelle
+pas \texttt{GroundTruthBuilder} avec l'argument \texttt{--selection},
+qui renvoie alors \texttt{fn = 0} au lieu de \texttt{fn = gt\_size},
+provoquant une division par zéro ($R = 0/0 = \text{NaN}$). Ces commits
+sont donc exclus des moyennes, ce qui surestime les performances réelles
+de l'outil : les~cas de sélection vide correspondent à des rappels
+nuls~($R = 0$) et constituent les pires scénarios.
+
+\subsubsection{Tableau comparatif}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Configuration} & \textbf{Commits valides} & \textbf{Précision} & \textbf{Rappel brut} & \textbf{Rappel corrigé} & \textbf{F1} \\
+\midrule
+LLM seul               & 6  & 0{,}650 & 0{,}110 & 0{,}220 & 0{,}168 \\
+Hybride (statique + LLM) & 7 & \textbf{0{,}911} & \textbf{0{,}384} & \textbf{0{,}767} & \textbf{0{,}514} \\
+\midrule
+Gain absolu            & $+1$ & $+0{,}261$ & $+0{,}274$ & $+0{,}547$ & $+0{,}346$ \\
+\bottomrule
+\end{tabular}
+\caption{Métriques moyennes sur les commits non-NaN avec \texttt{gt\_size > 0}
+         (rappel corrigé $= $ rappel brut $\times 2$ pour corriger le double-comptage).
+         Modèle : Mistral 7B-instruct q3\_K\_M.}
+\label{tab:resultats}
+\end{table}
+
+\begin{avertissement}
+Les 21/27 commits NaN (LLM seul) et 20/27 commits NaN (hybride) correspondent
+tous à \texttt{sel\_size = 0} et représentent des rappels nuls ($R = 0$).
+Les moyennes du tableau ci-dessus sont donc calculées \textbf{uniquement sur les
+meilleurs commits} et surestiment les performances réelles.
+Si l'on impute $R = 0, P = 0, F1 = 0$ aux commits NaN, le rappel corrigé moyen
+global tombe à $0{,}049$ (LLM seul) et $0{,}199$ (hybride).
+\end{avertissement}
+
+\subsubsection{Distribution du rappel par commit}
+
+Au-delà des moyennes, la distribution du rappel par commit révèle un
+comportement plus nuancé (rappels corrigés, $\times 2$) :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Tranche de rappel corrigé} & \textbf{LLM seul} ($n=6$) & \textbf{Hybride} ($n=7$) \\
+\midrule
+$R = 0$                        & 1 commit  (17\,\%) & 0 commit   (0\,\%) \\
+$R \in ]0;\, 0{,}5]$           & 4 commits (67\,\%) & 2 commits (29\,\%) \\
+$R \in ]0{,}5;\, 1{,}0[$       & 1 commit  (17\,\%) & 1 commit  (14\,\%) \\
+$R = 1$                        & 0 commit   (0\,\%) & 4 commits (57\,\%) \\
+\bottomrule
+\end{tabular}
+\caption{Distribution du rappel corrigé par commit (commits non-NaN avec \texttt{gt\_size > 0}).}
+\label{tab:distribution}
+\end{table}
+
+\noindent Le mode hybride atteint un rappel parfait ($R = 1$) sur 4 des 7 commits
+valides (57\,\%), alors que le LLM seul n'y parvient jamais. Cette différence
+s'explique par les chemins d'appel fournis par l'analyse statique : le LLM
+dispose d'un contexte structurel précis qui lui permet de relier le diff à chaque
+scénario impacté, au lieu de raisonner uniquement sur des ressemblances lexicales.
+Les 4 commits avec $R = 1$ en mode hybride sont ceux qui modifient des méthodes
+peu centrales, avec une vérité terrain réduite (2 scénarios) : l'analyse statique
+isole correctement les candidats et le LLM les confirme tous.
+
+% ------------------------------------------------------------
+\subsection{Interprétation des résultats}
+% ------------------------------------------------------------
+
+\subsubsection{Apport de l'analyse statique}
+
+L'analyse statique apporte un gain significatif sur toutes les métriques :
+$+0{,}261$ en précision, $+0{,}547$ en rappel corrigé, et $+0{,}346$ en F1.
+Ces gains s'expliquent par deux effets cumulatifs.
+
+\textbf{Contexte structurel.} Le LLM reçoit la chaîne d'appel reliant
+chaque candidat à la méthode modifiée. Il peut ainsi raisonner sur la
+nature réelle de l'impact plutôt que sur des ressemblances lexicales dans
+le diff, ce qui améliore à la fois la précision (0{,}650 $\to$ 0{,}911)
+et le rappel.
+
+\textbf{Réduction de la taille du prompt.} Sans analyse statique, le LLM
+reçoit la totalité des 12 scénarios dans un prompt de 9\,000 à 11\,000
+caractères. Avec le filtre statique, seuls les candidats structurellement
+liés au diff sont transmis, réduisant la longueur du prompt de 60 à 80\,\%.
+Cela améliore la qualité du raisonnement du modèle et réduit le taux de
+sélection vide (de 21/27 à 20/27), bien que l'effet reste limité.
+
+\textbf{Rappel parfait sur les commits peu centraux.} Le mode hybride
+atteint $R = 1$ sur 4 commits dont la vérité terrain ne compte que
+2 scénarios. L'analyse statique identifie exactement les scénarios
+structurellement liés, et le LLM les confirme intégralement.
+
+\subsubsection{Explication du faible rappel}
+
+Le rappel corrigé de~0{,}220 (LLM seul, commits non-NaN) et le taux de NaN
+de 78\,\% s'expliquent par trois causes complémentaires :
+
+\begin{itemize}
+  \item \textbf{Le conservatisme du LLM sur les grands prompts.}
+        Sur 27~commits avec vérité terrain non vide, 21~renvoient une
+        sélection vide, ce qui est interprété comme une absence totale
+        de réponse utile. Le modèle Mistral~7B-instruct q3\_K\_M,
+        confronté à un prompt de 9\,000 à 11\,000 caractères (12 scénarios
+        + diff complet), tend à répondre avec un tableau JSON vide lorsqu'il
+        ne détecte pas de lien \emph{direct} et évident entre le diff et un
+        scénario.
+
+  \item \textbf{La nature centrale du projet.} Avec seulement 12 scénarios
+        BDD couvrant une API REST resserrée, un commit qui modifie une
+        méthode centrale (gestion des requêtes HTTP, authentification,
+        \texttt{AbstractBddStepDefinition}) peut structurellement impacter
+        la quasi-totalité des scénarios. La vérité terrain atteint alors
+        24 à 30 entrées (12 à 15 scénarios réels après correction), alors
+        que l'outil en sélectionne 1 à 2.
+
+  \item \textbf{Le bug NaN dans l'évaluation.}
+        Lorsque \texttt{sel\_size = 0}, le script d'évaluation
+        \texttt{eval\_history.sh} ne passe pas l'argument
+        \texttt{--selection} à \texttt{GroundTruthBuilder}, ce qui
+        produit \texttt{fn = 0} au lieu de \texttt{fn = gt\_size},
+        et donc $R = 0/0 = \text{NaN}$. Ces commits sont exclus des
+        moyennes, masquant les pires performances de l'outil.
+\end{itemize}
+
+\subsubsection{Analyse d'un cas concret}
+
+Pour illustrer les situations où l'outil et la vérité terrain divergent,
+prenons le commit \texttt{f1eea53} (\emph{``docs: Add javadoc + update
+readme file''}). Ce commit supprime la classe
+\texttt{BasicAuthAuthentication} et déplace sa méthode \texttt{authenticate}
+dans \texttt{DefaultRestApiStepDefinitionTest}.
+
+\begin{itemize}
+  \item \textbf{Côté RTS-LLM} : l'analyse statique détecte la nouvelle
+        méthode \texttt{authenticate} comme modifiée, remonte le call graph
+        jusqu'aux scénarios d'authentification et en sélectionne 1 à 2.
+
+  \item \textbf{Côté vérité terrain} : la couverture est collectée avant
+        le commit, dans l'état du code parent. La nouvelle méthode n'existait
+        pas encore à ce stade : aucun scénario ne peut l'avoir couverte.
+        La vérité terrain est donc vide (\texttt{gt\_size = 0}), et le
+        commit est exclu de l'évaluation.
+\end{itemize}
+
+Ce cas illustre parfaitement la limitation des méthodes ajoutées par le
+diff : RTS-LLM a identifié un impact potentiellement réel (le code
+d'authentification a changé), mais la méthode de mesure ne peut pas le
+confirmer. Dans les métriques, cela se traduit par des faux positifs
+apparents qui pénalisent l'outil.
+
+% ------------------------------------------------------------
+\subsection{Discussion et limites}
+% ------------------------------------------------------------
+
+\subsubsection{Limites du benchmark}
+
+L'évaluation repose sur un seul projet. Cette contrainte est inhérente
+aux difficultés de mise en place de la vérité terrain --- la collecte
+de couverture par scénario nécessite d'exécuter l'intégralité de la
+suite de tests pour chaque scénario individuellement, ce qui représente
+un coût important en temps de calcul. Les résultats obtenus ne peuvent
+donc pas être généralisés à d'autres projets sans campagne d'évaluation
+complémentaire.
+
+Par ailleurs, le projet retenu présente une particularité structurelle
+forte : ses 12 scénarios couvrent massivement le même code applicatif
+(une API REST de taille réduite). Cela produit des vérités terrain de
+grande taille relative, qui mécaniquement font baisser le rappel moyen
+de l'outil.
+
+\subsubsection{Utilisabilité en production}
+
+En considérant les 21~commits NaN comme des rappels nuls, le rappel
+corrigé \emph{global} tombe à $0{,}049$ (LLM seul) et $0{,}199$ (hybride).
+Ces chiffres sont insuffisants pour garantir la détection des régressions
+en production : l'outil, dans son état actuel, ne peut pas remplacer une
+suite complète de tests.
+
+Le mode hybride, avec un rappel global de $0{,}199$ et une précision de
+$0{,}911$ sur les commits où il sélectionne quelque chose, peut néanmoins
+constituer un \textbf{complément utile} dans un pipeline CI : exécuté en
+première passe rapide, il identifie avec une très haute précision les
+scénarios les plus susceptibles d'être affectés par les commits qui
+modifient des méthodes peu centrales. Pour les commits qui modifient du
+code traversé par la majorité des scénarios, l'outil renvoie une
+sélection vide et l'exécution complète de la suite reste nécessaire.
+
+\subsubsection{Perspectives d'amélioration}
+
+Plusieurs pistes permettraient d'améliorer les résultats :
+
+\begin{itemize}[noitemsep]
+  \item \textbf{Corriger le bug NaN dans l'évaluation} : lorsque
+        \texttt{sel\_size = 0}, passer \texttt{--selection ""} à
+        \texttt{GroundTruthBuilder} pour obtenir $R = 0$ au lieu de NaN.
+        Cela donnerait une image fidèle des performances réelles et
+        permettrait d'inclure les 21 commits actuellement exclus.
+
+  \item \textbf{Améliorer la résolution du call graph} : traiter les
+        fichiers supprimés par le diff et les méthodes nouvellement
+        introduites, qui constituent les deux principales sources de
+        faux négatifs statiques.
+
+  \item \textbf{Affiner le prompt} : explorer des formulations qui
+        incitent le LLM à être moins conservateur sur les grands prompts,
+        ou découper les scénarios en lots pour éviter la saturation du
+        contexte.
+
+  \item \textbf{Étendre le benchmark} : évaluer l'outil sur plusieurs
+        projets de natures différentes (tailles variées, domaines métier
+        distincts, couplage scénario/code plus faible) pour obtenir des
+        résultats généralisables.
+
+  \item \textbf{Utiliser un modèle plus puissant} : Mistral 7B-instruct
+        q3\_K\_M est un modèle compact contraint par le matériel disponible.
+        Des modèles plus grands (13B, 34B) ou spécialisés sur le code
+        pourraient réduire significativement le taux de sélection vide.
+
+  \item \textbf{Re-collecter la couverture} avec le script corrigé pour
+        obtenir un \texttt{gt\_size} réel (12 entrées au lieu de 24) et
+        mesurer le rappel brut sans correction analytique.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,33 @@
+1. Extraction du diff Git...
+   58 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   34 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   4 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   5 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 7745 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 5
+    [3] Add tony stark user
+    [4] Add bruce wayne user
+    [5] Add bruce banner user
+    [6] Update tony stark user
+    [7] Patch bruce wayne user
+
+  Justification LLM :
+    These scenarios test the modified method.
+
+═══════════════════════════════════════════════════

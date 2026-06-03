@@ -1,0 +1,28 @@
+1. Extraction du diff Git...
+   29 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   2 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.uploadFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 11660 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 2
+    [1] Should import users csv file
+    [2] Should be authenticated
+
+  Justification LLM :
+    La modification des méthodes uploadFile et head/request dans AbstractBddStepDefinition affecte les scénarios candidates. Les scénarios candidats [1] Should import users csv file et [2] Should be authenticated contiennent des étapes qui appellent ces méthodes, donc ils sont impactés.
+
+═══════════════════════════════════════════════════

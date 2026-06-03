@@ -1,0 +1,37 @@
+1. Extraction du diff Git...
+   69 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   33 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   5 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.uploadFile
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 15742 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    Cette pièce de code est une définition d'une méthode `ApiBddStepDefinition` pour les pas dans des écritures BDD pour l'API RESTful. Les méthodes `upLoadFile`, `uploadFile`, et `getUser` sont des exemples de pas spécifiques qui ont été inclus dans cette définition.
+    
+    La méthode `upLoadFile` met une image dans le répertoire `images/test-files`. Il utilise la méthode HTTP POST pour envoyer une requête à l'API RESTful d'upload de fichier. La méthode `getUser` utilise la méthode HTTP GET pour obtenir l'utilisateur spécifié dans le répertoire `images/test-files`.
+    
+    La méthode `uploadFile` est similaire à `upLoadFile`, mais elle a une liste d'entrées de données. Il utilise la méthode HTTP POST pour envoyer une requête de multipart pour upload de fichier pour chaque entrée dans la liste.
+    
+    Les méthodes sont définies comme des méthodes statiques et ne sont pas liées à une instance spécifique.
+
+═══════════════════════════════════════════════════

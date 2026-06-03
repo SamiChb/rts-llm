@@ -13,31 +13,63 @@
    13 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 11991 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 6
-    [4] Update tony stark user
-    [6] Get users
-    [8] Search for invalid users
-    [9] Get user
-    [10] Get user
-    [12] Delete wrong user
+  Aucun scénario impacté.
 
   Justification LLM :
-    The modifications made to AbstractBddStepDefinition affect the request handling and response processing. The changes might alter the behavior of certain scenarios depending on how they interact with the request/response mechanism.
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    Important : le code modifié n'est pas fourni dans la question. Il est à remplacer par le code spécifié pour chacun des scénarios.
     
-    Scenarios [1] and [5] do not directly call any methods modified in AbstractBddStepDefinition, but rather use helper methods (like head, patch) which in turn call the modified methods. Since these helper methods are expected to maintain their functionality, a change in AbstractBddStepDefinition should not impact the behavior of these scenarios.
+    Candidat 1 : Should be authenticated
     
-    Scenario [2] adds a user by making a POST request, and [3] adds another user while referencing the previously added one (starkUser and firstSessionId). The changes in AbstractBddStepDefinition do not affect the data handling or creation process, so these scenarios should still work as expected.
+    * Scène : When I HEAD /authenticated
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+    * Scène : And I authenticate with login/password tstark/marvel
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+    * Scène : Then http response code should be 401
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkResponseCodeEquals
+    * Scène : And I authenticate with login/password tstark/marvel
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.head
+    * Scène : Then http response code should be 200
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkResponseCodeEquals
     
-    Scenario [7] searches for a specific user by query parameter, and [11] retrieves an invalid user. Since the modifications in AbstractBddStepDefinition are related to request/response handling, they would not affect the searching process or the identification of non-existent users.
+    Candidat 2 : Search for valid users
     
-    Scenario [13] deletes multiple users and then checks for their absence. Again, the changes in AbstractBddStepDefinition do not impact the data deletion process or the checking of user presence.
+    * Scène : And I set http query parameter name to bruce
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHttpQueryParameterValue
+    * Scène : When I GET /users
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.get
+    * Scène : And http response body should be valid json
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonBodyIsValid
+    * Scène : Then http response code should be 200
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkResponseCodeEquals
+    * Scène : And http response body path $.[0].id should be 2
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
+    * Scène : And http response body path $.[0].firstName should be Bruce
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
     
-    Lastly, scenario [12] attempts to delete an invalid user (id=3), which doesn't exist in the system anyway. Therefore, the modification in AbstractBddStepDefinition does not affect the behavior of this scenario.
+    Candidat 3 : Search for invalid users
+    
+    * Scène : And I set http query parameter name to djndjndsqds
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHttpQueryParameterValue
+    * Scène : When I GET /users
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.get
+    * Scène : And http response body should be valid json
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonBodyIsValid
+    * Scène : Then http response code should be 200
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkResponseCodeEquals
+    * Scène : And http response body path $ should not have content
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.checkJsonPathDoesntExist
+    
+    Candidat 4 : Get user
+    
+    * Scène : When I GET /users/1
+    	+ Chaîne d'appel vers le code modifié : fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.get
 
 ═══════════════════════════════════════════════════

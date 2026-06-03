@@ -1,0 +1,27 @@
+1. Extraction du diff Git...
+   52 lignes de diff extraites.
+2. Collecte des scénarios BDD...
+   2 fichiers .feature
+   15 scénarios trouvés
+   0 step definitions
+3. Construction du prompt...
+   Prompt : 11716 caractères
+4. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    Based on the code modification and the existing scenarios in the feature file, here are the steps to select the affected scenarios:
+    
+    1. Identify all the lines in the feature file that reference the modified code using the `import` keyword. For example, if the modified code is located in the file `/src/main/java/com/example/MyClass`, then you can use regular expressions or string matching to identify all the lines in the feature file that reference this file.
+    2. Identify all the scenarios in the feature file that have any of the identified lines from step 1. This will give you a list of all the scenarios that may be affected by the modifications.
+    3. Iterate through each scenario and determine whether it is impacted by the modifications or not. To do this, you can use regular expressions or string matching to compare the lines in the feature file that reference the modified code with the actual code changes. If any of the lines are matched, then the scenario is likely to be impacted and should be included in the list of affected scenarios.
+    4. Return a list of all the affected scenarios along with a brief explanation of why each one was selected.
+
+═══════════════════════════════════════════════════

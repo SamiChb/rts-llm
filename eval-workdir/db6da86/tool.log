@@ -15,7 +15,7 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 15957 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -25,10 +25,17 @@
 
   Justification LLM :
     Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
-    Réponse brute :  It appears that the provided text is a list of Cucumber scenarios for testing a REST API with a specific Java project named "bdd-rest". Each scenario is associated with its corresponding step definitions located in the `fr.red-panda.bdd.rest.stepdefinitions` package.
+    Réponse brute : 
+    Le fichier `DefaultRestApiBddStepDefinition.java` dans le répertoire `src/test/java/fr/redfroggy/bdd/restapi/glue` contient la définition de la classe `DefaultRestApiBddStepDefinition`. Cette classe étend l'abstraction `AbstractBddStepDefinition` et implémente les méthodes `shouldSend`, `send`, `responseCode`, `shouldParse`, et `parse`.
     
-    The scenarios cover various operations on users, such as creating, deleting, and searching for users, handling authentication, and validating responses. The test data includes predefined scenario variables that are used throughout the scenarios to make assertions or modify requests. The step definitions use the Cucumber's DataTables feature to handle tables of input data in a structured way.
+    La méthode `shouldSend` permet d'indiquer si une action spécifique est nécessaire pour l'execution du scénario.
     
-    The response format for the Cucumber runner is specified at the end, indicating that responses should be JSON objects with a "selected" array containing the selected scenario numbers and a "reasoning" field explaining why a specific scenario was not selected if applicable.
+    La méthode `send` envoie la requête HTTP.
+    
+    La méthode `responseCode` permet de récupérer le code d'état HTTP et de valider sa valeur.
+    
+    La méthode `shouldParse` permet de spécifier si les données retournées doivent être analysées.
+    
+    La méthode `parse` analyse les données retournées.
 
 ═══════════════════════════════════════════════════

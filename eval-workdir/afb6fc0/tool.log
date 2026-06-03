@@ -11,22 +11,40 @@
    8 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 10885 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 7
-    [2] Add tony stark user
-    [4] Update tony stark user
-    [5] Patch bruce wayne user
-    [6] Get users
-    [7] Search for valid users
-    [9] Get user
-    [10] Get user
+  Aucun scénario impacté.
 
   Justification LLM :
-    Les scénarios sélectionnés appellent la méthode modifiée pour vérifier le format du corps de la requête HTTP. Cette modification peut affecter leur évaluation et donc changer leur comportement observable.
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : Candidats :
+    
+    * [2] Add tony stark user (src/test/resources/features/users.feature)
+    	+ Body path should be equal to <".id": "1"</>
+    	+ Body path must exist
+    	+ Body path must not be equal to <".id": "2"</>
+    * [3] Add bruce wayne user (src/test/resources/features/users.feature)
+    	+ Body path should be equal to <".relatedTo.id": "$starkUser"</>
+    	+ Body path should exist
+    	+ Body path must not exist
+    * [4] Update tony stark user (src/test/resources/features/users.feature)
+    	+ Body path should be equal to <".age": "60"</>
+    	+ Body path must not be equal to <".age": "50"</>
+    * [5] Patch bruce wayne user (src/test/resources/features/users.feature)
+    	+ Body path should be equal to <".lastName": "WAYNE"</>
+    * [6] Get users (src/test/resources/features/users.feature)
+    	+ Body path should not exist
+    	+ Body path must not be equal to <".id": "1"</>
+    	+ Body path must not be equal to <".id": "2"</>
+    * [7] Search for valid users (src/test/resources/features/users.feature)
+    	+ Body path should exist
+    	+ Body path should be equal to <".id": "2"</>
+    * [8] Get user (src/test/resources/features/users.feature)
+    	+ Body path must not exist
+    	+ Body path must be equal to <".firstSessionId": "$firstSessionId"</>
 
 ═══════════════════════════════════════════════════

@@ -11,12 +11,44 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 20184 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : request timed out
-java.net.http.HttpTimeoutException: request timed out
-	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
-	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
-	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
-	at com.rts.llm.Main.runStaticPrune(Main.java:186)
-	at com.rts.llm.Main.run(Main.java:74)
-	at com.rts.llm.Main.main(Main.java:33)
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected ':' at line 1 column 11 path $.<Action>
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute : 
+    Cet automateur de tests est utilisé pour tester les fonctionnalités d'une application basée sur le web. Il est conçu pour lire des fichiers de spécifications en langue naturelle (English, FR) et exécuter des tests automatisés pour chaque scénario décrit dans le fichier.
+    
+    Il utilise la syntaxe de Gherkin, qui est une méthode d'écriture de scénarios d'intégration basée sur des histoires naturelles. Les scenarios sont écrits en langue naturelle et ont des noms expressifs pour faciliter le comprendre du côté humain.
+    
+    Les fichiers de spécifications sont stockés sous le répertoire "features" dans un sous-répertoire spécifié par la valeur de la variable $environment, par exemple : "users", "products", etc. Chaque scénario est spécifié par un fichier de langue naturelle et d'extension .feature, situé sous le répertoire features.
+    
+    Chaque scénario contient des étapes en langue naturelle qui décrivent les actions à effectuer dans l'application. Chaque étape est précisée par une méthode d'action spécifiée et est attribuée à un contexte, qui définit la valeur du paramètre de l'action lorsqu'elle est exécutée.
+    
+    Les méthodes d'actions disponibles sont : [DefineStepDefinition](../definestepdefinition.md), [Given](../given.md), [When](../when.md), [Then](../then.md), [ScenarioVariableIsValid](../scenariovariableisvalid.md), [CheckHeaderExists](../checkheaderexists.md), [HeaderValueIsEqualTo](../headervalueisEqualTo.md), [ContainsHeaderValue](../containsheadervalue.md), [CheckResponseBodyPathShouldBeEqualTo](../checkresponsebodypathshouldbeEqualTo.md), [StoreHeader](../storeheader.md), [CheckScenarioVariable](../checkscenariovariable.md), [ReplaceDynamicParameters](../replacedynamicparameters.md), [GetRequestBody](../getrequestbody.md), [SetHttpMethod](../sethttpmethod.md), [SetUrl](../seturl.md), [GetBody](../getbody.md), [StoreResponseHeader](../storeresponseheader.md), [GetContentType](../getcontenttype.md), [CheckStatus](../checkstatus.md), [DeleteRequestBody](../deleterequestbody.md), [GetUser](../getuser.md), [PutUser](../putuser.md), [GetSessionId](../getsessionid.md), [SetRequestHeader](../setrequestheader.md)
+    
+    Les actions peuvent être spécifiées avec des paramètres, dont les noms sont en camelCase et sont situés entre des crochets dans la méthode d'action. Les paramètres sont optionnels, sauf si la méthode n'accepte pas de paramètres.
+    
+    Les actions peuvent aussi être spécifiées avec des variables de scénario, qui sont en camelCase et sont situées entre des crochets dans le nom de l'action. Les variables de scénario sont définies et remplacées par leur valeur lorsque l'action est exécutée.
+    
+    La syntaxe du contexte d'une action est : [Méthode d'action] ([Paramètres], [Scénario Variables]). Les variables de scénario sont rencontrées dans le contexte et remplacées par leur valeur lorsque l'action est exécutée. Les paramètres sont optionnels, sauf si la méthode n'accepte pas de paramètres.
+    
+    Les actions peuvent être spécifiées avec une liste de contexte, qui sont en camelCase et sont situés entre des crochets dans le nom de l'action. Les variables de scénario sont rencontrées dans chacun des contextes de l'action et remplacées par leur valeur lorsque l'action est exécutée. Les paramètres peuvent aussi être spécifiés en camelCase et sont situés entre les parenthèses au sein du contexte d'une action.
+    
+    Les variables de scénario peuvent être définies dans le fichier de langue naturelle avec le mot-clef "definestepdefinition" comme méthode d'action, et la syntaxe est : `Variable Name:Value`. Les paramètres sont optionnels, sauf si la méthode n'accepte pas de paramètres.
+    
+    Les variables de scénario peuvent aussi être définies dans le fichier de langue naturelle avec la méthode d'action "set" et la syntaxe est : `Variable Name:Value`. Les variables de scénario sont rencontrées lorsqu'elles sont spécifiées dans une action et remplacées par leur valeur. Les paramètres peuvent aussi être spécifiés en camelCase et sont situés entre les parenthèses au sein du contexte d'une action.
+    
+    La syntaxe de la définition des steps est : `definestepdefinition "Scenario Variables" {<Action>}`
+    
+    La syntaxe de l'action est : `"Scenario Variables"`
+    
+    Le nom de la méthode d'action doit être en camelCase. Les variables de scénario doivent aussi être en camelCase et se rencontrer dans le contexte de l'action.
+
+═══════════════════════════════════════════════════

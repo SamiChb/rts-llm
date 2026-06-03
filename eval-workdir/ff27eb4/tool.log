@@ -29,31 +29,107 @@
    13 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 18066 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : For input string: "LoginInvalidUserScenario"
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
-Usage : java -jar rts-llm.jar <chemin-projet> [options]
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
 
-Options :
-  --provider openai|anthropic|ollama|gemini  (défaut: openai)
-  --model <nom>                      (défaut: gpt-4o-mini / claude-sonnet-4-20250514 / llama3 / gemini-2.0-flash)
-  --api-key <clé>                    (ou env OPENAI_API_KEY / ANTHROPIC_API_KEY / GEMINI_API_KEY)
-  --diff-from <commit>               (défaut: HEAD~1)
-  --diff-to <commit>                 (défaut: HEAD)
-  --include-stepdefs                 (inclut les step defs dans le prompt)
-  --show-prompt                      (affiche le prompt et la réponse)
-  --static-prune                     (pipeline hybride : analyse statique → LLM élagueur)
+  Aucun scénario impacté.
 
-Exemples :
-  # Avec OpenAI, dernier commit
-  java -jar rts-llm.jar /mon/projet --api-key sk-xxx
+  Justification LLM :
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected ':' at line 1 column 10 path $.user_id
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute : 
+    Voici les chaînes d'appel vers le code modifié pour chaque cas de test :
+    
+    1. Get current user (src/test/resources/features/users.feature)
+    ```less
+    When I GET /users
+    And http response code should be 200
+    And http response body path $.id should be $user_id
+    And http response body path $.firstName should be $first_name
+    And http response body path $.lastName should be $last_name
+    And http response body path $.age should be $age
+    And I store the value of http response header Content-Type as httpContentType in scenario scope
+    And http value of scenario variable httpContentType should be application/json
+    ```
+    2. Search for a user by name (src/test/resources/features/users.feature)
+    ```less
+    When I GET /users
+    And http response code should be 200
+    And http response body is typed as array using path $ with length 1
+    And http response body path $.id should be $user_id
+    And http response body path $.firstName should be $first_name
+    ```
+    3. Search for a user by age (src/test/resources/features/users.feature)
+    ```less
+    When I GET /users
+    And http response code should be 200
+    And http response body is typed as array using path $ with length 1
+    And http response body path $.id should be $user_id
+    And http response body path $.lastName should be $last_name
+    And http response body path $.age should be $age
+    ```
+    4. Search for a user by email (src/test/resources/features/users.feature)
+    ```less
+    When I GET /users
+    And http response code should be 200
+    And http response body is typed as array using path $ with length 1
+    And http response body path $.id should be $user_id
+    And http response body path $.email should be $email
+    ```
+    5. Add a new user (src/test/resources/features/users.feature)
+    ```less
+    When I POST /users
+    And http response code should be 201
+    And http response body is typed as json using path $ with id equal to $user_id
+    And http response body path $.firstName should be $first_name
+    And http response body path $.lastName should be $last_name
+    And http response body path $.age should be $age
+    And I store the value of http response header Content-Type as httpContentType in scenario scope
+    And http value of scenario variable httpContentType should be application/json
+    ```
+    6. Add a new user with invalid input (src/test/resources/features/users.feature)
+    ```less
+    When I POST /users
+    And http response code should be 400
+    And http response body path $ should not exist
+    ```
+    7. Update an existing user (src/test/resources/features/users.feature)
+    ```less
+    When I PUT /users/${user_id}
+    And http response code should be 200
+    And http response body is typed as json using path $ with id equal to $user_id
+    And http response body path $.firstName should be $first_name
+    And http response body path $.lastName should be $last_name
+    And http response body path $.age should be $age
+    And I store the value of http response header Content-Type as httpContentType in scenario scope
+    And http value of scenario variable httpContentType should be application/json
+    ```
+    8. Update an existing user with invalid input (src/test/resources/features/users.feature)
+    ```less
+    When I PUT /users/${user_id}
+    And http response code should be 400
+    And http response body path $ should not exist
+    ```
+    9. Delete a user (src/test/resources/features/users.feature)
+    ```scss
+    When I DELETE /users/${user_id}
+    And http response code should be 200
+    And http response body path $ should not exist
+    ```
+    10. Delete a non-existent user (src/test/resources/features/users.feature)
+    ```less
+    When I DELETE /users/nonexistent_user_id
+    And http response code should be 404
+    And http response body path $ should not exist
+    ```
+    11. Search for a non-existent user (src/test/resources/features/users.feature)
+    ```less
+    When I GET /users
+    And http response code should be 200
+    And http response body path $ should not exist
+    ```
 
-  # Avec Gemini (Google AI Studio)
-  java -jar rts-llm.jar /mon/projet --provider gemini --api-key AIza-xxx
-
-  # Avec Anthropic, entre deux commits
-  java -jar rts-llm.jar /mon/projet --provider anthropic --diff-from abc123 --diff-to def456
-
-  # Avec Ollama local (gratuit)
-  java -jar rts-llm.jar /mon/projet --provider ollama --model llama3
-
+═══════════════════════════════════════════════════

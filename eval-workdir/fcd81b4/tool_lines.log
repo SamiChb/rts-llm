@@ -1,0 +1,32 @@
+1. Extraction du diff Git...
+   87 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   7 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonValue
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16535 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : Cet article se concentre sur les différents scenarios BDD (Behavior-Driven Development) possibles dans le cadre d'une application de gestion de utilisateurs. Il est présenté dans un tableau avec un nom, une description des étapes du scénario et une chaîne d'appel vers le code modifié. Les indices valides sont entre crochets, les numéros sont en dehors de ceux-ci.
+
+═══════════════════════════════════════════════════

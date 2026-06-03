@@ -1,0 +1,22 @@
+1. Extraction du diff Git...
+   52 lignes de diff extraites.
+2. Collecte des scénarios BDD...
+   2 fichiers .feature
+   15 scénarios trouvés
+   0 step definitions
+3. Construction du prompt...
+   Prompt : 11716 caractères
+4. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 2
+    [1] Should import users csv file
+    [3] Add tony stark user
+
+  Justification LLM :
+    Scénarios 1 and 3 are impacted by the modifications to AbstractBddStepDefinition.java because they reference the HTTP response code of a POST request to /api/users with an ID of 1.
+
+═══════════════════════════════════════════════════

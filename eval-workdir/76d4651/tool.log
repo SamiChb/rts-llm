@@ -14,16 +14,38 @@
    4 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 6941 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 1
-    [1] Should import users csv file
+  Aucun scénario impacté.
 
   Justification LLM :
-    The 'Add tony stark user' scenario modifies the age of Tony Stark using the introduced method in the modified code.
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    Pour chaque scénario candidat, on doit analyser le chemin d'appel vers le code modifié et décider si le changement est un impact réel ou un faux positif.
+    
+    Afin de ceci, nous pouvons étudier les différents niveaux de chaque scénario :
+    
+    - Scénario 3 : `Add tony stark user`
+    	+ Scénario contient une modification de l'http request body par la méthode `setBodyWithJsonPath`.
+    	+ La méthode `setBodyWithJsonPath` modifie la valeur d'un jsonPath.
+    	+ Il est possible que le changement n'ait pas de conséquence sur le comportement observable du scénario.
+    - Scénario 4 : `Add bruce wayne user`
+    	+ Scénario contient une modification de l'http request body par la méthode `setBodyTo`.
+    	+ La méthode `setBodyTo` modifie la valeur d'une variable de scénario.
+    	+ Le changement est un impact réel sur le comportement observable du scénario.
+    - Scénario 5 : `Update tony stark user`
+    	+ Scénario contient une modification de l'http request body par la méthode `setBodyTo`.
+    	+ La méthode `setBodyTo` modifie la valeur d'une variable de scénario.
+    	+ Le changement est un impact réel sur le comportement observable du scénario.
+    - Scénario 6 : `Patch bruce wayne user`
+    	+ Scénario contient une modification de l'http request body par la méthode `setBodyTo`.
+    	+ La méthode `setBodyTo` modifie la valeur d'une variable de scénario.
+    	+ Le changement est un impact réel sur le comportement observable du scénario.
+    
+    En conclusion, seul les scénarios 3 et 6 ne sont pas des impacts réels sur le comportement observable du système. Les autres scénarios sont à analyser plus en détail car il existe des impacts réels sur le comportement observable du système.
 
 ═══════════════════════════════════════════════════

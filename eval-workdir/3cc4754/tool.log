@@ -13,16 +13,16 @@
    5 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 8029 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 1
-    [3] Add tony stark user
+  Aucun scénario impacté.
 
   Justification LLM :
-    In the 'Add tony stark user' scenario, the change in the code modifies the method that mocks third-party API calls. This modification will affect the scenario as it changes the behavior of the mock API call. The new step definition now accepts an additional parameter 'contentType', which is used in the updated scenario to set the content type of the HTTP request body.
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonArray; at path $
+    Réponse brute : [1, 2, 6, 7]
 
 ═══════════════════════════════════════════════════

@@ -1,5 +1,0 @@
-Should be authenticated
-Add tony stark user
-Update tony stark user
-Search for users
-Get user

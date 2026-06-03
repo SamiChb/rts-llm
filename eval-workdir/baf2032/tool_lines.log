@@ -1,0 +1,28 @@
+1. Extraction du diff Git...
+   197 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   3 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseHeader
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseJsonPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+4. Calcul des scénarios candidats (remontée transitive)...
+   2 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 6855 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [2] Add tony stark user
+
+  Justification LLM :
+    The candidate "Add tony stark user" is directly impacted by the modification of the code.
+
+═══════════════════════════════════════════════════

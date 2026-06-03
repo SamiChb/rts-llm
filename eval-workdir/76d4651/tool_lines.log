@@ -1,0 +1,33 @@
+1. Extraction du diff Git...
+   46 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   34 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   4 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyPathWithValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   4 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 6941 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 5
+    [1] Should import users csv file
+    [2] Should be authenticated
+    [4] Add bruce wayne user
+    [5] Update tony stark user
+    [6] Patch bruce wayne user
+
+  Justification LLM :
+    Les méthodes modifiées sont appelées dans les scénarios [3] et [6]. Il est donc possible que ces scénarios ont un impact réel. Les autres scénarios n'ont pas de modification réelle qui pourrait affecter la fonctionnalité.
+
+═══════════════════════════════════════════════════

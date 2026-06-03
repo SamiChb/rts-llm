@@ -1,0 +1,34 @@
+Lecture de /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/bd99a7c/coverage-per-scenario
+Bytecode  : [/home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/classes, /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/test-classes]
+sc_001 (Should be authenticated) → 21 méthodes, 104 lignes couvertes
+sc_002 (Add tony stark user) → 49 méthodes, 184 lignes couvertes
+sc_003 (Add bruce wayne user) → 11 méthodes, 62 lignes couvertes
+sc_004 (Add bruce banner user) → 11 méthodes, 62 lignes couvertes
+sc_005 (Update tony stark user) → 23 méthodes, 110 lignes couvertes
+sc_006 (Patch bruce wayne user) → 20 méthodes, 103 lignes couvertes
+sc_007 (Get users) → 22 méthodes, 106 lignes couvertes
+sc_008 (Search for valid users) → 23 méthodes, 109 lignes couvertes
+sc_009 (Search for invalid users) → 25 méthodes, 117 lignes couvertes
+sc_010 (Get user Tony Stark) → 17 méthodes, 100 lignes couvertes
+sc_011 (Get user Bruce Wayne) → 17 méthodes, 96 lignes couvertes
+sc_012 (Get wrong user) → 19 méthodes, 96 lignes couvertes
+sc_013 (Delete wrong user) → 21 méthodes, 101 lignes couvertes
+sc_014 (Delete user) → 15 méthodes, 81 lignes couvertes
+sc_015 (Should import users csv file) → 39 méthodes, 159 lignes couvertes
+sc_016 (Should be authenticated) → 21 méthodes, 104 lignes couvertes
+sc_017 (Add tony stark user) → 49 méthodes, 184 lignes couvertes
+sc_018 (Add bruce wayne user) → 11 méthodes, 62 lignes couvertes
+sc_019 (Add bruce banner user) → 11 méthodes, 62 lignes couvertes
+sc_020 (Update tony stark user) → 23 méthodes, 110 lignes couvertes
+sc_021 (Patch bruce wayne user) → 20 méthodes, 103 lignes couvertes
+sc_022 (Get users) → 22 méthodes, 106 lignes couvertes
+sc_023 (Search for valid users) → 23 méthodes, 109 lignes couvertes
+sc_024 (Search for invalid users) → 25 méthodes, 117 lignes couvertes
+sc_025 (Get user Tony Stark) → 17 méthodes, 100 lignes couvertes
+sc_026 (Get user Bruce Wayne) → 17 méthodes, 96 lignes couvertes
+sc_027 (Get wrong user) → 19 méthodes, 96 lignes couvertes
+sc_028 (Delete wrong user) → 21 méthodes, 101 lignes couvertes
+sc_029 (Delete user) → 15 méthodes, 81 lignes couvertes
+sc_030 (Should import users csv file) → 39 méthodes, 159 lignes couvertes
+→ Vérité terrain de couverture écrite dans /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/bd99a7c/coverage.json
+  30 scénario(s) indexés

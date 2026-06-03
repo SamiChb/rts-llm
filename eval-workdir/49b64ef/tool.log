@@ -29,7 +29,7 @@
    13 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 18066 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -38,6 +38,12 @@
   Aucun scénario impacté.
 
   Justification LLM :
-    Deletes multiple users from the system and verifies that no users are left.
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    1. Le code source du fichier .feature contient une suite de cas d'usage du système qui utilise la méthode `fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition` et des étapes spécifiques dans le cadre d'un framework d'automation de tests en langue anglaise (en).
+    2. La méthode `fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition` est un élément clé du framework BDD de test en langue anglaise qui permet d'automatiser les tests des interfaces RESTful dans les différentes scénarios spécifiés dans le fichier .feature.
+    3. Les étapes spécifiques sont définies dans le fichier .feature et correspondent aux actions à effectuer lors de chaque scénario.
+    4. Ces actions sont mises en œuvre par le framework BDD en générant des requêtes HTTP et traitant les réponses appropriées en fonction des mécanismes spécifiés dans la méthode `fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition`.
+    5. Le code source de chaque étape est généré à partir d'une chaîne d'appels vers les méthodes appropriées de l'objet `fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition` et peut être modifié manuellement si besoin.
 
 ═══════════════════════════════════════════════════

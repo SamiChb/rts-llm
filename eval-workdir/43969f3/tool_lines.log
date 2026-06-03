@@ -1,0 +1,45 @@
+1. Extraction du diff Git...
+   108 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   7 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonValue
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 16623 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : Ce sont 12 scénarios qui sont proposés pour un système de gestion d'utilisateur, lequel inclut des méthodes et une interface REST API. Chaque scénario est associé à un indice global, qui est utilisé dans les réponses attendues du programme de test.
+    
+    1. Une méthode GET pour authentifier un utilisateur en fonction d'une base de données authentifiée et d'une configuration de l'application (nom de la méthode définie comme « login »)
+    2. Une méthode POST permettant d'ajouter un nouvel utilisateur dans la base de données authentifiée (nom de la méthode défini comme « addUser »)
+    3. Une méthode DELETE permettant de supprimer un utilisateur de la base de données authentifiée (nom de la méthode défini comme « deleteUser »)
+    4. Une méthode GET pour récupérer l'ensemble des utilisateurs de la base de données authentifiée (nom de la méthode défini comme « getUsers »)
+    5. Une méthode PUT permettant d'update l'information d'un utilisateur dans la base de données authentifiée (nom de la méthode défini comme « updateUser »)
+    6. Une méthode POST pour ajouter une nouvelle ressource à une collection d'resources du système (nom de la méthode défini comme « addResource »)
+    7. Une méthode GET pour récupérer l'ensemble des ressources de la collection d'resources du système (nom de la méthode défini comme « getResources »)
+    8. Une méthode DELETE permettant de supprimer une ressource de la collection d'resources du système (nom de la méthode défini comme « deleteResource »)
+    9. Une méthode GET pour récupérer l'ensemble des utilisateurs ayant accès à une certaine collection d'resources du système (nom de la méthode défini comme « getUsersWithResources »)
+    10. Une méthode PATCH permettant de modifier partiellement une ressource dans la collection d'resources du système (nom de la méthode défini comme « patchResource »)
+    11. Une méthode GET pour récupérer l'ensemble des resources ayant été créées dans un certain intervalle de temps du système (nom de la méthode défini comme « getResourcesCreatedAt »)
+    12. Une méthode DELETE permettant de supprimer l'ensemble des ressources ayant été créées dans un certain intervalle de temps du système (nom de la méthode défini comme « deleteResourcesCreatedAt »)
+
+═══════════════════════════════════════════════════

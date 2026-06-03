@@ -29,21 +29,87 @@
    13 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 24262 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 6
-    [1] Should be authenticated
-    [5] Patch bruce wayne user
-    [7] Search for valid users
-    [9] Get user
-    [11] Get wrong user
-    [12] Delete wrong user
+  Aucun scénario impacté.
 
   Justification LLM :
-    The selected scenarios are those that directly interact with the functions modify, delete, or retrieve data from the users resource. Scenarios 1, 5, and 7 involve creating, updating, and retrieving user data, respectively. Scenario 9 stores the response header Content-Type for further use in the scenario scope. Scenario 11 tests a non-existent user ID, which could be relevant when handling edge cases. Scenario 12 deletes a wrong user, testing an error condition for a DELETE request.
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected ':' at line 2 column 17 path $.return
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute : 
+    Pour modifier le code, vous devrez remplacer la ligne de commentaire `// fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.*` avec les lignes suivantes :
+    ```scss
+    import com.github.frredfroggy.bdd.restapi.glue.AbstractBddStepDefinition;
+    import com.github.frredfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition;
+    
+    @Given("^I have a {string} user$")
+    public class GetUserBddStepDefinition extends DefaultRestApiBddStepDefinition {
+        private final String username;
+    
+        public GetUserBddStepDefinition(String username) {
+            this.username = username;
+        }
+    
+        @Override
+        protected AbstractBddStepDefinition getRequest() {
+            return fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.*("GET", "/users/" + username);
+        }
+    }
+    ```
+    En plus de remplacer la ligne de commentaire, vous devrez également importer les classes `AbstractBddStepDefinition`, `DefaultRestApiBddStepDefinition`, et `com.github.frredfroggy.bdd.restapi.glue.AbstractBddStepDefinition.*`.
+    
+    Vous devriez également remplacer la ligne suivante :
+    ```css
+    @Then("^I should be able to {string} a user$")
+    public class GetUserBddStepDefinition extends AbstractBddStepDefinition {
+        private final String username;
+    
+        public GetUserBddStepDefinition(String username) {
+            this.username = username;
+        }
+    
+        @Override
+        protected AbstractBddStepDefinition getRequest() {
+            return fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.*("GET", "/users/" + username);
+        }
+    }
+    ```
+    En remplaçant `@Then("^I should be able to {string} a user$")` par `@When("I have a {string} user$")`, vous modifierons l'action effectuée par la step de manière que le test s'exécute quand une entité spécifiée est fournie, au lieu qu'un test soit effectué quand il est possible.
+    
+    Enfin, vous devriez remplacer cette ligne :
+    ```css
+    public class GetUserBddStepDefinition extends AbstractBddStepDefinition {
+        private final String username;
+    
+        public GetUserBddStepDefinition(String username) {
+            this.username = username;
+        }
+    
+        @Override
+        protected AbstractBddStepDefinition getRequest() {
+            return fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.*("GET", "/users/" + username);
+        }
+    }
+    ```
+    Par cette ligne :
+    ```scss
+    public class GetUserBddStepDefinition extends DefaultRestApiBddStepDefinition {
+        private final String username;
+    
+        public GetUserBddStepDefinition(String username) {
+            this.username = username;
+        }
+    
+        @Override
+        protected AbstractBddStepDefinition getRequest() {
+            return fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.*("GET", "/users/" + username);
+        }
+    }
+    ```
+    Ceci change le type de la classe `GetUserBddStepDefinition` à `DefaultRestApiBddStepDefinition`, ce qui réutilise les fonctionnalités du classique framework BDD de RedFroggy.
 
 ═══════════════════════════════════════════════════

@@ -1,12 +1,2 @@
+Should import users csv file
 Should be authenticated
-Add bruce wayne user
-Update tony stark user
-Patch bruce wayne user
-Get users
-Search for valid users
-Search for invalid users
-Get user
-Get user
-Get wrong user
-Delete wrong user
-Delete user

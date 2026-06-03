@@ -1,0 +1,44 @@
+1. Extraction du diff Git...
+   287 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   32 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   19 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkBodyContains
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathExists
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonCollection
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathIsArray
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.storeJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getBodyDocument
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getJsonPathValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.notResponseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldNotBeEqualTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathMustBeEqualTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathMustNotBeEqualTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldNotHaveContent
+4. Calcul des scénarios candidats (remontée transitive)...
+   13 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 18066 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [12] Delete wrong user
+
+  Justification LLM :
+    Candidate 12 (delete wrong user) should have a valid response with http response code 404, http response body path $ should not exist and http response body path $ should not have content.
+
+═══════════════════════════════════════════════════

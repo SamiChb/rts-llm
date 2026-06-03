@@ -1,0 +1,31 @@
+1. Extraction du diff Git...
+   58 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   12 fichiers indexés
+   35 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   6 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBodyPathWithValue
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithJsonPath
+4. Calcul des scénarios candidats (remontée transitive)...
+   5 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 8040 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [3] Add tony stark user
+
+  Justification LLM :
+    La méthode modifiée est appelée dans le scénario candidat [3]. Il est donc certain qu'il est impacté.
+
+═══════════════════════════════════════════════════

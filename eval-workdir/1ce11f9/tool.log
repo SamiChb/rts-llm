@@ -13,27 +13,38 @@
    5 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 8029 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 4
-    [3] Add tony stark user
-    [6] Update tony stark user
-    [7] Patch bruce wayne user
-    [11] Get user Tony Stark
+  Aucun scénario impacté.
 
   Justification LLM :
-    Analyse des chaînes d'appel :
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected value at line 1 column 1 path $
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute : =============================================
+    Liste des scénarios candidats et analyse
+    =============================================
     
-    [3] Add tony stark user : la méthode modifiée `mockThirdPartyApiCallWithJSON` est appelée avec un changement du type de contenu de corps de requête, qui peut affecter le comportement du scénario.
+    ### 1. Get user Tony Stark
     
-    [6] Update tony stark user : la même raison que précédemment.
+    * Scenario candidat : `Get user Tony Stark`
+    * Étape de définition du scenario : `scenarioVariableIsValid`
+    * Lien vers le code modifié : `DefaultRestApiBddStepDefinition.scenarioVariableIsValid`
     
-    [7] Patch bruce wayne user : la même raison que précédemment. Il est également utilisé pour modifier le corps de requête lors d'une mise à jour.
-    
-    [11] Get user Tony Stark : la même raison que précédemment, avec un changement du format de corps de requête.
+    * Composition des étapes du scénario :
+    	+ Get /users/1?format=json
+    	+ Then http response code should be 200
+    	+ And http response body path $.id should be 1
+    	+ And http response body path $.firstName should be Tony
+    	+ And http response body path $.lastName should be Stark
+    	+ And http response body path $.age should be 60
+    	+ And http response body path $.details.comicName should be IronMan
+    	+ And I store the value of http response header Content-Type as httpContentType in scenario scope
+    	+ And http value of scenario variable httpContentType should be application/json
+    * Le changement modifié : l'ajout du paramètre `format=json` à la requête GET /users/1
+    * Raison du impact : le modèle de réponse attend que ce paramètre soit inclus dans la requête.
 
 ═══════════════════════════════════════════════════

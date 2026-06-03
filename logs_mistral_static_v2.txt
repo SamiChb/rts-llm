@@ -1,0 +1,234 @@
+→ Branche/commit initial : f1eea5349288371c447bed1db88cf94cf50cce01
+→ 127 commit(s) à évaluer (plage : f1eea534^..cc93e763)
+
+════════════════════════════════════════════════════════════
+ Commit 1/127 : f1eea53
+════════════════════════════════════════════════════════════
+  docs: Add javadoc + update readme file
+  par Michael Desigaud, 2021-01-26
+  → couverture réutilisée : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/f1eea53/coverage.json
+  → checkout f1eea53
+  → exécution de RTS-LLM
+    3 scénario(s) sélectionné(s) par RTS-LLM
+  → calcul de la vérité terrain
+f1eea53,1,0,3,0,3,0,0.0000,1.0000,0.0000
+
+════════════════════════════════════════════════════════════
+ Commit 2/127 : c05d608
+════════════════════════════════════════════════════════════
+  Merge pull request #11 from RedFroggy/docs/update-readme
+  par Michael Desigaud, 2021-01-26
+  → couverture réutilisée : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/c05d608/coverage.json
+  → checkout c05d608
+  → exécution de RTS-LLM
+    6 scénario(s) sélectionné(s) par RTS-LLM
+  → calcul de la vérité terrain
+c05d608,0,0,4,0,4,0,0.0000,1.0000,0.0000
+
+════════════════════════════════════════════════════════════
+ Commit 3/127 : 7101e51
+════════════════════════════════════════════════════════════
+  chore(deps): pin dependencies
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 4/127 : 8b0464d
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency com.github.tomakehurst:wiremock-standalone to v2.27.2
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 5/127 : 65455be
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency org.apache.httpcomponents:httpclient to v4.5.13
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 6/127 : d5a55df
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency org.apache.maven.plugins:maven-source-plugin to v3
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 7/127 : 0a48161
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency pl.project13.maven:git-commit-id-plugin to v4
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 8/127 : 65db5db
+════════════════════════════════════════════════════════════
+  Merge pull request #12 from RedFroggy/renovate/pin-dependencies
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 9/127 : b2dfc8b
+════════════════════════════════════════════════════════════
+  Merge pull request #13 from RedFroggy/renovate/wiremock.version
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 10/127 : 29b9241
+════════════════════════════════════════════════════════════
+  Merge pull request #14 from RedFroggy/renovate/org.apache.httpcomponents-httpclient-4.x
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 11/127 : 4d69e00
+════════════════════════════════════════════════════════════
+  Merge pull request #18 from RedFroggy/renovate/major-maven-source-plugin.version
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 12/127 : c32b41e
+════════════════════════════════════════════════════════════
+  Merge pull request #19 from RedFroggy/renovate/major-git-commit-id-plugin.version
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 13/127 : 87a79d8
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency org.assertj:assertj-core to v3.19.0
+  par Renovate Bot, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 14/127 : bf0af5e
+════════════════════════════════════════════════════════════
+  docs: Add renovate schedule period
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 15/127 : b8931f4
+════════════════════════════════════════════════════════════
+  Merge pull request #15 from RedFroggy/renovate/assertj.version
+  par Michael Desigaud, 2021-01-26
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 16/127 : df63661
+════════════════════════════════════════════════════════════
+  chore(deps): update dependency husky to v5.0.8
+  par Renovate Bot, 2021-01-31
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 17/127 : 84c0633
+════════════════════════════════════════════════════════════
+  Merge pull request #20 from RedFroggy/renovate/husky-5.x
+  par Michael Desigaud, 2021-02-01
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 18/127 : 13cbfd8
+════════════════════════════════════════════════════════════
+  docs: Add installation steps in readme file
+  par Michael Desigaud, 2021-02-02
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 19/127 : d848b4a
+════════════════════════════════════════════════════════════
+  docs: Add husky + commitlint installation steps
+  par Michael Desigaud, 2021-02-02
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 20/127 : 50bfc4d
+════════════════════════════════════════════════════════════
+  docs: Add semantic-release badge
+  par Michael Desigaud, 2021-02-02
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 21/127 : 3a034a3
+════════════════════════════════════════════════════════════
+  docs: Add licence file
+  par Michael Desigaud, 2021-02-15
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 22/127 : 4b1868a
+════════════════════════════════════════════════════════════
+  ci: upgrade semantic release
+  par dej, 2021-02-15
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 23/127 : d178ff3
+════════════════════════════════════════════════════════════
+  Merge pull request #22 from RedFroggy/semantic-release
+  par Michael Desigaud, 2021-02-15
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 24/127 : a85931e
+════════════════════════════════════════════════════════════
+  feat: Rename maven artifactId to cucumber-restapi
+  par Michael Desigaud, 2021-02-17
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 25/127 : f927fd4
+════════════════════════════════════════════════════════════
+  Merge pull request #23 from RedFroggy/feat/rename-artifact
+  par Michael Desigaud, 2021-02-17
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 26/127 : a13615e
+════════════════════════════════════════════════════════════
+  1.2.0 [ci skip]
+  par semantic-release-bot, 2021-02-17
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 27/127 : f00257b
+════════════════════════════════════════════════════════════
+  Prepare next development iteration 1.2.1-SNAPSHOT
+  par semantic-release-bot, 2021-02-17
+  (sauté — aucune modification Java)
+
+════════════════════════════════════════════════════════════
+ Commit 28/127 : baf2032
+════════════════════════════════════════════════════════════
+  feat: Rename package + update readme file
+  par Michael Desigaud, 2021-02-17
+  → couverture réutilisée : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/baf2032/coverage.json
+  → checkout baf2032
+  → exécution de RTS-LLM
+    (RTS-LLM en échec — voir /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/baf2032/tool.log)
+  → calcul de la vérité terrain
+baf2032,3,0,0,0,0,0,NaN,NaN,NaN
+
+════════════════════════════════════════════════════════════
+ Commit 29/127 : b3e0b1a
+════════════════════════════════════════════════════════════
+  chore: Move RestApiCucumberTest.java file to parent package
+  par Michael Desigaud, 2021-02-17
+  → couverture réutilisée : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/b3e0b1a/coverage.json
+  → checkout b3e0b1a
+  → exécution de RTS-LLM
+    0 scénario(s) sélectionné(s) par RTS-LLM
+  → calcul de la vérité terrain
+b3e0b1a,0,0,0,0,0,0,NaN,NaN,NaN
+
+════════════════════════════════════════════════════════════
+ Commit 30/127 : c7ca258
+════════════════════════════════════════════════════════════
+  Merge pull request #24 from RedFroggy/feat/rename-package
+  par Michael Desigaud, 2021-02-17
+  → couverture réutilisée : /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/c7ca258/coverage.json
+  → checkout c7ca258
+  → exécution de RTS-LLM

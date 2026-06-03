@@ -1,0 +1,105 @@
+20:47:14.400 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+20:47:14.412 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+20:47:14.441 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+20:47:14.448 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest], using SpringBootContextLoader
+20:47:14.451 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]: class path resource [fr/redfroggy/bdd/restapi/glue/DefaultRestApiStepDefinitionTest-context.xml] does not exist
+20:47:14.452 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]: class path resource [fr/redfroggy/bdd/restapi/glue/DefaultRestApiStepDefinitionTestContext.groovy] does not exist
+20:47:14.452 [main] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+20:47:14.452 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]: DefaultRestApiStepDefinitionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:47:14.479 [main] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]
+20:47:14.527 [main] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [/home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/test-classes/fr/redfroggy/bdd/restapi/Application.class]
+20:47:14.528 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration fr.redfroggy.bdd.restapi.Application for test class fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest
+20:47:14.593 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [fr.redfroggy.bdd.restapi.glue.DefaultRestApiStepDefinitionTest]: using defaults.
+20:47:14.593 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+20:47:14.602 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
+20:47:14.602 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+20:47:14.602 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@709f0202, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@654e6a90, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@14168e1, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@16a5c7e4, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1e225820, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8aeab9e, org.springframework.test.context.event.EventPublishingTestExecutionListener@2a2dc0a, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@3a00b15d, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@36ef1d65, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4be0a27d, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@5f366587, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@6003ad65, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@2ec99035]
+20:47:14.617 [main] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, marvel.api.host=http://localhost:8888, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.4.4)
+
+2026-05-24 20:47:14.819  INFO 188649 --- [           main] r.b.r.g.DefaultRestApiStepDefinitionTest : Starting DefaultRestApiStepDefinitionTest using Java 21.0.10 on dptinfo-pret with PID 188649 (started by etudiant in /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api)
+2026-05-24 20:47:14.820  INFO 188649 --- [           main] r.b.r.g.DefaultRestApiStepDefinitionTest : No active profile set, falling back to default profiles: default
+2026-05-24 20:47:15.378  INFO 188649 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-05-24 20:47:15.386  INFO 188649 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-24 20:47:15.387  INFO 188649 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.44]
+2026-05-24 20:47:15.444  INFO 188649 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-24 20:47:15.444  INFO 188649 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 607 ms
+2026-05-24 20:47:15.697  INFO 188649 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2026-05-24 20:47:15.828  INFO 188649 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-05-24 20:47:15.833  INFO 188649 --- [           main] r.b.r.g.DefaultRestApiStepDefinitionTest : Started DefaultRestApiStepDefinitionTest in 1.214 seconds (JVM running for 1.993)
+
+Scenario: Add bruce banner user                                   # src/test/resources/features/users.feature:54
+2026-05-24 20:47:15.900 Verbose logging enabled
+2026-05-24 20:47:15.985  INFO 188649 --- [           main] wiremock.org.eclipse.jetty.util.log      : Logging initialized @2144ms
+2026-05-24 20:47:16.040  INFO 188649 --- [           main] w.org.eclipse.jetty.server.Server        : jetty-9.2.z-SNAPSHOT
+2026-05-24 20:47:16.052  INFO 188649 --- [           main] w.o.e.j.server.handler.ContextHandler    : Started w.o.e.j.s.ServletContextHandler@2a4ff62{/__admin,null,AVAILABLE}
+2026-05-24 20:47:16.053  INFO 188649 --- [           main] w.o.e.j.server.handler.ContextHandler    : Started w.o.e.j.s.ServletContextHandler@36011924{/,null,AVAILABLE}
+2026-05-24 20:47:16.055  INFO 188649 --- [           main] w.o.e.j.s.NetworkTrafficServerConnector  : Started NetworkTrafficServerConnector@2d01bc46{HTTP/1.1}{0.0.0.0:8888}
+2026-05-24 20:47:16.055  INFO 188649 --- [           main] w.org.eclipse.jetty.server.Server        : Started @2215ms
+  Given http baseUri is /api/                                     # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.baseUri(java.lang.String)
+  And I set Accept-Language http header to en-US                  # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.header(java.lang.String,java.lang.String)
+  And I set http headers to:                                      # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headers(java.util.Map<java.lang.String, java.lang.String>)
+  And I set Authorization http header to `$authToken`             # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.header(java.lang.String,java.lang.String)
+      java.lang.AssertionError: 
+Expecting actual not to be null
+	at fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters(AbstractBddStepDefinition.java:460)
+	at fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setHeader(AbstractBddStepDefinition.java:106)
+	at fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.header(DefaultRestApiBddStepDefinition.java:83)
+	at ✽.I set Authorization http header to `$authToken`(file:///home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/src/test/resources/features/users.feature:55)
+
+  And I set http body with file fixtures/bruce-banner.user.json   # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyWithFile(java.lang.String)
+  And I POST /users                                               # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.post(java.lang.String)
+  And http response code should be 201                            # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode(java.lang.String)
+  And http response body path $.id should be 15948349393          # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo(java.lang.String,java.lang.String)
+  And http response body path $.firstName should be Bruce         # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo(java.lang.String,java.lang.String)
+  And http response body path $.lastName should be Banner         # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo(java.lang.String,java.lang.String)
+  And http response body path $.age should be 45                  # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo(java.lang.String,java.lang.String)
+  And http response body path $.sessionIds should be ["99869448"] # fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathShouldBeEqualTo(java.lang.String,java.lang.String)
+2026-05-24 20:47:16.105  INFO 188649 --- [           main] w.o.e.j.s.NetworkTrafficServerConnector  : Stopped NetworkTrafficServerConnector@2d01bc46{HTTP/1.1}{0.0.0.0:8888}
+2026-05-24 20:47:16.106  INFO 188649 --- [           main] w.o.e.j.server.handler.ContextHandler    : Stopped w.o.e.j.s.ServletContextHandler@36011924{/,null,UNAVAILABLE}
+2026-05-24 20:47:16.106  INFO 188649 --- [           main] w.o.e.j.server.handler.ContextHandler    : Stopped w.o.e.j.s.ServletContextHandler@2a4ff62{/__admin,null,UNAVAILABLE}
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│ Share your Cucumber Report with your team at https://reports.cucumber.io          │
+│ Activate publishing with one of the following:                                    │
+│                                                                                   │
+│ src/test/resources/cucumber.properties:          cucumber.publish.enabled=true    │
+│ src/test/resources/junit-platform.properties:    cucumber.publish.enabled=true    │
+│ Environment variable:                            CUCUMBER_PUBLISH_ENABLED=true    │
+│ JUnit:                                           @CucumberOptions(publish = true) │
+│                                                                                   │
+│ More information at https://reports.cucumber.io/docs/cucumber-jvm                 │
+│                                                                                   │
+│ Disable this message with one of the following:                                   │
+│                                                                                   │
+│ src/test/resources/cucumber.properties:          cucumber.publish.quiet=true      │
+│ src/test/resources/junit-platform.properties:    cucumber.publish.quiet=true      │
+└───────────────────────────────────────────────────────────────────────────────────┘
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.065 s <<< FAILURE! - in fr.redfroggy.bdd.restapi.RestApiCucumberTest
+[ERROR] Add bruce banner user(Users api tests)  Time elapsed: 1.801 s  <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual not to be null
+
+2026-05-24 20:47:16.177  INFO 188649 --- [extShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+[ERROR] Failures: 
+[ERROR]   
+Expecting actual not to be null
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project cucumber-restapi: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

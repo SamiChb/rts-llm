@@ -1,0 +1,61 @@
+1. Extraction du diff Git...
+   97 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   35 step definitions
+   14 scénarios
+3. Extraction des symboles modifiés...
+   6 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.mockThirdPartyApiCall
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithJSON
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.mockThirdPartyApiCallWithFileContent
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+4. Calcul des scénarios candidats (remontée transitive)...
+   14 candidat(s) sur 14 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 23135 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [14] Delete user
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonArray; at path $ → fallback texte : [14] scénario(s) extraits
+    Réponse brute : 
+    [13] Delete user   (src/test/resources/features/users.feature)
+    When I DELETE /users/1
+    Then http response code should be 200
+    And  I DELETE /users/2
+    Then http response code should be 200
+    And  I GET /users
+    Then http response body is typed as array using path $ with length 0
+    And http response body path $ should not have content
+    
+    Candidats:
+    
+    * [13] Delete user   (src/test/resources/features/users.feature)
+    When I DELETE /users/1
+    Then http response code should be 200
+    And  I DELETE /users/2
+    Then http response code should be 200
+    And  I GET /users
+    Then http response body is typed as array using path $ with length 0
+    And http response body path $ should not have content
+    * [14] Delete user   (src/test/resources/features/users.feature)
+    When I DELETE /users/1
+    Then http response code should be 200
+    And  I DELETE /users/2
+    Then http response code should be 200
+    And  I GET /users
+    Then http response body is typed as array using path $ with length 0
+    And http response body path $ should not have content
+    
+    Note: [13] Delete user   (src/test/resources/features/users.feature) and [14] Delete user   (src/test/resources/features/users.feature) are the same scenario. Please choose one of them and provide its details.
+
+═══════════════════════════════════════════════════

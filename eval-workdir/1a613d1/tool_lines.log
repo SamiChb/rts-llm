@@ -1,0 +1,44 @@
+1. Extraction du diff Git...
+   238 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   13 scénarios
+3. Extraction des symboles modifiés...
+   19 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.addHeaders
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.setBody
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.request
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkStatus
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkHeaderExists
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkHeaderEqual
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkJsonPathDoesntExist
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.storeHeader
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.storeJsonPath
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.checkScenarioVariable
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.getBodyDocument
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.replaceDynamicParameters
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.emptyBodyPath
+     - fr.redfroggy.bdd.restapi.user.UserController.get
+     - fr.redfroggy.bdd.restapi.user.UserController.addUser
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getId
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setRelatedTo
+     - fr.redfroggy.bdd.restapi.user.UserDTO.getSessionIds
+     - fr.redfroggy.bdd.restapi.user.UserDTO.setSessionIds
+4. Calcul des scénarios candidats (remontée transitive)...
+   13 candidat(s) sur 13 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 24262 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [10] Get user
+
+  Justification LLM :
+    La fonction GET /users/24333 renvoie un code HTTP 404, indiquant que la ressource n'existe pas.
+
+═══════════════════════════════════════════════════

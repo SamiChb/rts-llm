@@ -31,12 +31,36 @@
    15 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 24833 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : request timed out
-java.net.http.HttpTimeoutException: request timed out
-	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
-	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
-	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
-	at com.rts.llm.Main.runStaticPrune(Main.java:186)
-	at com.rts.llm.Main.run(Main.java:74)
-	at com.rts.llm.Main.main(Main.java:33)
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : com.google.gson.stream.MalformedJsonException: Expected ':' at line 1 column 5 path $.id
+    See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json
+    Réponse brute : 
+    Chaque candidat est un changement qui modifie le code source ou le code de configuration du système. Le changement peut être une modification d'une variable, une ajout d'un import ou une modification d'une fonction. Il peut aussi impliquer la création d'un nouveau fichier ou la suppression d'un ancien.
+    
+    Les changements possibles sont :
+    
+    1. Rename `users.feature` to `users_test.feature`.
+    2. Change the value of the `httpContentType` variable in `getUserTonyStark` step to "application/json".
+    3. Add a new `DELETE /users/{id}` step in `deleteWrongUser` scenario.
+    4. Remove the `PUT /users/1` step from the `deleteUser` scenario.
+    5. Add a new variable `sessionIds` and set its value to an array of session ids. This variable should be available for all scenarios.
+    6. Modify the `setHeader` function in the `getWrongUser` scenario to include a new header with name "Authorization" and value "Bearer ". The authorization token should be obtained from the environment variable `accessToken`.
+    7. Change the value of the `httpContentType` variable in the `storeResponseHeader` step of the `getWrongUser` scenario to "application/json".
+    8. Add a new `PUT /users/{id}` step in the `deleteUser` scenario to delete all sessions associated with the user being deleted.
+    9. Remove the `mockThirdPartyApiCallWithFileContent` function from the `getBruceWayne` scenario.
+    10. Add a new `GET /users/24333` step in the `getWrongUser` scenario to retrieve the user with id 24333.
+    11. Add a new `DELETE /users/24333` step in the `deleteWrongUser` scenario to delete the user with id 24333.
+    12. Change the value of the `httpContentType` variable in the `storeResponseHeader` step of the `getUserTonyStark` scenario to "application/json".
+    13. Add a new `GET /users/{id}` step in the `deleteWrongUser` scenario to retrieve the user with id 24333.
+    14. Remove the `DELETE /users/3` step from the `deleteWrongUser` scenario.
+    15. Remove the `mockThirdPartyApiCallWithFileContent` function from the `getBruceWayne` scenario.
+
+═══════════════════════════════════════════════════

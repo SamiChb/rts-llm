@@ -1,0 +1,15 @@
+sc_001|Should be authenticated
+sc_002|Add tony stark user
+sc_003|Add bruce wayne user
+sc_004|Add bruce banner user
+sc_005|Update tony stark user
+sc_006|Patch bruce wayne user
+sc_007|Get users
+sc_008|Search for valid users
+sc_009|Search for invalid users
+sc_010|Get user Tony Stark
+sc_011|Get user Bruce Wayne
+sc_012|Get wrong user
+sc_013|Delete wrong user
+sc_014|Delete user
+sc_015|Should import users csv file

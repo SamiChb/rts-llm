@@ -82,9 +82,16 @@ if $NO_POM_CHANGES; then
 fi
 
 # ── Découverte des scénarios ─────────────────────────────────────────────
+# On cherche uniquement dans src/test/resources si ce répertoire existe,
+# sinon dans src/test. Les deux ne doivent pas être ajoutés simultanément :
+# src/test/resources est un sous-répertoire de src/test, ce qui provoquerait
+# un double-comptage de chaque scénario dans le grep récursif.
 SEARCH_DIRS=()
-[[ -d "$PROJECT/src/test/resources" ]] && SEARCH_DIRS+=("$PROJECT/src/test/resources")
-[[ -d "$PROJECT/src/test" ]] && SEARCH_DIRS+=("$PROJECT/src/test")
+if [[ -d "$PROJECT/src/test/resources" ]]; then
+  SEARCH_DIRS+=("$PROJECT/src/test/resources")
+elif [[ -d "$PROJECT/src/test" ]]; then
+  SEARCH_DIRS+=("$PROJECT/src/test")
+fi
 
 if [[ ${#SEARCH_DIRS[@]} -eq 0 ]]; then
   echo "Aucun répertoire src/test trouvé sous $PROJECT" >&2

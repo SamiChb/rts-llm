@@ -31,12 +31,16 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 23262 caractères
-6. Appel au LLM (OLLAMA / mistral)...
-Erreur : request timed out
-java.net.http.HttpTimeoutException: request timed out
-	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:953)
-	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
-	at com.rts.llm.LLMClient.chat(LLMClient.java:54)
-	at com.rts.llm.Main.runStaticPrune(Main.java:186)
-	at com.rts.llm.Main.run(Main.java:74)
-	at com.rts.llm.Main.main(Main.java:33)
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : Les tests fonctionnels sont une méthode de test de l'ensemble des fonctionnalités d'une application, généralement dans un environnement de développement. Ils visent à tester la conformité des détails de l'implémentation avec les spécifications du produit et à détecter des problèmes possibles avant la livraison. Les tests fonctionnels se basent sur des cas d'utilisation et des préconditions connues, pour chaque fonctionnalité. Ils sont utilisés pendant le développement et le testing du logiciel, et sont généralement effectués par des testeurs spécialisés dans les test fonctionnels.
+
+═══════════════════════════════════════════════════

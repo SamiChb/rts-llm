@@ -1,1 +1,5 @@
 Should import users csv file
+Should be authenticated
+Add bruce wayne user
+Update tony stark user
+Patch bruce wayne user

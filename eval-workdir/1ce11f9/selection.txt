@@ -1,4 +1,4 @@
-Add tony stark user
+Add bruce wayne user
 Update tony stark user
 Patch bruce wayne user
-Get user Tony Stark
+Get user Bruce Wayne

@@ -1,0 +1,280 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{parskip}
+
+\definecolor{accent}{HTML}{2A5A8A}
+\definecolor{warn}{HTML}{B85C00}
+\definecolor{thbg}{HTML}{EEF3F8}
+\definecolor{okbg}{HTML}{EEF9EE}
+\definecolor{ok}{HTML}{2A7A2A}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{insight}{
+  colback=thbg, colframe=accent, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{attention}{
+  colback=okbg, colframe=ok, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{limite}{
+  colback=yellow!8, colframe=warn, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\renewcommand{\arraystretch}{1.5}
+
+\title{\textbf{Résultats et analyse du benchmark RTS-LLM}}
+\author{Samir El Khoumri, Aly Hachem-Reda, Sami Chbicheb}
+\date{Mai 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+Nous avons vu que la vérité terrain est l'élément central de toute évaluation
+d'un outil de sélection de tests : sans elle, il est impossible de savoir si
+l'outil sélectionne les bons scénarios ou s'il se trompe. Elle constitue la
+référence objective à laquelle toute sélection automatique doit être comparée.
+
+Pour exploiter cette vérité terrain, il faut un \textbf{benchmark} : un
+protocole d'évaluation structuré qui soumet l'outil à un ensemble de situations
+réelles et mesure ses performances de manière reproductible. Le benchmark joue
+ici un rôle clé. Il ne s'agit pas simplement de vérifier que l'outil
+``fonctionne'' dans quelques cas favorables, mais de le confronter à la
+diversité des commits réels --- des modifications triviales aux refactorisations
+complexes --- pour obtenir une image honnête de ce qu'il sait faire et de ce
+qu'il rate. C'est cette image qui permet de prendre des décisions éclairées sur
+l'utilisation de l'outil en production et sur les axes d'amélioration prioritaires.
+
+Dans notre cas, le benchmark sert également à répondre à une question précise :
+l'ajout d'une analyse statique du code apporte-t-il réellement quelque chose par
+rapport au LLM utilisé seul ? Les résultats qui suivent quantifient cet apport
+commit par commit, sur les trois métriques standard : précision, rappel et F1.
+
+% ============================================================
+\section{Résultats quantitatifs}
+% ============================================================
+
+Le benchmark compare deux configurations de RTS-LLM sur 38 commits du projet
+\textbf{spring-cucumber-rest-api}, en utilisant le modèle Mistral~7B-instruct
+(q3\_K\_M) via Ollama sur GPU local (NVIDIA RTX A500, 4\,Go VRAM).
+
+\begin{itemize}[noitemsep]
+  \item \textbf{LLM seul} : le diff et tous les scénarios BDD sont soumis
+        directement au modèle, qui sélectionne seul les scénarios à retester.
+  \item \textbf{Hybride} : un outil d'analyse de code identifie d'abord
+        quels scénarios sont reliés aux méthodes modifiées en remontant
+        les chaînes d'appel ; le LLM reçoit uniquement ces candidats
+        et décide lesquels sont réellement impactés.
+\end{itemize}
+
+\subsection{Métriques moyennes}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Configuration}
+  & \makecell{\textbf{Commits}\\\textbf{gt\,>\,0}}
+  & \makecell{\textbf{Précision}\\\small(commits actifs)}
+  & \makecell{\textbf{Rappel}\\\small(tous commits)}
+  & \makecell{\textbf{F1 moyen}\\\small(tous commits)} \\
+\midrule
+LLM seul                 & 24 & 0{,}487 & 0{,}368 & 0{,}227 \\
+Hybride (statique + LLM) & 17 & \textbf{0{,}789} & 0{,}372 & \textbf{0{,}378} \\
+\midrule
+Gain                     & --- & $\mathbf{+0{,}302}$ & $+0{,}004$ & $\mathbf{+0{,}151}$ \\
+\bottomrule
+\end{tabular}
+\caption{Métriques moyennes sur les commits avec \texttt{gt\_size > 0}
+         (vérité terrain non vide). Modèle : Mistral 7B-instruct q3\_K\_M.}
+\label{tab:resultats}
+\end{table}
+
+\subsection{Distribution du rappel par commit}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Tranche de rappel}
+  & \textbf{LLM seul} ($n = 24$)
+  & \textbf{Hybride} ($n = 17$) \\
+\midrule
+$R = 0$ \quad (aucun scénario impacté détecté)  & 13~commits (54\,\%) & 6~commits (35\,\%) \\
+$0 < R < 0{,}5$ \quad (détection partielle)     &  2~commits ( 8\,\%) & 5~commits (29\,\%) \\
+$0{,}5 \leq R < 1$ \quad (bonne détection)      &  2~commits ( 8\,\%) & 1~commit  ( 6\,\%) \\
+$R = 1$ \quad (détection complète)              &  7~commits (29\,\%) & 5~commits (29\,\%) \\
+\bottomrule
+\end{tabular}
+\caption{Distribution du rappel sur les commits avec \texttt{gt\_size > 0}.}
+\label{tab:distribution}
+\end{table}
+
+% ============================================================
+\section{Interprétation des résultats}
+% ============================================================
+
+\subsection{Pourquoi le mode hybride obtient une précision bien meilleure}
+
+Le gain en précision est le résultat le plus marquant du benchmark
+($+0{,}302$, soit $+62\,\%$ relatif). Il s'explique directement par le rôle
+de l'analyse statique comme pré-filtre.
+
+\textbf{En mode LLM seul}, le modèle reçoit la totalité des scénarios BDD
+sans savoir lesquels exécutent réellement le code modifié. Il se base alors
+sur la \emph{ressemblance de mots} entre le diff et les descriptions de
+scénarios : il sélectionne un scénario si sa description contient des termes
+proches du diff (noms de méthodes, type d'opération, champs modifiés).
+Ce raisonnement produit des \textbf{faux positifs} : des scénarios dont
+le texte ressemble au diff mais qui n'exécutent pas le code modifié.
+La précision de 0{,}487 signifie qu'en moyenne, sur deux scénarios sélectionnés
+par le LLM seul, un seul est réellement impacté.
+
+\textbf{En mode hybride}, seuls les scénarios dont le code de test appelle
+(directement ou indirectement) une méthode modifiée sont transmis au LLM.
+Ce filtre préalable élimine les faux positifs par ressemblance de mots :
+un scénario ne peut figurer dans la liste que s'il est prouvé qu'il passe par
+le code modifié. Le LLM reçoit en plus le chemin d'appel reliant chaque scénario
+à la méthode modifiée, ce qui lui permet de confirmer ou d'écarter chaque cas
+avec des informations concrètes plutôt que de deviner. La précision de 0{,}789
+signifie que près de quatre scénarios sélectionnés sur cinq sont réellement impactés.
+
+\begin{insight}
+\textbf{En résumé :} l'analyse de code sert de filtre objectif qui supprime
+les faux positifs que le LLM produirait par ressemblance de mots.
+Le LLM, muni du chemin d'appel concret, peut ensuite juger si chaque
+scénario est vraiment impacté par le changement.
+\end{insight}
+
+\subsection{Pourquoi le rappel n'augmente presque pas}
+
+Malgré la nette amélioration de précision, le rappel reste quasi identique
+(0{,}368 \emph{vs} 0{,}372, $+0{,}004$). Ce résultat peut sembler paradoxal :
+si l'analyse statique « trouve » les bons scénarios, pourquoi ne pas mieux
+les sélectionner ?
+
+\textbf{Le LLM introduit ses propres faux négatifs.} En mode hybride,
+si le modèle juge qu'un lien est trop indirect ou que la modification est
+mineure, il écarte ce scénario de la sélection finale — même si l'analyse
+de code l'avait correctement identifié comme impacté. Le gain apporté par
+le filtre de code est donc partiellement annulé.
+
+\textbf{L'analyse de code produit elle aussi des faux négatifs.} Les méthodes
+ajoutées par le diff, les appels faits par réflexion ou par héritage, et
+les classes supprimées ne sont pas détectés par l'outil d'analyse.
+Si un scénario est impacté par l'un de ces cas, il ne figurera jamais dans
+la liste des candidats et sera manqué, quelle que soit la décision du LLM.
+
+\textbf{La baisse des sélections vides compense ces faux négatifs.}
+Le seul gain de rappel visible est la baisse du taux de sélection vide
+(de 54\,\% à 35\,\%). Quand le LLM seul ne voit pas de lien évident, il
+ne sélectionne rien ; quand le mode hybride lui fournit un chemin d'appel
+concret, il sélectionne au moins quelques candidats. C'est cet effet qui
+explique les $+0{,}004$ de rappel moyen : les scénarios récupérés grâce au
+filtre compensent tout juste les faux négatifs introduits par le LLM.
+
+\subsection{Ce que révèle la distribution du rappel}
+
+La distribution (Tableau~\ref{tab:distribution}) donne une image plus fine
+que les seules moyennes.
+
+\textbf{Le mode LLM seul fonctionne en tout ou rien.} 54\,\% des commits
+produisent $R = 0$ et 29\,\% produisent $R = 1$, avec très peu de cas
+intermédiaires (16\,\%). Soit le LLM ne voit aucun lien et ne sélectionne
+rien, soit il identifie un lien évident et sélectionne correctement tous
+les scénarios impactés. Les détections partielles sont rares.
+
+\textbf{Le mode hybride couvre davantage de cas intermédiaires.}
+La proportion de commits avec $0 < R < 1$ passe de 16\,\% à 35\,\%.
+Le filtre de code fournit une liste de candidats que le LLM affine :
+cette sélection partielle vaut mieux que rien — même un rappel de 0{,}3
+ou 0{,}5 réduit déjà fortement le nombre de tests à exécuter.
+
+\textbf{Le taux de détection complète ($R = 1$) est identique (29\,\%).}
+Les commits sur lesquels l'outil trouve tous les scénarios impactés sont
+aussi nombreux dans les deux modes. Ce sont des commits avec un diff court
+ciblant une ou deux méthodes : le lien avec les scénarios est si évident
+que le LLM le détecte directement, sans avoir besoin du filtre de code.
+
+\begin{attention}
+Les 7 commits avec $R = 1$ en mode LLM seul sont :
+\texttt{34eb988}, \texttt{53f6cc1}, \texttt{5799273}, \texttt{86a39d5},
+\texttt{afb6fc0}, \texttt{bd99a7c}, \texttt{fcd81b4}.
+Ils partagent tous un diff court ciblant une méthode dont le nom ou le rôle
+est suffisamment parlant (\texttt{ControllerAdvice}, \texttt{authenticate},
+\texttt{getAll\ldots}) pour que le LLM fasse le lien sans aide extérieure.
+\end{attention}
+
+\subsection{Lecture synthétique : deux profils de commits}
+
+L'ensemble des résultats converge vers un constat : les performances de
+l'outil dépendent fortement du \textbf{profil du commit}, indépendamment
+du mode utilisé.
+
+\paragraph{Commits avec un diff court et ciblé.}
+Le diff modifie une ou deux méthodes dont le rôle est précis et limité.
+Peu de scénarios passent par ce code, donc peu sont impactés. Le lien
+entre la modification et les scénarios concernés est clair, et les deux
+modes trouvent correctement tous les scénarios ($R = 1$). C'est le cas
+idéal pour RTS-LLM.
+
+\paragraph{Commits avec un diff long touchant du code partagé par tous les scénarios.}
+Le diff modifie du code exécuté par presque tous les scénarios
+(gestion des requêtes HTTP, authentification, gestionnaire d'erreurs global).
+Presque tous les scénarios sont donc impactés, mais l'outil n'ose pas
+tous les sélectionner. Le résultat est souvent une sélection vide
+(LLM seul) ou partielle (hybride), avec un rappel très faible.
+
+\begin{limite}
+Quand la modification touche du code partagé par tous les scénarios,
+l'outil ne peut pas remplacer l'exécution complète de la suite de tests.
+Il reste cependant utile pour la majorité des commits du quotidien,
+dont le diff est court et ciblé sur une fonctionnalité précise.
+\end{limite}
+
+% ============================================================
+\section{Perspectives d'amélioration}
+% ============================================================
+
+Les résultats identifient deux axes de progrès prioritaires.
+
+\textbf{Réduire le taux de sélection vide ($R = 0$).} C'est le principal
+levier pour améliorer le rappel. Trois pistes sont envisageables :
+(1)~utiliser un modèle plus grand (13B, 34B) qui serait moins réticent à
+sélectionner quand le diff est long ; (2)~augmenter la limite de taille du
+diff transmis (actuellement 4\,000 caractères) pour que le LLM dispose de
+plus de contexte ; (3)~reformuler le prompt du mode hybride pour que le LLM
+ne génère pas de réponses hors-sujet quand le contexte est partiel.
+
+\textbf{Améliorer la précision du mode LLM seul.} Une précision de 0{,}487
+signifie qu'un scénario sélectionné sur deux est un faux positif. Fournir
+au LLM quelques informations sur la structure du code — même sans analyse
+complète des chaînes d'appel — pourrait limiter les sélections basées
+uniquement sur la ressemblance de mots.
+
+\end{document}

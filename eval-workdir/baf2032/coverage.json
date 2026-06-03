@@ -5,7 +5,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_002": {
     "name": "Add tony stark user",
@@ -13,7 +42,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_003": {
     "name": "Add bruce wayne user",
@@ -21,7 +79,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_004": {
     "name": "Update tony stark user",
@@ -29,7 +116,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_005": {
     "name": "Patch bruce wayne user",
@@ -37,7 +153,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_006": {
     "name": "Get users",
@@ -45,7 +190,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_007": {
     "name": "Search for users",
@@ -53,7 +227,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_008": {
     "name": "Get user",
@@ -61,7 +264,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_009": {
     "name": "Get user",
@@ -69,7 +301,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_010": {
     "name": "Get wrong user",
@@ -77,7 +338,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_011": {
     "name": "Delete wrong user",
@@ -85,7 +375,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_012": {
     "name": "Delete user",
@@ -93,7 +412,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_013": {
     "name": "Should be authenticated",
@@ -101,7 +449,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_014": {
     "name": "Add tony stark user",
@@ -109,7 +486,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_015": {
     "name": "Add bruce wayne user",
@@ -117,7 +523,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_016": {
     "name": "Update tony stark user",
@@ -125,7 +560,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_017": {
     "name": "Patch bruce wayne user",
@@ -133,7 +597,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_018": {
     "name": "Get users",
@@ -141,7 +634,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_019": {
     "name": "Search for users",
@@ -149,7 +671,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_020": {
     "name": "Get user",
@@ -157,7 +708,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_021": {
     "name": "Get user",
@@ -165,7 +745,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_022": {
     "name": "Get wrong user",
@@ -173,7 +782,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_023": {
     "name": "Delete wrong user",
@@ -181,7 +819,36 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   },
   "sc_024": {
     "name": "Delete user",
@@ -189,6 +856,35 @@
       "fr.redfroggy.bdd.scope.ScenarioScope.getHeaders",
       "fr.redfroggy.bdd.scope.ScenarioScope.getJsonPaths",
       "fr.redfroggy.bdd.scope.ScenarioScopeTest.shouldBeInitialized"
-    ]
+    ],
+    "lines": {
+      "fr/redfroggy/bdd/Application.java": [
+        7
+      ],
+      "fr/redfroggy/bdd/glue/DefaultRestApiStepDefinitionTest.java": [
+        19,
+        20,
+        21
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScope.java": [
+        17,
+        18,
+        19,
+        20,
+        23,
+        27
+      ],
+      "fr/redfroggy/bdd/scope/ScenarioScopeTest.java": [
+        6,
+        8,
+        12,
+        13,
+        14
+      ],
+      "fr/redfroggy/bdd/user/UserController.java": [
+        14,
+        16
+      ]
+    }
   }
 }

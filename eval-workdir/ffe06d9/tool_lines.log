@@ -1,0 +1,26 @@
+1. Extraction du diff Git...
+   28 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   14 fichiers indexés
+   37 step definitions
+   15 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
+4. Calcul des scénarios candidats (remontée transitive)...
+   1 candidat(s) sur 15 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 3830 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 1
+    [1] Should import users csv file
+
+  Justification LLM :
+    Should import users csv file - The given feature file contains the scenario 'Should import users csv file' which sends a multipart POST request to /api/users with some parameters. The provided code modification is in AbstractBddStepDefinition.postMultipart method which handles multipart requests. Therefore, the scenario 'Should import users csv file' must be considered as a vrai impact.
+
+═══════════════════════════════════════════════════

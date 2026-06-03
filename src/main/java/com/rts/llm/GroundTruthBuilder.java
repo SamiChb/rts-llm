@@ -6,7 +6,9 @@ import com.google.gson.reflect.TypeToken;
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
+import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.IMethodCoverage;
+import org.jacoco.core.analysis.ISourceFileCoverage;
 import org.jacoco.core.tools.ExecFileLoader;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,15 +60,18 @@ import java.util.stream.Stream;
  */
 public class GroundTruthBuilder {
 
-    /** Couverture d'un scénario : son nom + les méthodes qu'il exécute. */
+    /** Couverture d'un scénario : son nom, les méthodes et les lignes qu'il exécute. */
     public static class ScenarioCoverage {
         public String name;
         public List<String> methods;
+        /** Lignes couvertes par fichier source : "com/example/Foo.java" → [10, 15, 42, ...] */
+        public Map<String, List<Integer>> lines;
 
         public ScenarioCoverage() {}
-        public ScenarioCoverage(String name, List<String> methods) {
+        public ScenarioCoverage(String name, List<String> methods, Map<String, List<Integer>> lines) {
             this.name = name;
             this.methods = methods;
+            this.lines = lines;
         }
     }
 
@@ -112,10 +119,12 @@ public class GroundTruthBuilder {
             for (Path exec : execs) {
                 String id = exec.getFileName().toString().replace(".exec", "");
                 Set<String> methods = coveredMethods(exec, classesDirs);
+                Map<String, List<Integer>> lines = coveredLinesByFile(exec, classesDirs);
                 String name = nameById.getOrDefault(id, id);
-                result.put(id, new ScenarioCoverage(name, new ArrayList<>(methods)));
+                result.put(id, new ScenarioCoverage(name, new ArrayList<>(methods), lines));
+                int totalLines = lines.values().stream().mapToInt(List::size).sum();
                 System.out.println(id + " (" + name + ") → "
-                        + methods.size() + " méthodes couvertes");
+                        + methods.size() + " méthodes, " + totalLines + " lignes couvertes");
             }
         }
         return result;
@@ -147,6 +156,36 @@ public class GroundTruthBuilder {
             }
         }
         return covered;
+    }
+
+    /** Lignes couvertes par un .exec, groupées par fichier source JaCoCo ({@code com/example/Foo.java}). */
+    public static Map<String, List<Integer>> coveredLinesByFile(Path execFile, List<Path> classesDirs)
+            throws IOException {
+
+        ExecFileLoader loader = new ExecFileLoader();
+        loader.load(execFile.toFile());
+
+        CoverageBuilder cb = new CoverageBuilder();
+        Analyzer analyzer = new Analyzer(loader.getExecutionDataStore(), cb);
+        for (Path dir : classesDirs) {
+            if (Files.isDirectory(dir)) analyzer.analyzeAll(dir.toFile());
+        }
+
+        Map<String, List<Integer>> result = new TreeMap<>();
+        for (ISourceFileCoverage sf : cb.getSourceFiles()) {
+            String sourcePath = sf.getPackageName() + "/" + sf.getName();
+            List<Integer> coveredLines = new ArrayList<>();
+            for (int line = sf.getFirstLine(); line <= sf.getLastLine(); line++) {
+                int status = sf.getLine(line).getStatus();
+                if (status == ICounter.FULLY_COVERED || status == ICounter.PARTLY_COVERED) {
+                    coveredLines.add(line);
+                }
+            }
+            if (!coveredLines.isEmpty()) {
+                result.put(sourcePath, coveredLines);
+            }
+        }
+        return result;
     }
 
     /** {@code com/example/Outer$Inner} → {@code com.example.Outer.Inner}. */
@@ -191,6 +230,93 @@ public class GroundTruthBuilder {
             Set<String> methods = new TreeSet<>(e.getValue().methods);
             if (!Collections.disjoint(methods, modifiedMethods)) {
                 g.add(e.getKey());
+            }
+        }
+        return g;
+    }
+
+    private static final Pattern OLD_FILE_HEADER =
+            Pattern.compile("^--- (.+)$");
+    private static final Pattern HUNK_OLD =
+            Pattern.compile("^@@ -(\\d+)(?:,\\d+)? \\+\\d+(?:,\\d+)? @@");
+
+    /**
+     * Lignes modifiées dans l'ANCIEN fichier par un diff Git, groupées par
+     * chemin source JaCoCo ({@code com/example/Foo.java}).
+     * Seules les lignes effectivement supprimées/modifiées (préfixe {@code -})
+     * sont retenues, pas les lignes de contexte.
+     */
+    public static Map<String, Set<Integer>> modifiedLinesByFile(String diff) {
+        Map<String, Set<Integer>> result = new TreeMap<>();
+        String currentOldFile = null;
+        int currentOldLine = 0;
+
+        for (String line : diff.split("\n")) {
+            if (line.startsWith("--- ")) {
+                String rawPath = line.substring(4);
+                if (rawPath.equals("/dev/null") || rawPath.endsWith("/dev/null")) {
+                    currentOldFile = null;
+                } else {
+                    currentOldFile = normalizeSourcePath(rawPath);
+                }
+                currentOldLine = 0;
+                continue;
+            }
+
+            if (currentOldFile == null) continue;
+
+            Matcher hunk = HUNK_OLD.matcher(line);
+            if (hunk.find()) {
+                currentOldLine = Integer.parseInt(hunk.group(1));
+                continue;
+            }
+
+            if (line.startsWith("-") && !line.startsWith("---")) {
+                result.computeIfAbsent(currentOldFile, k -> new TreeSet<>()).add(currentOldLine);
+                currentOldLine++;
+            } else if (line.startsWith(" ")) {
+                currentOldLine++;
+            }
+            // "+" lines are only in the new file — do not increment old-file counter
+        }
+        return result;
+    }
+
+    /** "a/src/main/java/com/example/Foo.java" → "com/example/Foo.java" */
+    private static String normalizeSourcePath(String rawPath) {
+        String path = rawPath.replaceFirst("^[ab]/", "");
+        for (String prefix : List.of("src/main/java/", "src/test/java/", "src/main/", "src/test/")) {
+            int idx = path.indexOf(prefix);
+            if (idx >= 0) return path.substring(idx + prefix.length());
+        }
+        return path;
+    }
+
+    /**
+     * Vérité terrain ligne-à-ligne : scénarios dont la couverture intersecte
+     * les lignes modifiées dans l'ancien fichier.
+     */
+    public static List<String> groundTruthByLines(
+            Map<String, Set<Integer>> modifiedLinesByFile,
+            Map<String, ScenarioCoverage> coverageMap) {
+
+        List<String> g = new ArrayList<>();
+        for (var e : coverageMap.entrySet()) {
+            ScenarioCoverage sc = e.getValue();
+            if (sc.lines == null || sc.lines.isEmpty()) continue;
+
+            outer:
+            for (var modEntry : modifiedLinesByFile.entrySet()) {
+                List<Integer> coveredLines = sc.lines.get(modEntry.getKey());
+                if (coveredLines != null) {
+                    Set<Integer> modLines = modEntry.getValue();
+                    for (int covLine : coveredLines) {
+                        if (modLines.contains(covLine)) {
+                            g.add(e.getKey());
+                            break outer;
+                        }
+                    }
+                }
             }
         }
         return g;
@@ -299,29 +425,44 @@ public class GroundTruthBuilder {
                 ? extractor.diffBetween(diffFrom, diffTo)
                 : extractor.lastCommitDiff();
 
-        // 3. Méthodes modifiées
+        // 3. Vérité terrain (ligne ou méthode selon les données disponibles)
+        boolean hasLineData = coverageMap.values().stream()
+                .anyMatch(sc -> sc.lines != null && !sc.lines.isEmpty());
+
         Set<String> modifiedIds = new TreeSet<>();
-        if (!diff.isBlank()) {
-            StaticAnalyzer.Index index = StaticAnalyzer.analyze(projectPath);
-            List<SymbolExtractor.ModifiedSymbol> modified =
-                    SymbolExtractor.extract(diff, index.methodRangesByFile());
-            modified.stream()
-                    .map(SymbolExtractor.ModifiedSymbol::methodId)
-                    .forEach(modifiedIds::add);
+        Map<String, Set<Integer>> modifiedLines = Map.of();
+        List<String> g;
+
+        if (hasLineData) {
+            modifiedLines = diff.isBlank() ? Map.of() : modifiedLinesByFile(diff);
+            g = groundTruthByLines(modifiedLines, coverageMap);
+            if (!csv) System.out.println("Mode GT : couverture par lignes");
+        } else {
+            if (!diff.isBlank()) {
+                StaticAnalyzer.Index index = StaticAnalyzer.analyze(projectPath);
+                List<SymbolExtractor.ModifiedSymbol> modified =
+                        SymbolExtractor.extract(diff, index.methodRangesByFile());
+                modified.stream()
+                        .map(SymbolExtractor.ModifiedSymbol::methodId)
+                        .forEach(modifiedIds::add);
+            }
+            g = groundTruth(modifiedIds, coverageMap);
+            if (!csv) System.out.println("Mode GT : couverture par méthodes");
         }
 
-        // 4. Vérité terrain
-        List<String> g = groundTruth(modifiedIds, coverageMap);
-
-        // 5. Comparaison avec une sélection (optionnelle)
+        // 4. Comparaison avec une sélection (optionnelle)
         Metrics metrics = (selection != null)
                 ? evaluate(selection, g, coverageMap)
                 : null;
 
-        // 6. Sortie
+        // 5. Sortie
+        // commit,modified_count,gt_size,sel_size,tp,fp,fn,precision,recall,f1
+        // modified_count = nb méthodes (mode méthodes) ou nb lignes modifiées (mode lignes)
+        int modifiedCount = hasLineData
+                ? modifiedLines.values().stream().mapToInt(Set::size).sum()
+                : modifiedIds.size();
+
         if (csv) {
-            // Header géré par le script appelant
-            // commit,modified_methods,gt_size,sel_size,tp,fp,fn,precision,recall,f1
             int sel = metrics != null ? metrics.selectionSize() : 0;
             int tp = metrics != null ? metrics.truePositives() : 0;
             int fp = metrics != null ? metrics.falsePositives() : 0;
@@ -330,7 +471,7 @@ public class GroundTruthBuilder {
             double r = metrics != null ? metrics.recall()    : Double.NaN;
             double f = metrics != null ? metrics.f1()        : Double.NaN;
             System.out.printf(Locale.ROOT, "%s,%d,%d,%d,%d,%d,%d,%.4f,%.4f,%.4f%n",
-                    commitTag, modifiedIds.size(), g.size(), sel, tp, fp, fn, p, r, f);
+                    commitTag, modifiedCount, g.size(), sel, tp, fp, fn, p, r, f);
             return;
         }
 
@@ -338,8 +479,15 @@ public class GroundTruthBuilder {
             System.out.println("Diff vide — vérité terrain = ∅");
             return;
         }
-        System.out.println("Méthodes modifiées : " + modifiedIds.size());
-        modifiedIds.forEach(m -> System.out.println("  - " + m));
+        if (hasLineData) {
+            System.out.println("Lignes modifiées : " + modifiedCount
+                    + " dans " + modifiedLines.size() + " fichier(s)");
+            modifiedLines.forEach((file, lines) ->
+                    System.out.println("  - " + file + " : " + lines.size() + " ligne(s)"));
+        } else {
+            System.out.println("Méthodes modifiées : " + modifiedCount);
+            modifiedIds.forEach(m -> System.out.println("  - " + m));
+        }
         System.out.println();
         System.out.println("Vérité terrain : " + g.size() + " scénario(s)");
         for (String id : g) {

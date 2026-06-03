@@ -11,7 +11,7 @@
    1 candidat(s) sur 15 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 3535 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -21,6 +21,6 @@
     [1] Should import users csv file
 
   Justification LLM :
-    The change in the Content-Disposition header and Content-Type headers' formatting affects how the file is uploaded, potentially causing differences in the response body.
+    The candidate [1] is the only one that calls the `postMultipart` method of the modified code, which means that it has a potential impact on the application. The chain of calls from step def to `postMultipart` can be found in the given scenario.
 
 ═══════════════════════════════════════════════════

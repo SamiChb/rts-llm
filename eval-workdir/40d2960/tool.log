@@ -9,7 +9,9 @@
      - fr.redfroggy.bdd.restapi.glue.AbstractBddStepDefinition.postMultipart
 4. Calcul des scénarios candidats (remontée transitive)...
    1 candidat(s) sur 15 scénario(s)
-5. Mode --no-llm : retour direct des candidats statiques (pas d'appel LLM)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 3779 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -19,6 +21,6 @@
     [1] Should import users csv file
 
   Justification LLM :
-    Analyse statique seule (sans filtrage LLM). 1 candidat(s) retourné(s) tels quels.
+    Changement de type du Content-Disposition header pour l'entité #0
 
 ═══════════════════════════════════════════════════

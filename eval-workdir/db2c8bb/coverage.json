@@ -1,106 +1,132 @@
 {
   "sc_001": {
     "name": "Should be authenticated",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_002": {
     "name": "Add tony stark user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_003": {
     "name": "Add bruce wayne user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_004": {
     "name": "Update tony stark user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_005": {
     "name": "Patch bruce wayne user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_006": {
     "name": "Get users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_007": {
     "name": "Search for valid users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_008": {
     "name": "Search for invalid users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_009": {
     "name": "Get user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_010": {
     "name": "Get user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_011": {
     "name": "Get wrong user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_012": {
     "name": "Delete wrong user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_013": {
     "name": "Delete user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_014": {
     "name": "Should be authenticated",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_015": {
     "name": "Add tony stark user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_016": {
     "name": "Add bruce wayne user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_017": {
     "name": "Update tony stark user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_018": {
     "name": "Patch bruce wayne user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_019": {
     "name": "Get users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_020": {
     "name": "Search for valid users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_021": {
     "name": "Search for invalid users",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_022": {
     "name": "Get user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_023": {
     "name": "Get user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_024": {
     "name": "Get wrong user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_025": {
     "name": "Delete wrong user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   },
   "sc_026": {
     "name": "Delete user",
-    "methods": []
+    "methods": [],
+    "lines": {}
   }
 }

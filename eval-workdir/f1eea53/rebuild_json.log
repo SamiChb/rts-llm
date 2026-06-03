@@ -1,0 +1,28 @@
+Lecture de /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/f1eea53/coverage-per-scenario
+Bytecode  : [/home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/classes, /home/etudiant/Bureau/BenchmarksProjetsBDD/spring-cucumber-rest-api/target/test-classes]
+sc_001 (Should be authenticated) → 19 méthodes, 97 lignes couvertes
+sc_002 (Add tony stark user) → 39 méthodes, 148 lignes couvertes
+sc_003 (Add bruce wayne user) → 10 méthodes, 57 lignes couvertes
+sc_004 (Update tony stark user) → 18 méthodes, 90 lignes couvertes
+sc_005 (Patch bruce wayne user) → 15 méthodes, 83 lignes couvertes
+sc_006 (Get users) → 20 méthodes, 98 lignes couvertes
+sc_007 (Search for users) → 21 méthodes, 101 lignes couvertes
+sc_008 (Get user) → 12 méthodes, 74 lignes couvertes
+sc_009 (Get user) → 12 méthodes, 74 lignes couvertes
+sc_010 (Get wrong user) → 17 méthodes, 89 lignes couvertes
+sc_011 (Delete wrong user) → 19 méthodes, 94 lignes couvertes
+sc_012 (Delete user) → 12 méthodes, 74 lignes couvertes
+sc_013 (Should be authenticated) → 19 méthodes, 97 lignes couvertes
+sc_014 (Add tony stark user) → 39 méthodes, 148 lignes couvertes
+sc_015 (Add bruce wayne user) → 10 méthodes, 57 lignes couvertes
+sc_016 (Update tony stark user) → 18 méthodes, 90 lignes couvertes
+sc_017 (Patch bruce wayne user) → 15 méthodes, 83 lignes couvertes
+sc_018 (Get users) → 20 méthodes, 98 lignes couvertes
+sc_019 (Search for users) → 21 méthodes, 101 lignes couvertes
+sc_020 (Get user) → 12 méthodes, 74 lignes couvertes
+sc_021 (Get user) → 12 méthodes, 74 lignes couvertes
+sc_022 (Get wrong user) → 17 méthodes, 89 lignes couvertes
+sc_023 (Delete wrong user) → 19 méthodes, 94 lignes couvertes
+sc_024 (Delete user) → 12 méthodes, 74 lignes couvertes
+→ Vérité terrain de couverture écrite dans /home/etudiant/Bureau/rts llm/rts-llm/eval-workdir/f1eea53/coverage.json
+  24 scénario(s) indexés

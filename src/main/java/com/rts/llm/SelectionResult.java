@@ -5,7 +5,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,10 +66,16 @@ public class SelectionResult {
             return new SelectionResult(indices, scenarios, reasoning);
 
         } catch (JsonSyntaxException e) {
-            return new SelectionResult(
-                    List.of(), List.of(),
-                    "Erreur de parsing JSON : " + e.getMessage()
-                            + "\nRéponse brute : " + llmResponse);
+            // Fallback : extraire les indices/noms depuis le texte libre
+            List<Integer> indices = extractIndicesFromText(llmResponse, allScenarios);
+            List<String> scenarios = new ArrayList<>();
+            for (int idx : indices) {
+                scenarios.add(allScenarios.get(idx - 1));
+            }
+            String note = "Erreur de parsing JSON : " + e.getMessage()
+                    + (indices.isEmpty() ? "" : " → fallback texte : " + indices + " scénario(s) extraits")
+                    + "\nRéponse brute : " + llmResponse;
+            return new SelectionResult(indices, scenarios, note);
         }
     }
 
@@ -85,6 +94,44 @@ public class SelectionResult {
             last = matcher.group();
         }
         return last != null ? last : response.trim();
+    }
+
+    // ── Fallback texte ────────────────────────────────
+
+    /**
+     * Tente d'extraire des indices de scénarios depuis une réponse en texte libre.
+     * Stratégie 1 : cherche ([N]) ou [N] au sens de référence explicite.
+     * Stratégie 2 : cherche les noms de scénarios connus dans le texte.
+     */
+    private static List<Integer> extractIndicesFromText(String response, List<String> allScenarios) {
+        Set<Integer> seen = new LinkedHashSet<>();
+
+        // Stratégie 1 : ([N]) ou ([N]) — référence explicite à l'indice
+        Pattern pIdx = Pattern.compile("\\(\\[?(\\d+)\\]?\\)");
+        Matcher m = pIdx.matcher(response);
+        while (m.find()) {
+            int idx = Integer.parseInt(m.group(1));
+            if (idx >= 1 && idx <= allScenarios.size()) seen.add(idx);
+        }
+        if (!seen.isEmpty()) return new ArrayList<>(seen);
+
+        // Stratégie 2 : chercher les noms de scénarios dans le texte
+        // On ignore les lignes qui contiennent "non impacté", "not impacted", "pas impacté"
+        String lower = response.toLowerCase(Locale.FRENCH);
+        for (int i = 0; i < allScenarios.size(); i++) {
+            String name = allScenarios.get(i).toLowerCase(Locale.FRENCH).trim();
+            if (name.isEmpty()) continue;
+            int pos = lower.indexOf(name);
+            if (pos < 0) continue;
+            // Vérifier que la ligne contenant ce nom ne nie pas l'impact
+            int lineStart = lower.lastIndexOf('\n', pos) + 1;
+            int lineEnd   = lower.indexOf('\n', pos);
+            String line   = lower.substring(lineStart, lineEnd < 0 ? lower.length() : lineEnd);
+            if (line.contains("non impacté") || line.contains("not impacted")
+                    || line.contains("pas impacté") || line.contains("n'est pas")) continue;
+            seen.add(i + 1);
+        }
+        return new ArrayList<>(seen);
     }
 
     // ── Affichage ──────────────────────────────────────

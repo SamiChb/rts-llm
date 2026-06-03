@@ -31,7 +31,7 @@
    14 candidat(s) sur 14 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 16903 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
@@ -41,22 +41,12 @@
 
   Justification LLM :
     Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
-    Réponse brute :  It appears you've shared a list of potential tests for an API in the form of scenarios with specific steps. Each scenario has a description, expected outcome, and a set of actions to perform to test the API. The steps are written in a way that suggests they use a Cucumber-style BDD (Behavior Driven Development) testing framework.
+    Réponse brute : Cette erreur se produit lorsque le plugin de JUnit est activé mais n'est pas installé dans le système.
     
-    Here's an example of one of the scenarios:
+    Le plugin de JUnit permet d'ajouter des annotations spécifiques au code Java qui seront interpretées par JUnit pour effectuer les tests unitaires. Cependant, pour que ce plugin fonctionne, il doit être installé dans votre système.
     
-    ```
-    [10] Get user   (src/test/resources/features/users.feature)
-        When I GET /users/1
-        Then http response code should be 200
-        And http response body path $.id should be 1
-        And http response body path $.firstName should be Tony
-        And http response body path $.lastName should be Stark
-        And http response body path $.age should be 60
-        And I store the value of http response header Content-Type as httpContentType in scenario scope
-        And http value of scenario variable httpContentType should be application/json
-        And http response body should contain `$firstSessionId`
-    ```
-    In this example, the test involves making a GET request to the API endpoint for user 1, checking that the response code is 200 OK and that the user's data (ID, first name, last name, and age) are as expected. Additionally, it stores the value of the Content-Type header in a scenario variable and verifies that the response body contains the `$firstSessionId`.
+    Pour résoudre cette erreur, vous devrez installer le plugin de JUnit. En tant qu'il est spécifié ici que le plugin de JUnit est installé et configuré avec un certain nombre de paramètres (comme "pretty", "features" et "glue"), vous pourrez vérifier que ces configurations sont correctes et correspondent à votre environnement de développement.
+    
+    Si vous avez besoin d'assistance supplémentaire, vous pouvez consulter les documents officiels de JUnit ou les forums spécialisés dans la configuration des tests unitaires en Java.
 
 ═══════════════════════════════════════════════════

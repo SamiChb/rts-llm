@@ -129,19 +129,16 @@ public class PromptBuilder {
         StringBuilder sb = new StringBuilder();
 
         sb.append("""
-                Tu es un expert en sélection de tests de régression pour les projets BDD (Cucumber/Gherkin).
+                TÂCHE : Sélection de tests BDD impactés par une modification de code.
 
-                Une analyse statique a déjà identifié les scénarios *potentiellement* impactés par
-                les modifications de code (ils appellent transitivement une méthode modifiée).
-                Ton rôle : pour chaque candidat, décider s'il s'agit d'un vrai impact ou d'un faux
-                positif (la chaîne d'appel existe mais la modification ne change pas le comportement
-                observable par le scénario).
+                Une analyse statique a présélectionné des scénarios candidats.
+                Tu dois décider lesquels sont réellement impactés (comportement observable change)
+                et lesquels sont des faux positifs (lien statique mais pas d'impact réel).
 
-                Règles :
-                - Sélectionne UNIQUEMENT les scénarios dont le comportement observable change.
-                - Utilise la chaîne d'appel pour comprendre COMMENT chaque scénario atteint le code modifié.
-                - Un changement purement cosmétique (log, commentaire, renommage interne) n'est pas un impact.
-                - Si AUCUN candidat n'est un vrai impact, retourne une liste vide.
+                RÈGLES :
+                - Réponds UNIQUEMENT avec un objet JSON. Rien d'autre.
+                - Format obligatoire : {\"selected\": [indices], \"reasoning\": \"explication\"}
+                - Si aucun candidat n'est impacté : {\"selected\": [], \"reasoning\": \"...\"}
 
                 """);
 
@@ -181,14 +178,13 @@ public class PromptBuilder {
           .append("La numérotation globale va de [1] à [").append(totalScenarios).append("] ; ")
           .append("tout indice en dehors des candidats listés est INVALIDE.\n\n");
 
-        sb.append("═══ FORMAT DE RÉPONSE ═══\n\n");
-        sb.append("IMPORTANT :\n");
-        sb.append("- Ta réponse doit commencer IMMÉDIATEMENT par { et se terminer par }.\n");
-        sb.append("- N'écris aucun texte avant ou après le JSON.\n");
-        sb.append("- N'utilise pas de blocs ```json```.\n");
-        sb.append("- Un seul objet JSON, rien d'autre.\n\n");
-        sb.append("Exemple : {\"selected\": [1, 3], \"reasoning\": \"Explication courte.\"}\n");
-        sb.append("Si aucun candidat n'est un vrai impact : {\"selected\": [], \"reasoning\": \"...\"}\n");
+        sb.append("═══ RÉPONSE ATTENDUE ═══\n\n");
+        sb.append("Réponds MAINTENANT avec UNIQUEMENT ce JSON (commence par { et termine par }) :\n");
+        sb.append("{\"selected\": [indices des candidats réellement impactés], \"reasoning\": \"explication\"}\n\n");
+        sb.append("Exemples :\n");
+        sb.append("{\"selected\": [2, 5], \"reasoning\": \"Ces scénarios testent la méthode modifiée.\"}\n");
+        sb.append("{\"selected\": [], \"reasoning\": \"Le changement est cosmétique, pas d'impact observable.\"}\n\n");
+        sb.append("RAPPEL : ta réponse doit commencer immédiatement par { sans aucun texte avant.\n");
 
         return sb.toString();
     }

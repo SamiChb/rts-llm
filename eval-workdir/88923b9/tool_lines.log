@@ -1,0 +1,57 @@
+1. Extraction du diff Git...
+   219 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   23 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.baseUri
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.setBodyTo
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.header
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.queryParameter
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headers
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.responseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.notResponseCode
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerNotExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.headerNotEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyIsValid
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyContains
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathExists
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathDoesntExist
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.emptyBodyPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathNotEqual
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathIsArray
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.bodyPathIsArrayWithLength
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseHeader
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.storeResponseJsonPath
+     - fr.redfroggy.bdd.restapi.glue.DefaultRestApiBddStepDefinition.scenarioVariableIsValid
+4. Calcul des scénarios candidats (remontée transitive)...
+   12 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 14980 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Aucun scénario impacté.
+
+  Justification LLM :
+    Erreur de parsing JSON : Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive; at path $
+    Réponse brute : 
+    Cet outil vous permet de gérer des candidats pour la construction de tests automatisés dans un environnement BDD (Behavior-Driven Development) en Java, c'est-à-dire que le test cas est décrit en langue naturelle avec des "Given" et "Then", et le code de fonctionnalités est généré automatiquement.
+    
+    Cet outil utilise la notations Gherkin pour décrire les cas d'utilisation du système en développant un scénario en langue naturelle, dans lequel on indique les actions effectuées par l'utilisateur et les résultats attendus. Le système étant un serveur REST API, le scénario peut être représenté sous la forme d'une URL HTTPS (et d'autres méthodes de communication).
+    
+    Cette solution permet de générer des scénarios BDD avec des paramètres et des états du système, ainsi que d'ajouter des assertions sur les résultats attendus pour chaque scénario. Les scénarios sont créés dans une base de données MySQL et les fonctionnalités sont développées en Java.
+    
+    Le générateur de tests est basé sur la bibliothèque JUnit, qui est une framework d'unité de test pour Java. Il permet d'instancier des objets Java (des classes) dans un scénario, et de définir des méthodes pour les tests (des fonctionnalités).
+    
+    Cet outil peut être utilisé pour des systèmes de toutes les tailles et complexité variées. Il offre une base solide de fonctionnalités qui permet d'automatiser le développement de tests dans un environnement BDD.
+
+═══════════════════════════════════════════════════

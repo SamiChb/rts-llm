@@ -1,0 +1,27 @@
+1. Extraction du diff Git...
+   82 lignes de diff extraites.
+2. Analyse statique (AST + call graph)...
+   11 fichiers indexés
+   30 step definitions
+   12 scénarios
+3. Extraction des symboles modifiés...
+   1 méthode(s) modifiée(s) détectée(s)
+     - fr.redfroggy.bdd.glue.DefaultRestApiStepDefinitionTest.authenticate
+4. Calcul des scénarios candidats (remontée transitive)...
+   2 candidat(s) sur 12 scénario(s)
+5. Construction du prompt (mode élagueur)...
+   Prompt : 6322 caractères
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
+
+═══════════════════════════════════════════════════
+  SÉLECTION RTS (analyse LLM du code source)
+═══════════════════════════════════════════════════
+
+  Scénarios à retester : 2
+    [1] Should be authenticated
+    [2] Add tony stark user
+
+  Justification LLM :
+    Scenario 1 Should be authenticated et Scenario 2 Add tony stark user sont les seuls qui ne changent pas leur comportement observable après modification de code. Les autres scénarios sont impactés par la modification de code.
+
+═══════════════════════════════════════════════════

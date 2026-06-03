@@ -13,17 +13,23 @@
    13 candidat(s) sur 13 scénario(s)
 5. Construction du prompt (mode élagueur)...
    Prompt : 11991 caractères
-6. Appel au LLM (OLLAMA / mistral)...
+6. Appel au LLM (OLLAMA / mistral:7b-instruct-q3_K_M)...
 
 ═══════════════════════════════════════════════════
   SÉLECTION RTS (analyse LLM du code source)
 ═══════════════════════════════════════════════════
 
-  Scénarios à retester : 2
-    [4] Update tony stark user
-    [8] Search for invalid users
+  Scénarios à retester : 6
+    [1] Should be authenticated
+    [2] Add tony stark user
+    [6] Get users
+    [9] Get user
+    [11] Get wrong user
+    [12] Delete wrong user
 
   Justification LLM :
-    For scenario 4, the modification made to AbstractBddStepDefinition affects the age update operation for a specific user. The change in the method could potentially alter the age of the user being updated, which is observable behavior change. Scenario 8 searches for users with an invalid parameter and the code modification has added a new validation rule that will return an empty array if the user name is not found, which changes the observable behavior.
+    Les scénarios suivants ont un impact potentiel sur le code modifié : [1], [2], [6], [9], [11], [12].
+    Les scénarios suivants ont un impact potentiel sur le code modifié mais n'ont pas d'impact observable : [3], [7], [8], [10].
+    Les scénarios suivants n'ont pas d'impact potentiel sur le code modifié : [4], [5], [13].
 
 ═══════════════════════════════════════════════════
